@@ -9,6 +9,5 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class MyModel(BaseModel):
-    name = models.CharField(max_length=100)
-    # other fields
+class ConcreateTest(BaseModel):
+    extra_field = models.CharField(max_length=50)

@@ -1,0 +1,15 @@
+{% extends "_base.html" %}
+{% block content %}
+<form class=" shadow-sm py-3 border rounded p-4">
+    <div class="mb-3">
+      <label for="title" class="form-label">Cover title</label>
+      {{form.title}}
+      <div id="emailHelp" class="form-text">Give any title like python-cover, frontend-cover-letter etc.</div>
+    </div>
+    <div class="mb-3">
+      <label class="form-label text-w1">Content for letter*</label>
+      {{form.contents}}
+    </div>
+    <button type="submit" class="tbtn-def">Create Cover</button>
+  </form>
+{% endblock content %}
