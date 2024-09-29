@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +23,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-o5yzb0da)2q67b1)#sz7spa4%x8gef4)-$0gil*3aq^kygwd=_'
-
+SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -77,13 +78,25 @@ WSGI_APPLICATION = 'pilot_products.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+USE_MYSQL =  os.getenv('USE_MYSQL'),
+if USE_MYSQL == True:
+    DATABASES = {
+        'default': {
+        'ENGINE':'django.db.backends.mysql',
+        'NAME': os.getenv('MYSQL_DB_NAME'),
+        'USER': os.getenv('MYSQL_DB_USER'),
+        'PASSWORD':os.getenv('MYSQL_DB_PASSWORD'),
+        'HOST':os.getenv('MYSQL_DB_HOST'),
+        'PORT':'3306',
+    }
+    }
+else:
+    DATABASES = {
+        'default': {
+        'ENGINE':'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-}
+    }
 
 
 # Password validation

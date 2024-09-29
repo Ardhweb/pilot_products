@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect, HttpResponse
 from .models import  CoverLetter
 from .forms import CoverLetterForm
 def index(request):
-    return render(request,'index.html')
+    return render(request,'coverit/index.html')
 
 def create_cover(request):
     if request.method == 'POST':

@@ -11,7 +11,20 @@
     <title>Django + Tailwind CSS + Flowbite</title>
     {% include "global.html" %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   
+   <style>
+
+    #root > * {
+        transform: translateX(0); /* Initial position */
+        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Smooth transition for horizontal movement and opacity */
+        opacity: 1;
+    }
+
+    /* Hidden state */
+    .d-none {
+        transform: translateX(100%); /* Move out of the view to the right */
+        opacity: 0; /* Fades out as it moves */
+    }
+   </style>
 </head>
 
 
@@ -19,46 +32,54 @@
 <body class="bg-green-50">
     
    
-    <!-- As a heading -->
-    <nav class="navbar text-s1 text-w1 bg-body-tertiary border-bottom py4">
-        <div class="container text-center">
-            <div class="row w-100">
-                <div class="col">
-                    <div class="container-fluid">
-                        <span class="navbar-brand mb-0 h1">Navbar</span>
-                    </div>
-                </div>
-                <div class="col-6 col-md-8 col-sm-12">
-                    <ul class="nav justify-content-center">
-                        <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="/">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link tbtn-def" href="/made-cover">Cover</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col ms-auto text-end">
-                    <button class="tbtn-def">Log in</button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    
-<!--Navbar-->
+{% include "utility/nav.html" %}
+{% include "component/buttons.html" %}
+<div id="top-main-bar" class="container-fluid m-4">
+    <div class="d-flex">
+        <button id="sidepane-btn" class="tbtn-def">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-filter-left " viewBox="0 0 16 16">
+                <path d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+              </svg>
+            </button>
+    </div>
+</div>
+<main class="row m-2" id="root">
+   <div class="col-md-auto d-none mt-4">
+    <ul class="list-group">
+        <li class="list-group-item">Cras justo odio</li>
+        <li class="list-group-item">Dapibus ac facilisis in</li>
+        <li class="list-group-item">Morbi leo risus</li>
+        <li class="list-group-item">Porta ac consectetur ac</li>
+        <li class="list-group-item">Vestibulum at eros</li>
+      </ul>
+  
 
-<main>
+      
+     
+</div>
+   </div>
+   <div class="col">
     <div class="container mx-auto mt-4">
         {% block content %}
         {% endblock content %}
     </div>
+   </div>
 </main>
+
+
+
+<script>
+    // Get the root element's first child and the button
+    const rootElementFirstChild = document.getElementById('root').firstElementChild;
+    const button = document.getElementById('sidepane-btn');
+
+    // Add an event listener for the button click
+    button.addEventListener('click', function() {
+        // Toggle the 'd-none' class on the root element's first child
+        rootElementFirstChild.classList.toggle('d-none');
+    });
+</script>
+
 </body>
 
 </html>
