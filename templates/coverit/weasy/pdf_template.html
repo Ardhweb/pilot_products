@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="{% static 'public/coverit/css/overriden-globe.css' %}" rel="stylesheet">
+    <title>{{data.title}}</title>
+    <style>
+        body {
+            font-family: Rubik, Arial, sans-serif;
+        }
+      
+    </style>
+</head>
+<body>
+    <div class="d-flex pt-3">
+        {% block content %}
+        <p>{{data.contents|linebreaks }}</p>
+        {% endblock content %}
+    </div>
+</body>
+</html>

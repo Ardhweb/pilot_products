@@ -1,0 +1,26 @@
+{% extends "coverit/base.html" %}
+{% comment %} {% load breadcrumbs %} {% endcomment %}
+{% block head %}
+<style>
+  :root{
+    --body-bg-color:#b3b3b3a6!important;
+  }
+ 
+</style>
+{% endblock head %}
+
+
+{% block content %}
+
+<div class="container px-5 py-5  mx-5 my-5">
+    <div class=" d-flex flex-column  justify-content-center text-center shadow bg-light py-5  mb-5  rounded p-4">
+        <h2 class="text-greadient-1">Hurrah Your Cover Letter Is Ready</h2>
+        <span>Download or  Preview</span>
+        <div class="p-2">
+
+        <button type="button" class="btn btn-secondary btn-sm" disabled>Download</button>
+        <a type="button" class="btn btn-primary btn-sm" href="{% url 'generate_pdf' cover_data.id %}">View Letter</a>
+        </div>
+    </div>
+</div>
+{% endblock content %}
