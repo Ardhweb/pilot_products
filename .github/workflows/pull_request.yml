@@ -1,0 +1,16 @@
+name: Pull Request Trigger
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  pull_request:
+    if: startsWith(github.event.comment.body, '/pull')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Pull specific branch
+        run: git pull origin production  # Change 'main' to your desired branch
