@@ -23,6 +23,7 @@ from pilot_products.config.https_status.error_handler import (error_404)
 urlpatterns = [
     path('pilot-super/admin/dash/', admin.site.urls),
     path('', include("coverit.urls")),
+    path('core', include("core.urls")),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
