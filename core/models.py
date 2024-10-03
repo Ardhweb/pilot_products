@@ -11,3 +11,12 @@ class BaseModel(models.Model):
 
 class ConcreateTest(BaseModel):
     extra_field = models.CharField(max_length=50)
+
+
+class SeoTags(BaseModel):
+    keyword = models.CharField(max_length=50, blank=False, unique=True)
+    description = models.TextField(null=True, blank=True)
+
+    def __str__(self):
+        return self.keyword
+    
