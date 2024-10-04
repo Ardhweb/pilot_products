@@ -1,0 +1,115 @@
+{% extends "coverit/base.html" %}
+{% block head %}
+<style>
+  :root {
+    --body-bg-color: #b3b3b3a6 !important;
+  }
+</style>
+{% endblock head %}
+{% block content %}
+
+<div class="container px-5 pt-5 mb-5 " style="height: calc(70vh - 20px); ">
+  <!-- Dropdown Menu -->
+  <div class="mb-4">
+    <div class="dropdown">
+      <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        Sort <i class="ri-sort-asc"></i>
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <li><a class="dropdown-item" href="#">Newest </a></li>
+        <li><a class="dropdown-item" href="#">Oldest</a></li>
+        <!-- Add more options as needed -->
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    {% for letter in letter %}
+      <div class="col-3 position-relative" style="height: 200px;">
+        <div class="border rounded text-center" style="background-color: rgba(248, 249, 250, 0.8); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); height: 100%; z-index: 1;">
+          <a class="text-decoration-none text-reset" href="">
+            <p class="fw-semibold fs-4">{{ letter.title }}</p>
+            <p class="fw-semibold text-start"><span>created:<span>{{ letter.created_at }}</span></span></p>
+          </a>
+        </div>
+        <div class="button-container position-absolute top-50 start-50 translate-middle d-none" style="transition: opacity 0.3s ease; opacity: 0; width: 100%; max-width: 150px;">
+          <div class="icon-wrapper" style="background-color: rgba(255, 255, 255, 0.9); border-radius: 10px; padding: 10px; display: flex; justify-content: center; align-items: center; gap: 10px; flex-direction: row; width: 100%;">
+            <a href="#" class="text-reset" style="cursor: pointer; text-decoration: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="Download">
+              <i class="ri-arrow-down-circle-line" style="font-size: 24px;"></i>
+            </a>
+            <a target="_blank" href="{% url 'generate_pdf' letter.id %}" class="text-reset" style="cursor: pointer; text-decoration: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="View">
+              <i class="ri-eye-line" style="font-size: 24px;"></i>
+            </a>
+            <a href="#" class="text-reset" style="cursor: pointer; text-decoration: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit">
+              <i class="ri-file-edit-line" style="font-size: 24px;"></i>
+            </a>
+            <a href="#" class="text-reset" style="hover:background-color:red; cursor: pointer; text-decoration: none;" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete">
+                <i class="ri-delete-bin-5-line" style="font-size: 24px;"></i>
+              </a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+    // Add event listeners to show buttons on hover and touch
+    document.querySelectorAll('.col-3').forEach(col => {
+        const buttonContainer = col.querySelector('.button-container');
+
+        // Show buttons on mouse enter
+        col.addEventListener('mouseenter', () => {
+            buttonContainer.classList.remove('d-none');
+            buttonContainer.style.opacity = '1';
+        });
+
+        // Hide buttons on mouse leave
+        col.addEventListener('mouseleave', () => {
+            buttonContainer.style.opacity = '0';
+            setTimeout(() => {
+                buttonContainer.classList.add('d-none');
+            }, 300); // Matches the transition duration
+        });
+
+        // Show/hide buttons on touch for mobile devices
+        col.addEventListener('touchstart', (event) => {
+            event.preventDefault(); // Prevents potential double-tap zoom
+            if (buttonContainer.classList.contains('d-none')) {
+                buttonContainer.classList.remove('d-none');
+                buttonContainer.style.opacity = '1';
+            } else {
+                buttonContainer.style.opacity = '0';
+                setTimeout(() => {
+                    buttonContainer.classList.add('d-none');
+                }, 300); // Matches the transition duration
+            }
+            // Hide other button containers
+            document.querySelectorAll('.button-container').forEach(container => {
+                if (container !== buttonContainer) {
+                    container.classList.add('d-none');
+                    container.style.opacity = '0';
+                }
+            });
+        });
+    });
+
+    // Initialize Bootstrap tooltips
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
+
+    // Function to set icon orientation
+    function setIconOrientation(orientation) {
+        const direction = orientation === 'vertical' ? 'column' : 'row';
+        document.querySelectorAll('.icon-wrapper').forEach(wrapper => {
+            wrapper.style.flexDirection = direction; // Set to 'row' or 'column'
+        });
+    }
+
+    // Call this function with either 'row' or 'column'
+    setIconOrientation('row'); // To set icons horizontally
+    // setIconOrientation('column'); // Uncomment this line to set icons vertically
+</script>
+{% endblock content %}
