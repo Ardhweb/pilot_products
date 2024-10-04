@@ -19,6 +19,8 @@ def create_cover(request):
     if request.method == 'POST':
         form = CoverLetterForm(request.POST)
         if form.is_valid():
+            cover = form.save(commit=False)  # Create the instance but don't save yet
+            cover.candidate = request.user   
             cover = form.save()
             id = cover.id
             title = cover.title
@@ -66,3 +68,13 @@ class PDFView(View):
             response['Content-Disposition'] = 'inline; filename="document.pdf"'
         
         return response
+
+
+def indexing_cover_l(request):
+    if request.user.is_authenticated:
+        letter = CoverLetter.objects.all()
+        print(letter)
+        context = {'letter':letter}
+        return render(request,'coverit/listing.html', context)
+    else:
+        return redirect('index')
