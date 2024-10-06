@@ -25,6 +25,7 @@ urlpatterns = [
     path('pilot-super/admin/dash/', admin.site.urls),
     path('', include("coverit.urls")),
     path('core', include("core.urls")),
+    path('accounts/', include("accounts.urls")),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

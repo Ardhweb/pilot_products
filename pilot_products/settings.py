@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'coverit',
     'core',
+    'webnode',
+    'accounts',
     
    
 ]
@@ -78,25 +80,41 @@ WSGI_APPLICATION = 'pilot_products.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-USE_MYSQL =  os.getenv('USE_MYSQL'),
-if USE_MYSQL == True:
+import os
+from pathlib import Path
+from colorama import init, Fore
+
+# Initialize colorama
+init(autoreset=True)
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Read USE_MYSQL environment variable and convert it to a boolean
+USE_MYSQL = os.getenv('USE_MYSQL', 'False').lower() in ('true', '1', 't')
+
+if USE_MYSQL:
+    db_name = os.getenv('MYSQL_DB_NAME')
     DATABASES = {
         'default': {
-        'ENGINE':'django.db.backends.mysql',
-        'NAME': os.getenv('MYSQL_DB_NAME'),
-        'USER': os.getenv('MYSQL_DB_USER'),
-        'PASSWORD':os.getenv('MYSQL_DB_PASSWORD'),
-        'HOST':os.getenv('MYSQL_DB_HOST'),
-        'PORT':'3306',
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': db_name,
+            'USER': os.getenv('MYSQL_DB_USER'),
+            'PASSWORD': os.getenv('MYSQL_DB_PASSWORD'),
+            'HOST': os.getenv('MYSQL_DB_HOST'),
+            'PORT': '3306',
+        }
     }
-    }
+    print(f"{Fore.GREEN}Using MySQL database: {db_name} (True)")
 else:
+    db_name = BASE_DIR / 'db.sqlite3'
     DATABASES = {
         'default': {
-        'ENGINE':'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': db_name,
+        }
     }
-    }
+    print(f"{Fore.GREEN}Using SQLite database: {db_name} (False)")
+
 
 
 # Password validation
@@ -150,3 +168,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+LOGIN_REDIRECT_URL= '/index'
+
+LOGIN_URL = 'accounts/login'
+LOGOUT_URL = 'accounts/logout'
