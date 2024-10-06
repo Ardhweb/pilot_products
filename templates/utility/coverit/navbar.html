@@ -17,7 +17,7 @@
             {% if user.is_superuser %}
             {% endif %}
             <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">Your Letter's</a>
-            <a type="button" class="btn btn-secondary btn-sm" href="{% url 'accounts:logout' %}">Log-out</a>
+            <a type="button" class="btn btn-danger btn-sm" href="{% url 'accounts:logout' %}">Log-out</a>
             {% else %}
             <a type="button" class="btn btn-secondary btn-sm">Sign-up</a>
             <a type="button" class="btn btn-secondary btn-sm" href="{% url 'accounts:login' %}" >Login</a>

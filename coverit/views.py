@@ -7,9 +7,11 @@ from django.shortcuts import redirect, reverse
 from django.template.loader import get_template
 from weasyprint import HTML
 from django.views import View
-def index(request):
-    return render(request,'coverit/index.html')
 
+
+def index(request):
+    return render(request, 'coverit/index.html')
+    
 def create_cover(request):
     breadcrumbs = [
         {'name': 'Page 1', 'url': '/'},
