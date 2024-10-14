@@ -50,7 +50,8 @@ def cover_th(request,title,id):
         'title':title,
         'id':id
     }
-    return render(request,'coverit/thank.html', {'cover_data':cover_data})
+    downlload_cover = CoverLetter.objects.get(id=id)
+    return render(request,'coverit/thank.html', {'cover_data':cover_data, 'downlload_cover':downlload_cover})
 
 class PDFView(View):
     def get(self, request, id,*args, **kwargs):

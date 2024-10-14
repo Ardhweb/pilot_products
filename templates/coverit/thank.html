@@ -1,26 +1,113 @@
 {% extends "coverit/base.html" %}
 {% comment %} {% load breadcrumbs %} {% endcomment %}
+
+
 {% block head %}
 <style>
-  :root{
-    --body-bg-color:#b3b3b3a6!important;
+  :root {
+    --body-bg-color: #b3b3b3a6 !important;
   }
- 
+
+  body{
+    overflow-x: hidden!important;
+  }
+
+  #lettercontent {
+   width: 210mm; /* A4 width */
+   height: 297mm; /* A4 height */
+   padding: 20px;
+   box-sizing: border-box;
+   border: 1px solid #ccc;
+   overflow: auto; /* Allow scrolling if content overflows */
+   line-height: 1.5; /* Default line height */
+   display: none!important;
+  
+   
+  }
+
+  #line-height-slider {
+    margin: 20px 0;
+    width: 100%;
+  }
+
+  #logo {
+    display: none; /* Hidden by default */
+  }
 </style>
 {% endblock head %}
 
-
 {% block content %}
-
-<div class="container px-5 py-5  mx-5 my-5">
-    <div class=" d-flex flex-column  justify-content-center text-center shadow bg-light py-5  mb-5  rounded p-4">
+<div class="container px-5 py-5 mx-5 my-5">
+    <div class="d-flex flex-column justify-content-center text-center shadow bg-light py-5 mb-5 rounded p-4">
         <h2 class="text-greadient-1">Hurrah Your Cover Letter Is Ready</h2>
-        <span>Download or  Preview</span>
+        <span>Download or Preview</span>
         <div class="p-2">
-
-        <button type="button" class="btn btn-secondary btn-sm" disabled>Download</button>
-        <a type="button" class="btn btn-primary btn-sm" href="{% url 'generate_pdf' cover_data.id %}">View Letter</a>
+            <button type="button" class="btn btn-secondary btn-sm" id="download-letter">Download</button>
+            <a type="button" class="btn btn-primary btn-sm" href="{% url 'generate_pdf' cover_data.id %}">View Letter</a>
         </div>
     </div>
 </div>
+
+
+
+  
+<div class="container px-5 py-5 mx-5 my-5" 
+>
+  <div class="d-flex flex-column justify-content-center text-center shadow bg-light py-5 mb-5 rounded p-4">
+    <div id="lettercontent">
+       <h4 class="text-left"> {{downlload_cover.title}}</h4>
+       <div>
+        {{downlload_cover.contents}}
+       </div>
+    </div>
+    
+  </div>
+</div>
+
+
+<script>
+
+    const file_name = ("{{ downlload_letter.title }}" || 'download') + '.pdf';
+
+  const contentDiv = document.getElementById('lettercontent');
+
+  document.getElementById('download-letter').addEventListener('click', () => {
+      const { jsPDF } = window.jspdf;
+      const pdf = new jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+          putOnlyUsedFonts: true,
+          floatPrecision: 16
+      });
+
+    
+      
+      // Split content into multiple pages if necessary
+      const margins = { top: 50, left: 20, bottom: 20 }; // Adjust top margin for logo
+      const pageHeight = pdf.internal.pageSize.height;
+
+      
+      // Get the HTML content
+      const content = contentDiv.textContent;
+      const lines = pdf.splitTextToSize(content, 170); // Adjust width for margins
+      const lineHeight = 3; // Fixed line height for text
+
+      let contentHeight = margins.top; // Start content height after logo
+
+      // Add lines to the PDF
+      for (let i = 0; i < lines.length; i++) {
+          if (contentHeight + lineHeight > pageHeight - margins.top - margins.bottom) {
+              pdf.addPage();
+              contentHeight = margins.top; // Reset for new page
+            
+          }
+          pdf.text(lines[i], margins.left, contentHeight);
+          contentHeight += lineHeight;
+      }
+
+      // Save the PDF
+      pdf.save(file_name);
+  });
+</script>
 {% endblock content %}
