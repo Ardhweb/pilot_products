@@ -22,7 +22,7 @@ def create_cover(request):
         form = CoverLetterForm(request.POST)
         if form.is_valid():
             cover = form.save(commit=False)  # Create the instance but don't save yet
-            cover.candidate = request.user   
+            cover.candidate = request.user if request.user.is_authenticated else None
             cover = form.save()
             id = cover.id
             title = cover.title

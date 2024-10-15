@@ -40,10 +40,10 @@
 <div class="container px-5 py-5 mx-5 my-5">
     <div class="d-flex flex-column justify-content-center text-center shadow bg-light py-5 mb-5 rounded p-4">
         <h2 class="text-greadient-1">Hurrah Your Cover Letter Is Ready</h2>
-        <span>Download or Preview</span>
+        <span>Download</span>
         <div class="p-2">
-            <button type="button" class="btn btn-secondary btn-sm" id="download-letter">Download</button>
-            <a type="button" class="btn btn-primary btn-sm" href="{% url 'generate_pdf' cover_data.id %}">View Letter</a>
+            <button type="button" class="btn btn-secondary btn-sm" id="download-letter">Download Your Cover</button>
+            {% comment %} <a type="button" class="btn btn-primary btn-sm" href="{% url 'generate_pdf' cover_data.id %}">View Letter</a> {% endcomment %}
         </div>
     </div>
 </div>
@@ -51,7 +51,7 @@
 
 
   
-<div class="container px-5 py-5 mx-5 my-5" 
+<div style="display: none!important;" class="container px-5 py-5 mx-5 my-5" 
 >
   <div class="d-flex flex-column justify-content-center text-center shadow bg-light py-5 mb-5 rounded p-4">
     <div id="lettercontent">
