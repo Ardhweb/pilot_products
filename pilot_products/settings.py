@@ -14,6 +14,11 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 load_dotenv()
+import os
+from pathlib import Path
+from colorama import Fore
+import dj_database_url
+from colorama import init, Fore
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,18 +86,23 @@ WSGI_APPLICATION = 'pilot_products.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-import os
-from pathlib import Path
-from colorama import init, Fore
+
 
 # Initialize colorama
 init(autoreset=True)
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Read USE_MYSQL environment variable and convert it to a boolean
-USE_MYSQL = os.getenv('USE_MYSQL', 'False').lower() in ('true', '1', 't')
 
+
+# Environment variables for database selection
+USE_MYSQL = os.getenv('USE_MYSQL', 'False').lower() in ('true', '1', 't')
+USE_POSTGRESQL = os.getenv('USE_POSTGRESQL', 'False').lower() in ('true', '1', 't')
+GET_RENDER_EXTERNAL_DB_POSTGRESQL_URL = os.getenv('RENDER_POSTGRESQL_EXTERNAL_URL')
+# Define the base directory for SQLite
+BASE_DIR = Path(__file__).resolve().parent
+
+# Database configuration based on the environment variables
 if USE_MYSQL:
     db_name = os.getenv('MYSQL_DB_NAME')
     DATABASES = {
@@ -106,6 +116,26 @@ if USE_MYSQL:
         }
     }
     print(f"{Fore.GREEN}Using MySQL database: {db_name} (True)")
+
+elif USE_POSTGRESQL:
+    db_name = os.getenv('POSTGRESQL_DB_NAME')
+    DATABASES = {
+        # 'default': {
+        #     'ENGINE': 'django.db.backends.postgresql',
+        #     'NAME': db_name,
+        #     'USER': os.getenv('POSTGRESQL_DB_USER'),
+        #     'PASSWORD': os.getenv('POSTGRESQL_DB_PASSWORD'),
+        #     'HOST': os.getenv('POSTGRESQL_DB_HOST'),
+        #     'PORT': '5432',
+        # }
+        'default': dj_database_url.config(
+        default=GET_RENDER_EXTERNAL_DB_POSTGRESQL_URL,
+        conn_max_age=600
+        )
+
+    }
+    print(f"{Fore.GREEN}Using PostgreSQL database: {db_name} (True)")
+
 else:
     db_name = BASE_DIR / 'db.sqlite3'
     DATABASES = {
@@ -115,8 +145,6 @@ else:
         }
     }
     print(f"{Fore.GREEN}Using SQLite database: {db_name} (False)")
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
