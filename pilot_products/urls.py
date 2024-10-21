@@ -20,6 +20,8 @@ from django.conf import settings
 from django.conf.urls.static import static 
 from django.conf.urls import handler404
 from pilot_products.config.https_status.error_handler import (error_404)
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin', admin.site.urls),
@@ -27,7 +29,9 @@ urlpatterns = [
     path('core', include("core.urls")),
     path('accounts/', include("accounts.urls")),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+urlpatterns+=static(settings.STATIC_URL,
+document_root=settings.STATIC_ROOT)
 
 
 handler404 = error_404
