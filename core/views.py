@@ -19,3 +19,11 @@ def github_webhook(request):
 
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
+
+
+def about_us(request):
+    return render(request, "utility/project/about.html")
+
+
+def privacy_policy(request):
+    return render(request, "utility/project/privacy.html")

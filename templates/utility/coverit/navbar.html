@@ -7,9 +7,16 @@
         </a>
         <nav class="nav float-start">
             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-            <a class="nav-link" href="#">About</a>
-            <a class="nav-link" href="#">Link</a>
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">ToolBox</a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url 'create_cover' %}">Cover-Letter</a></li>
+                  <li><a class="dropdown-item" href="{% url 'password-generator' %}">Random Password</a></li>
+                  {% comment %} <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="#">Separated link</a></li> {% endcomment %}
+                </ul>
+              </li>
         </nav>
         <div class="float-end">
             {% if request.user.is_authenticated %}

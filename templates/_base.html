@@ -31,40 +31,12 @@
 
 <body class="bg-green-50">
     
-   
-{% include "utility/nav.html" %}
-{% include "component/buttons.html" %}
-<div id="top-main-bar" class="container-fluid m-4">
-    <div class="d-flex">
-        <button id="sidepane-btn" class="tbtn-def">
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-filter-left " viewBox="0 0 16 16">
-                <path d="M2 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m0-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
-              </svg>
-            </button>
-    </div>
-</div>
-<main class="row m-2" id="root">
-   <div class="col-md-auto d-none mt-4">
-    <ul class="list-group">
-        <li class="list-group-item">Cras justo odio</li>
-        <li class="list-group-item">Dapibus ac facilisis in</li>
-        <li class="list-group-item">Morbi leo risus</li>
-        <li class="list-group-item">Porta ac consectetur ac</li>
-        <li class="list-group-item">Vestibulum at eros</li>
-      </ul>
-  
 
-      
-     
-</div>
-   </div>
-   <div class="col">
     <div class="container mx-auto mt-4">
         {% block content %}
         {% endblock content %}
     </div>
-   </div>
-</main>
+
 
 
 

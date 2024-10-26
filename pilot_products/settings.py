@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'core',
     'webnode',
     'accounts',
+    'generators',
     
    
 ]
