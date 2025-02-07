@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'webnode',
     'accounts',
     'generators',
+    'timeline',
     
    
 ]
@@ -98,7 +99,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Environment variables for database selection
 USE_MYSQL = os.getenv('USE_MYSQL', 'False').lower() in ('true', '1', 't')
 USE_POSTGRESQL = os.getenv('USE_POSTGRESQL', 'False').lower() in ('true', '1', 't')
-GET_RENDER_EXTERNAL_DB_POSTGRESQL_URL = os.getenv('RENDER_POSTGRESQL_EXTERNAL_URL')
+RENDER_POSTGRESQL_EXTERNAL_URL = os.getenv('RENDER_POSTGRESQL_EXTERNAL_URL')
 # Define the base directory for SQLite
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -129,8 +130,8 @@ elif USE_POSTGRESQL:
         #     'PORT': '5432',
         # }
         'default': dj_database_url.config(
-        default=GET_RENDER_EXTERNAL_DB_POSTGRESQL_URL,
-        conn_max_age=600
+        default=RENDER_POSTGRESQL_EXTERNAL_URL,
+        conn_max_age=1200
         )
 
     }

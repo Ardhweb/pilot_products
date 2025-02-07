@@ -1,0 +1,17 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center  flex-column align-items-center vh-100">
+    <h3>Create the title of your checklist</h3>
+    <form method="POST" class="border p-4 rounded bg-secondary-subtle shadow-sm w-50">
+        {% csrf_token %}
+        
+        <div class="form-floating mb-3">
+            {{ form.name }}
+            <label for="floatingTitle">Title</label>
+        </div>
+        
+        <input value="Create" type="submit" class="btn btn-primary w-100" />
+    </form>
+</div>
+{% endblock content %}

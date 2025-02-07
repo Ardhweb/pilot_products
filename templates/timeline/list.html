@@ -1,0 +1,9 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center  flex-column align-items-center vh-100">
+{% for objs in objs  %}
+<p>{{objs.id}}:{{objs.name}}</p>
+{% endfor %}
+</div>
+{% endblock content %}
