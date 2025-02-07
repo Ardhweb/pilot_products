@@ -1,0 +1,44 @@
+{% extends "_base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center  flex-column align-items-center vh-100">
+
+<p>{{anchor_obj.id}}</p>
+
+
+<div class="container mt-5 w-50 border rounded bg-warning-50 p-3">
+    <h2 class="text-center">Daily Task List</h2>
+    <form method="POST" id="taskForm">
+        {% csrf_token %}
+        <div id="taskContainer" class="mb-3">
+            <div class="input-group mb-2">
+                <input type="text" class="form-control" name="task" placeholder="Enter task...">
+                <input type="checkbox" disabled class="ms-2">
+                <button class="btn btn-danger" type="button" onclick="removeTask(this)">Remove</button>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" onclick="addTask()">Add New Task</button>
+        <button type="submit" class="btn btn-success">Save</button>
+    </form>
+</div>
+
+<script>
+    function addTask() {
+        let taskContainer = document.getElementById("taskContainer");
+        let taskInput = document.createElement("div");
+        taskInput.classList.add("input-group", "mb-2");
+        taskInput.innerHTML = `
+            <input type="text" class="form-control" name="task" placeholder="Enter task...">
+            <input type="checkbox" disabled class="ms-2">
+            <button class="btn btn-danger" type="button" onclick="removeTask(this)">Remove</button>
+        `;
+        taskContainer.appendChild(taskInput);
+    }
+    
+    function removeTask(button) {
+        button.parentElement.remove();
+    }
+</script>
+
+</div>
+{% endblock content %}

@@ -142,10 +142,10 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': db_name,
+            'NAME':'db.sqlite3',
         }
     }
-    print(f"{Fore.GREEN}Using SQLite database: {db_name} (False)")
+    print(f"{Fore.GREEN}Using SQLite db")
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators

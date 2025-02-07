@@ -25,7 +25,7 @@ class AnchorCheckPoint(BaseModel):
     completed =  models.BooleanField(default=False)
 
 class ListItem(BaseModel):
-    anchorcheckpoint = models.OneToOneField(AnchorCheckPoint,on_delete=models.SET_NULL, null=True, blank=True)
+    anchorcheckpoint = models.ForeignKey(AnchorCheckPoint,on_delete=models.SET_NULL, null=True, blank=True)
     name =  models.CharField(max_length=20, null=True, blank=True)
     done =  models.BooleanField(default=False)
     remainder =  models.CharField(max_length=20, null=True, blank=True)
