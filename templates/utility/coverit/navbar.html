@@ -1,3 +1,4 @@
+
 <nav class="navbar bg-body-tertiary">
     <div class="container">
         <a class="navbar-brand float-start" href="/">
@@ -7,16 +8,41 @@
         </a>
         <nav class="nav float-start">
             <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">ToolBox</a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="{% url 'create_cover' %}">Cover-Letter</a></li>
-                  <li><a class="dropdown-item" href="{% url 'password-generator' %}">Random Password</a></li>
-                  {% comment %} <li><a class="dropdown-item" href="#">Something else here</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Separated link</a></li> {% endcomment %}
-                </ul>
-              </li>
+           
+
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Explore Things..
+                </button>
+              
+                <div class="dropdown-menu drop-width container p-2" style="max-height: 80vh; overflow-y: auto;">
+                  <div class="row">
+                    <!-- First column with items -->
+                    <div class="col-12 col-md-6 p-3 border-end">
+                      <h4 class="dropdown-header text-left fs-6 p-0">General & Letters</h4>
+                      <p class="text-muted mb-3 text-wrap">Simple Prodactivity tools , free to use</p>
+                      
+                      <ul class="list-unstyled">
+                        <li><a class="dropdown-item" href="{% url 'create_cover' %}">Create Cover Letter</a></li>
+                        <li><a class="dropdown-item" href="{% url 'password-generator' %}">Random Password</a></li>
+                      </ul>
+                    </div>
+              
+                    <!-- Second column with items -->
+                    <div class="col-12 col-md-6 p-3">
+                      <h4 class="dropdown-header text-left fs-6 p-0">Timeline & Task</h4>
+                      <p class="text-sm text-muted mb-3 text-wrap">Below using you  can schedule task , daily routine , project timeline and dealine plans and keep track activity.</p>
+              
+                      <ul class="list-unstyled">
+                        <li><a class="dropdown-item" href="">Timeline Dashboard</a></li>
+                        <li><a class="dropdown-item " href="{% url 'timeline:create_task' %}">Task Create</a></li>
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
         </nav>
         <div class="float-end">
             {% if request.user.is_authenticated %}
@@ -26,7 +52,7 @@
             <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">Your Letter's</a>
             <a type="button" class="btn btn-danger btn-sm" href="{% url 'accounts:logout' %}">Log-out</a>
             {% else %}
-            <a type="button" class="btn btn-secondary btn-sm">Sign-up</a>
+            <a type="button" class="btn btn-dark btn-sm">Sign-up</a>
             <a type="button" class="btn btn-secondary btn-sm" href="{% url 'accounts:login' %}" >Login</a>
             {% endif %}
         </div>
