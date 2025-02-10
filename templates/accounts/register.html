@@ -1,0 +1,44 @@
+{% extends "accounts/base.html" %}
+
+{% block content %}
+<div class="container">
+  <div class="row justify-content-center gap-2 ">
+    <div class="col-md-6  mt-5 text-center shadow-lg rounded bg-body">
+        <div class="container mt-5">
+            <button class="btn btn-light shadow-sm">
+              <i class="material-icons mr-2" style="font-size: 18px;">search</i>
+              Google Search
+            </button>
+          </div>
+    </div>
+   
+<p class="text-center">or </p>
+
+    <div class="col-md-6 p-3  mb-5 shadow-lg rounded bg-body">
+      <h2 class="text-center mb-4">Create an account.</h2>
+      <form method="POST">
+        <!-- CSRF token if using Django -->
+        {% csrf_token %}
+        
+
+        <div class="form-group">
+          <label for="email">Email*</label>
+          {{user_form.email}}
+        </div>
+        
+        <div class="form-group">
+          <label for="password">Password*</label>
+          {{user_form.password}}
+        </div>
+        
+        <div class="form-group mb-3 ">
+          <label for="confirm-password">Confirm Password</label>
+        {{user_form.password2}}
+        </div>
+        
+        <button type="submit" class="px-3  mt-4 btn btn-dark  btn-block">Sign Up</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock content %}

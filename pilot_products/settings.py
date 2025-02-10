@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'accounts',
     'generators',
     'timeline',
+    'social_django',
     
    
 ]
@@ -200,3 +201,12 @@ LOGIN_REDIRECT_URL= '/index'
 
 LOGIN_URL = 'accounts/login'
 LOGOUT_URL = 'accounts/logout'
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'your-client-id'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'your-client-secret'

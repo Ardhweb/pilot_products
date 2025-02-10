@@ -1,18 +1,27 @@
-{% extends "_base.html" %}
+{% extends "coverit/base.html" %}
 
 {% block content %}
 <div class="d-flex justify-content-center  flex-column align-items-center vh-100">
 
-<p>{{anchor_obj.id}}</p>
+<p>Anchor Id:{{anchor_obj.id}}</p>
 
 
 <div class="container mt-5 w-50 border rounded bg-warning-50 p-3">
     <h2 class="text-center">Daily Task List</h2>
+    <div id="" class="mb-3">
+        {% for item in list_items  %}
+        <div class="input-group mb-2">
+            <input type="text" class="form-control" value='{{item.name}}' placeholder="Enter task...">
+            <input type="checkbox" disabled class="ms-2">
+            <button class="btn btn-danger" type="button" onclick="">Remove</button>
+        </div>
+        {% endfor %}
+    </div>
     <form method="POST" id="taskForm">
         {% csrf_token %}
         <div id="taskContainer" class="mb-3">
             <div class="input-group mb-2">
-                <input type="text" class="form-control" name="task" placeholder="Enter task...">
+                <input type="text" class="form-control" name="task[]" placeholder="Enter task...">
                 <input type="checkbox" disabled class="ms-2">
                 <button class="btn btn-danger" type="button" onclick="removeTask(this)">Remove</button>
             </div>
@@ -28,7 +37,7 @@
         let taskInput = document.createElement("div");
         taskInput.classList.add("input-group", "mb-2");
         taskInput.innerHTML = `
-            <input type="text" class="form-control" name="task" placeholder="Enter task...">
+            <input type="text" class="form-control" name="task[]" placeholder="Enter task...">
             <input type="checkbox" disabled class="ms-2">
             <button class="btn btn-danger" type="button" onclick="removeTask(this)">Remove</button>
         `;

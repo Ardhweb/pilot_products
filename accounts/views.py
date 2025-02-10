@@ -2,7 +2,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
-from .forms import LoginForm
+from .forms import LoginForm,SignupForm
 def logout_user(request):
     logout(request)  # Log the user out
     # # Get the HTTP_REFERER from the request headers
@@ -39,3 +39,19 @@ def login_user(request):
         form = LoginForm()
     return render(request, 'accounts/login.html', {'form': form})
 
+
+
+def register(request):
+    if request.method == 'POST':
+        user_form = SignupForm(request.POST)
+        if user_form.is_valid ():
+            new_user = user_form.save(commit=False)
+            new_user.set_password(user_form.cleaned_data['password'])
+            new_user.save()
+            user = authenticate(request, email=user_form.cleaned_data['email'], password=user_form.cleaned_data['password'])
+            if user is not None:
+                login(request, user)
+            return redirect('index')   
+    else:
+        user_form = SignupForm()
+    return render(request,'accounts/register.html',{'user_form': user_form})

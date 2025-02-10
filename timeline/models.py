@@ -1,5 +1,6 @@
 from django.db import models
 from core.models import BaseModel
+from django.contrib.auth.models import User
 # Create your models here.
 class Timeline(BaseModel):
     title = models.CharField(max_length=50, blank=True, null=True)
@@ -13,19 +14,19 @@ class TimelineNode(BaseModel):
     mark_delete = models.BooleanField(default=False)
 
 
-class DailyParent(BaseModel):
+
+
+
+class ParentTask(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name =  models.CharField(max_length=20, null=True, blank=True)
-    remainder =  models.CharField(max_length=20, null=True, blank=True)
-
-
-class AnchorCheckPoint(BaseModel):
     all_task_done = models.BooleanField(default=False)
     daily_done =  models.BooleanField(default=False)
-    dailyparent = models.ForeignKey(DailyParent,on_delete=models.SET_NULL, null=True, blank=True)
     completed =  models.BooleanField(default=False)
+    remainder =  models.CharField(max_length=20, null=True, blank=True)
 
 class ListItem(BaseModel):
-    anchorcheckpoint = models.ForeignKey(AnchorCheckPoint,on_delete=models.SET_NULL, null=True, blank=True)
+    parent_task = models.ForeignKey(ParentTask,on_delete=models.SET_NULL, null=True, blank=True)
     name =  models.CharField(max_length=20, null=True, blank=True)
     done =  models.BooleanField(default=False)
     remainder =  models.CharField(max_length=20, null=True, blank=True)
