@@ -29,7 +29,6 @@ urlpatterns = [
     path('', include("core.urls")),
     path('gene/', include("generators.urls")),
     path('accounts/', include("accounts.urls")),
-    path('auth/', include('social_django.urls', namespace='social')),
     path('timeline/', include("timeline.urls")),
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
@@ -37,4 +36,4 @@ urlpatterns+=static(settings.STATIC_URL,
 document_root=settings.STATIC_ROOT)
 
 
-handler404 = error_404
+# handler404 = error_404

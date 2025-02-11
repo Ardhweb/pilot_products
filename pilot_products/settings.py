@@ -49,7 +49,6 @@ INSTALLED_APPS = [
     'accounts',
     'generators',
     'timeline',
-    'social_django',
     
    
 ]
@@ -63,7 +62,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'pilot_products.urls'
@@ -79,8 +77,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'social_django.context_processors.backends',
-                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -197,23 +193,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-
-
-
-# LOGIN_REDIRECT_URL = 'http://127.0.0.1:8000'
-# LOGOUT_REDIRECT_URL = '/'
-
-# LOGIN_URL = 'accounts/login'
-# LOGOUT_URL = 'accounts/logout'
-
 AUTHENTICATION_BACKENDS = (
-    'social_core.backends.google.GoogleOAuth2',
     # 'django.contrib.auth.backends.ModelBackend',
     'accounts.backends.CustomBackend',
+    
 )
 AUTH_USER_MODEL = 'accounts.User'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('GOOGLE_OAUTH_CLIENT_ID') 
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('GOOGLE_OAUTH_CLIENT_SECRET')
-# SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
-# SOCIAL_AUTH_GOOGLE_OAUTH2_REDIRECT_URI = 'http://127.0.0.1:8000' # Add this line
+
