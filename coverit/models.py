@@ -1,7 +1,7 @@
 from django.db import models
 from core.models import BaseModel
 # Create your models here.
-from django.contrib.auth.models import User
+from accounts.models import User
 
 
 class CoverLetter(BaseModel):
@@ -12,6 +12,7 @@ class CoverLetter(BaseModel):
     public = models.BooleanField(default=False)
     private = models.BooleanField(default=True)
     shareable_url = models.TextField(blank=True, null=True)
+   
     
 
     def __str__(self):

@@ -1,6 +1,6 @@
 from django.db import models
 from core.models import BaseModel
-from django.contrib.auth.models import User
+from accounts.models import User
 # Create your models here.
 class Timeline(BaseModel):
     title = models.CharField(max_length=50, blank=True, null=True)

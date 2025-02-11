@@ -25,6 +25,9 @@
                       <ul class="list-unstyled">
                         <li><a class="dropdown-item" href="{% url 'create_cover' %}">Create Cover Letter</a></li>
                         <li><a class="dropdown-item" href="{% url 'password-generator' %}">Random Password</a></li>
+                        <li>
+                          <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">Your Letter's</a>
+                        </li>
                       </ul>
                     </div>
               
@@ -46,13 +49,15 @@
         </nav>
         <div class="float-end">
             {% if request.user.is_authenticated %}
-            <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">Admin</a>
+            <span class="">Hi, {{ request.user.email|truncatechars_html:10 }}</span>
+
+            <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">My Dashboard</a>
             {% if user.is_superuser %}
+            <a href="" type="button" class="btn btn-warning btn-sm">Control Admin</a>
             {% endif %}
-            <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">Your Letter's</a>
             <a type="button" class="btn btn-danger btn-sm" href="{% url 'accounts:logout' %}">Log-out</a>
             {% else %}
-            <a type="button" class="btn btn-dark btn-sm">Sign-up</a>
+            <a type="button" href="{% url "accounts:register" %}" class="btn btn-dark btn-sm">Sign-up</a>
             <a type="button" class="btn btn-secondary btn-sm" href="{% url 'accounts:login' %}" >Login</a>
             {% endif %}
         </div>

@@ -5,12 +5,15 @@ from django.utils.timezone import now
 from datetime import timedelta
 # Create your models here.
 class User(AbstractUser):
+    username = None  # Remove username field
+    email = models.EmailField(unique=True)  # Ensure email is unique
     user_role = models.CharField(max_length=50,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_email_verified = models.BooleanField(default=False)
     is_phone_verified = models.BooleanField(default=False)
     USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
     objects = UserManager()
     groups = models.ManyToManyField(
         'auth.Group',

@@ -7,11 +7,12 @@ from django.shortcuts import redirect, reverse
 from django.template.loader import get_template
 from weasyprint import HTML
 from django.views import View
-
+from django.contrib.auth.decorators import login_required
 
 def index(request):
     return render(request, 'coverit/index.html')
-    
+
+@login_required
 def create_cover(request):
     breadcrumbs = [
         {'name': 'Page 1', 'url': '/'},
@@ -44,7 +45,7 @@ def create_cover(request):
         'page1':'Writeup', 'page2':'Gen', 'page3':'Thank you'}
         return render(request,"coverit/cover_create.html", context)
 
-
+@login_required
 def cover_th(request,title,id):
     cover_data = {
         'title':title,
@@ -52,6 +53,7 @@ def cover_th(request,title,id):
     }
     downlload_cover = CoverLetter.objects.get(id=id)
     return render(request,'coverit/thank.html', {'cover_data':cover_data, 'downlload_cover':downlload_cover})
+
 
 class PDFView(View):
     def get(self, request, id,*args, **kwargs):
@@ -73,10 +75,11 @@ class PDFView(View):
         return response
 
 
+
+@login_required
 def indexing_cover_l(request):
     if request.user.is_authenticated:
-        letter = CoverLetter.objects.all()
-        print(letter)
+        letter = CoverLetter.objects.filter(candidate_id=request.user.id)
         context = {'letter':letter}
         return render(request,'coverit/listing.html', context)
     else:

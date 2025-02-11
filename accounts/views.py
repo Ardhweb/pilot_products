@@ -15,8 +15,6 @@ def logout_user(request):
     return redirect('index')
 
 
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from .forms import LoginForm  # Ensure you have your LoginForm imported
 from django.contrib.auth.models import User
@@ -48,10 +46,13 @@ def register(request):
             new_user = user_form.save(commit=False)
             new_user.set_password(user_form.cleaned_data['password'])
             new_user.save()
+            print(user_form.cleaned_data['password'])
             user = authenticate(request, email=user_form.cleaned_data['email'], password=user_form.cleaned_data['password'])
-            if user is not None:
+            if user:
                 login(request, user)
-            return redirect('index')   
+                return redirect('index')
+            else:
+                return HttpResponse("User not Exist!")   
     else:
         user_form = SignupForm()
     return render(request,'accounts/register.html',{'user_form': user_form})

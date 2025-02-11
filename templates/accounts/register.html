@@ -1,44 +1,73 @@
 {% extends "accounts/base.html" %}
-
+{% load static %}
 {% block content %}
-<div class="container">
-  <div class="row justify-content-center gap-2 ">
-    <div class="col-md-6  mt-5 text-center shadow-lg rounded bg-body">
-        <div class="container mt-5">
-            <button class="btn btn-light shadow-sm">
-              <i class="material-icons mr-2" style="font-size: 18px;">search</i>
-              Google Search
-            </button>
-          </div>
-    </div>
-   
-<p class="text-center">or </p>
 
-    <div class="col-md-6 p-3  mb-5 shadow-lg rounded bg-body">
-      <h2 class="text-center mb-4">Create an account.</h2>
-      <form method="POST">
-        <!-- CSRF token if using Django -->
-        {% csrf_token %}
-        
 
-        <div class="form-group">
-          <label for="email">Email*</label>
-          {{user_form.email}}
-        </div>
-        
-        <div class="form-group">
-          <label for="password">Password*</label>
-          {{user_form.password}}
-        </div>
-        
-        <div class="form-group mb-3 ">
-          <label for="confirm-password">Confirm Password</label>
-        {{user_form.password2}}
-        </div>
-        
-        <button type="submit" class="px-3  mt-4 btn btn-dark  btn-block">Sign Up</button>
-      </form>
-    </div>
+<div class="d-flex flex-column align-items-center justify-content-center vh-100">
+  
+  <div class="mb-0 z-n-1 d-flex justify-content-end p-3 w-100">
+    {% if user_form.errors %}
+      <div class="col-md-6 alert alert-danger alert-dismissible fade show shadow-md custom-alert" role="alert">
+          <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+          <ul class="mt-1 mb-0">
+              {% for field, errors in user_form.errors.items %}
+                  {% for error in errors %}
+                      <li>{{ error }}</li>
+                  {% endfor %}
+              {% endfor %}
+          </ul>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endif %}
   </div>
+  
+  <div class="col-md-6 p-4 shadow-lg rounded bg-body gap-4">
+    <h2 class="mb-4">Create an account</h2>
+    
+ 
+    <form method="POST">
+      {% csrf_token %}
+      
+      <div class="form-group">
+        <label for="email">Email*</label>
+        {{ user_form.email }}
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password*</label>
+        {{ user_form.password }}
+      </div>
+      
+      <div class="form-group mb-3">
+        <label for="confirm-password">Confirm Password</label>
+        {{ user_form.password2 }}
+      </div>
+      
+      <button type="submit" class="btn btn-dark w-100 mt-3">Sign Up</button>
+    </form>
+
+    <div class="d-flex align-items-center my-4">
+      <hr class="flex-grow-1" />
+      <span class="mx-2">or</span>
+      <hr class="flex-grow-1" />
+    </div>
+    <div class=" py-4">
+      <a href="{% url 'social:begin' 'google-oauth2' %}" type="button" class="btn btn-outline-dark w-100 d-flex align-items-center justify-content-center gap-2">
+        <img width="35" height="35" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjxzdmcgaWQ9IkNhcGFfMSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTUwIDE1MDsiIHZlcnNpb249IjEuMSIgdmlld0JveD0iMCAwIDE1MCAxNTAiIHhtbDpzcGFjZT0icHJlc2VydmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiPjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+Cgkuc3Qwe2ZpbGw6IzFBNzNFODt9Cgkuc3Qxe2ZpbGw6I0VBNDMzNTt9Cgkuc3Qye2ZpbGw6IzQyODVGNDt9Cgkuc3Qze2ZpbGw6I0ZCQkMwNDt9Cgkuc3Q0e2ZpbGw6IzM0QTg1Mzt9Cgkuc3Q1e2ZpbGw6IzRDQUY1MDt9Cgkuc3Q2e2ZpbGw6IzFFODhFNTt9Cgkuc3Q3e2ZpbGw6I0U1MzkzNTt9Cgkuc3Q4e2ZpbGw6I0M2MjgyODt9Cgkuc3Q5e2ZpbGw6I0ZCQzAyRDt9Cgkuc3QxMHtmaWxsOiMxNTY1QzA7fQoJLnN0MTF7ZmlsbDojMkU3RDMyO30KCS5zdDEye2ZpbGw6I0Y2QjcwNDt9Cgkuc3QxM3tmaWxsOiNFNTQzMzU7fQoJLnN0MTR7ZmlsbDojNDI4MEVGO30KCS5zdDE1e2ZpbGw6IzM0QTM1Mzt9Cgkuc3QxNntjbGlwLXBhdGg6dXJsKCNTVkdJRF8yXyk7fQoJLnN0MTd7ZmlsbDojMTg4MDM4O30KCS5zdDE4e29wYWNpdHk6MC4yO2ZpbGw6I0ZGRkZGRjtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDE5e29wYWNpdHk6MC4zO2ZpbGw6IzBENjUyRDtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDIwe2NsaXAtcGF0aDp1cmwoI1NWR0lEXzRfKTt9Cgkuc3QyMXtvcGFjaXR5OjAuMztmaWxsOnVybCgjXzQ1X3NoYWRvd18xXyk7ZW5hYmxlLWJhY2tncm91bmQ6bmV3ICAgIDt9Cgkuc3QyMntjbGlwLXBhdGg6dXJsKCNTVkdJRF82Xyk7fQoJLnN0MjN7ZmlsbDojRkE3QjE3O30KCS5zdDI0e29wYWNpdHk6MC4zO2ZpbGw6IzE3NEVBNjtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDI1e29wYWNpdHk6MC4zO2ZpbGw6I0E1MEUwRTtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDI2e29wYWNpdHk6MC4zO2ZpbGw6I0UzNzQwMDtlbmFibGUtYmFja2dyb3VuZDpuZXcgICAgO30KCS5zdDI3e2ZpbGw6dXJsKCNGaW5pc2hfbWFza18xXyk7fQoJLnN0Mjh7ZmlsbDojRkZGRkZGO30KCS5zdDI5e2ZpbGw6IzBDOUQ1ODt9Cgkuc3QzMHtvcGFjaXR5OjAuMjtmaWxsOiMwMDRENDA7ZW5hYmxlLWJhY2tncm91bmQ6bmV3ICAgIDt9Cgkuc3QzMXtvcGFjaXR5OjAuMjtmaWxsOiMzRTI3MjM7ZW5hYmxlLWJhY2tncm91bmQ6bmV3ICAgIDt9Cgkuc3QzMntmaWxsOiNGRkMxMDc7fQoJLnN0MzN7b3BhY2l0eTowLjI7ZmlsbDojMUEyMzdFO2VuYWJsZS1iYWNrZ3JvdW5kOm5ldyAgICA7fQoJLnN0MzR7b3BhY2l0eTowLjI7fQoJLnN0MzV7ZmlsbDojMUEyMzdFO30KCS5zdDM2e2ZpbGw6dXJsKCNTVkdJRF83Xyk7fQoJLnN0Mzd7ZmlsbDojRkJCQzA1O30KCS5zdDM4e2NsaXAtcGF0aDp1cmwoI1NWR0lEXzlfKTtmaWxsOiNFNTM5MzU7fQoJLnN0Mzl7Y2xpcC1wYXRoOnVybCgjU1ZHSURfMTFfKTtmaWxsOiNGQkMwMkQ7fQoJLnN0NDB7Y2xpcC1wYXRoOnVybCgjU1ZHSURfMTNfKTtmaWxsOiNFNTM5MzU7fQoJLnN0NDF7Y2xpcC1wYXRoOnVybCgjU1ZHSURfMTVfKTtmaWxsOiNGQkMwMkQ7fQo8L3N0eWxlPjxnPjxwYXRoIGNsYXNzPSJzdDE0IiBkPSJNMTIwLDc2LjFjMC0zLjEtMC4zLTYuMy0wLjgtOS4zSDc1Ljl2MTcuN2gyNC44Yy0xLDUuNy00LjMsMTAuNy05LjIsMTMuOWwxNC44LDExLjUgICBDMTE1LDEwMS44LDEyMCw5MCwxMjAsNzYuMUwxMjAsNzYuMXoiLz48cGF0aCBjbGFzcz0ic3QxNSIgZD0iTTc1LjksMTIwLjljMTIuNCwwLDIyLjgtNC4xLDMwLjQtMTEuMUw5MS41LDk4LjRjLTQuMSwyLjgtOS40LDQuNC0xNS42LDQuNGMtMTIsMC0yMi4xLTguMS0yNS44LTE4LjkgICBMMzQuOSw5NS42QzQyLjcsMTExLjEsNTguNSwxMjAuOSw3NS45LDEyMC45eiIvPjxwYXRoIGNsYXNzPSJzdDEyIiBkPSJNNTAuMSw4My44Yy0xLjktNS43LTEuOS0xMS45LDAtMTcuNkwzNC45LDU0LjRjLTYuNSwxMy02LjUsMjguMywwLDQxLjJMNTAuMSw4My44eiIvPjxwYXRoIGNsYXNzPSJzdDEzIiBkPSJNNzUuOSw0Ny4zYzYuNS0wLjEsMTIuOSwyLjQsMTcuNiw2LjlMMTA2LjYsNDFDOTguMywzMy4yLDg3LjMsMjksNzUuOSwyOS4xYy0xNy40LDAtMzMuMiw5LjgtNDEsMjUuMyAgIGwxNS4yLDExLjhDNTMuOCw1NS4zLDYzLjksNDcuMyw3NS45LDQ3LjN6Ii8+PC9nPjwvc3ZnPg=="/>
+     <span class="fs-5 lh-3">Login with Google</span>
+      </a>
+    </div>
+
+
+  </div>
+
+  <a  href="{% url "accounts:login" %}" class="">
+   Already have account?
+    
+  </a>  <a  href="{% url "index" %}" class="">
+   Back Home
+     
+   </a>
 </div>
+
 {% endblock content %}
