@@ -18,7 +18,7 @@ from pathlib import Path
 from colorama import Fore
 import dj_database_url
 from colorama import init, Fore
-
+from urllib.parse import urlparse
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -105,11 +105,10 @@ init(autoreset=True)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 # Environment variables for database selection
 USE_MYSQL = os.getenv('USE_MYSQL', 'False').lower() in ('true', '1', 't')
 USE_POSTGRESQL = os.getenv('USE_POSTGRESQL', 'False').lower() in ('true', '1', 't')
-RENDER_POSTGRESQL_EXTERNAL_URL = os.getenv('RENDER_POSTGRESQL_EXTERNAL_URL')
 # Define the base directory for SQLite
 BASE_DIR = Path(__file__).resolve().parent
 
@@ -129,20 +128,16 @@ if USE_MYSQL:
     print(f"{Fore.GREEN}Using MySQL database: {db_name} (True)")
 
 elif USE_POSTGRESQL:
-    db_name = os.getenv('POSTGRESQL_DB_NAME')
+    db_name = tmpPostgres.path.replace('/', ''),
     DATABASES = {
-        # 'default': {
-        #     'ENGINE': 'django.db.backends.postgresql',
-        #     'NAME': db_name,
-        #     'USER': os.getenv('POSTGRESQL_DB_USER'),
-        #     'PASSWORD': os.getenv('POSTGRESQL_DB_PASSWORD'),
-        #     'HOST': os.getenv('POSTGRESQL_DB_HOST'),
-        #     'PORT': '5432',
-        # }
-        'default': dj_database_url.config(
-        default=RENDER_POSTGRESQL_EXTERNAL_URL,
-        conn_max_age=1200
-        )
+       'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
+    }
 
     }
     print(f"{Fore.GREEN}Using PostgreSQL database: {db_name} (True)")
