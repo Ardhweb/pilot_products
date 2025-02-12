@@ -241,7 +241,9 @@ ACCOUNT_USERNAME_REQUIRED = False  # Disable username requirement
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # Remove username field dependency
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
-ACCOUNT_ADAPTER = "pilot_products.adapters.NoSignupAccountAdapter"
+ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
+ACCOUNT_SIGNUP_DISABLED = False  # Ensure this is set to False
+
 
 # Redirect after login
 LOGIN_REDIRECT_URL = "/"  # Change this to your desired route
