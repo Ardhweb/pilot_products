@@ -49,6 +49,14 @@ INSTALLED_APPS = [
     'accounts',
     'generators',
     'timeline',
+    'django.contrib.sites',  # Required for django-allauth
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # Only Google provider
+    'allauth.socialaccount.providers.google',
     
    
 ]
@@ -62,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "allauth.account.middleware.AccountMiddleware",
 ]
 
 ROOT_URLCONF = 'pilot_products.urls'
@@ -77,6 +86,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -196,8 +206,42 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTHENTICATION_BACKENDS = (
     # 'django.contrib.auth.backends.ModelBackend',
     'accounts.backends.CustomBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',  # Allauth backend
     
 )
 AUTH_USER_MODEL = 'accounts.User'
+SITE_ID = 1  # Required for django-allauth
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': os.getenv('GOOGLE_OAUTH_CLIENT_ID'),
+            'secret': os.getenv('GOOGLE_OAUTH_CLIENT_SECRET'),
+            'key': '',
+             "settings": {
+                    # You can fine tune these settings per app:
+                    "scope": [
+                        "profile",
+                        "email",
+                    ],
+                    "auth_params": {
+                        "access_type": "online",
+                    },
+                },
+        }
+    }
+}
+# Ensure email is used for login
+ACCOUNT_AUTHENTICATION_METHOD = "email"  # Use email instead of username
+ACCOUNT_EMAIL_REQUIRED = True  # Ensure email is required
+ACCOUNT_USERNAME_REQUIRED = False  # Disable username requirement
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # Remove username field dependency
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+# Redirect after login
+LOGIN_REDIRECT_URL = "/"  # Change this to your desired route
 
-
+# Redirect after logout (optional)
+LOGOUT_REDIRECT_URL = "/"  # Redirect users to homepage after logout
