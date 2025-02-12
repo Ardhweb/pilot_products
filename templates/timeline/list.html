@@ -3,6 +3,7 @@
 {% block content %}
 
 <div class="container mb-5 py-md-5">
+  {% if anchor %}
     <div class="row">
     {% for task in anchor  %}
       <!-- Card 1 -->
@@ -27,6 +28,9 @@
         </div>
       </div>
       {% endfor %}
+      {% else %}
+      <h3>not found any task .please create one</h3>
+      {% endif %}
   
       <!-- Add more cards as needed -->
     </div>

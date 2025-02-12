@@ -24,6 +24,7 @@
   </div>
 
   <div class="row">
+    {% if letter %}
     {% for letter in letter %}
       <div class="col-3 position-relative" style="height: 200px;">
         <div class="border rounded text-center" style="background-color: rgba(248, 249, 250, 0.8); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); height: 100%; z-index: 1;">
@@ -50,6 +51,9 @@
         </div>
       </div>
     {% endfor %}
+    {% else %}
+    <h3> No letter yet created.</h3>
+    {% endif %}
   </div>
 </div>
 
