@@ -227,9 +227,14 @@ SOCIALACCOUNT_PROVIDERS = {
                         "email",
                     ],
                     "auth_params": {
-                        "access_type": "online",
+                        "access_type": "offline",
                     },
                 },
+        },
+        'SCOPE': ['email', 'profile'],
+        'AUTH_PARAMS': {
+            'access_type': 'offline',  # Ensures refresh token
+            'prompt': 'consent',  # Forces Google to show consent screen
         }
     }
 }
@@ -240,6 +245,8 @@ ACCOUNT_USERNAME_REQUIRED = False  # Disable username requirement
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None  # Remove username field dependency
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_LOGIN_ON_GET = True
+ACCOUNT_ADAPTER = "pilot_products.adapters.NoSignupAccountAdapter"
+
 # Redirect after login
 LOGIN_REDIRECT_URL = "/"  # Change this to your desired route
 

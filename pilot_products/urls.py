@@ -37,4 +37,4 @@ urlpatterns+=static(settings.STATIC_URL,
 document_root=settings.STATIC_ROOT)
 
 
-# handler404 = error_404
+handler404 = error_404
