@@ -1,0 +1,68 @@
+{% load static %}
+<nav class="navbar bg-body-tertiary">
+    <div class="container">
+        <a class="w-10 float-start" href="/">
+            
+        
+          <img src="{% static "/public/logo/logo-transparent-png.png" %}" alt="Pilot Project" class="img-fluid object-fit-cover " style="
+    width: 108px;
+    height: 42px;
+">
+        </a>
+        <nav class="nav float-start">
+            <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+           
+
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Explore Things..
+                </button>
+              
+                <div class="dropdown-menu drop-width container p-2" style="max-height: 80vh; overflow-y: auto;">
+                  <div class="row">
+                    <!-- First column with items -->
+                    <div class="col-12 col-md-6 p-3 border-end">
+                      <h4 class="dropdown-header text-left fs-6 p-0">General & Letters</h4>
+                      <p class="text-muted mb-3 text-wrap">Simple Prodactivity tools , free to use</p>
+                      
+                      <ul class="list-unstyled">
+                        <li><a class="dropdown-item" href="{% url 'create_cover' %}">Create Cover Letter</a></li>
+                        <li><a class="dropdown-item" href="{% url 'password-generator' %}">Random Password</a></li>
+                        <li>
+                          <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">Your Letter's</a>
+                        </li>
+                      </ul>
+                    </div>
+              
+                    <!-- Second column with items -->
+                    <div class="col-12 col-md-6 p-3">
+                      <h4 class="dropdown-header text-left fs-6 p-0">Timeline & Task</h4>
+                      <p class="text-sm text-muted mb-3 text-wrap">Below using you  can schedule task , daily routine , project timeline and dealine plans and keep track activity.</p>
+              
+                      <ul class="list-unstyled">
+                        <li><a class="dropdown-item" href="{% url 'timeline:list_task' %}">My Task</a></li>
+                        <li><a class="dropdown-item " href="{% url 'timeline:create_task' %}">Task Create</a></li>
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+        </nav>
+        <div class="float-end">
+            {% if request.user.is_authenticated %}
+            <span class="">Hi, {{ request.user.email|truncatechars_html:10 }}</span>
+
+            <a href="{% url 'cover_listing' %}" type="button" class="btn btn-primary btn-sm">My Dashboard</a>
+            {% if user.is_superuser %}
+            <a href="" type="button" class="btn btn-warning btn-sm">Control Admin</a>
+            {% endif %}
+            <a type="button" class="btn btn-danger btn-sm" href="{% url 'accounts:logout' %}">Log-out</a>
+            {% else %}
+            <a type="button" href="{% url "accounts:register" %}" class="btn btn-dark btn-sm">Sign-up</a>
+            <a type="button" class="btn btn-secondary btn-sm" href="{% url 'accounts:login' %}" >Login</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>

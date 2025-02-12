@@ -27,3 +27,7 @@ def about_us(request):
 
 def privacy_policy(request):
     return render(request, "utility/project/privacy.html")
+
+
+def homepage(request):
+    return render(request, "index.html")

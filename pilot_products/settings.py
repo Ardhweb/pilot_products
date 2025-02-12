@@ -14,7 +14,6 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 load_dotenv()
-from pathlib import Path
 from colorama import Fore
 import dj_database_url
 from colorama import init, Fore
@@ -187,9 +186,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Ensure BASE_DIR is defined
-STATICFILES_DIRS = [BASE_DIR / "static"]  # Your development static folder
+STATIC_URL = 'static/'
+STATIC_ROOT =  "staticfiles" # Ensure BASE_DIR is defined
+STATICFILES_DIRS = ["static"
+]
+print("STATICFILES_DIRS:", STATICFILES_DIRS)
+ # Your development static folder
 # Optional: for better caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 

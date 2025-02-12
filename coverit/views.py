@@ -83,4 +83,4 @@ def indexing_cover_l(request):
         context = {'letter':letter}
         return render(request,'coverit/listing.html', context)
     else:
-        return redirect('index')
+        return redirect('cover-home')

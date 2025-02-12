@@ -1,57 +1,187 @@
-
+<!doctype html>
 {% load static %}
 
-<!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    {% include "global.html" %}
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock title %}</title>
+     <!-- SEO Meta Tags -->
+     <meta name="description" content="Create a professional cover letter in minutes! Use our AI-powered Cover Letter Maker to craft personalized, job-winning cover letters that impress employers.">
+     <meta name="keywords" content="cover letter maker, free cover letter generator, AI cover letter, professional cover letter builder, resume and cover letter, online cover letter tool, job application letter, cover letter writing">
+     <meta name="author" content="Coverit">
+     
+     <!-- Open Graph (For Facebook, LinkedIn) -->
+     <meta property="og:title" content="AI Cover Letter Maker – Generate Job-Winning Cover Letters">
+     <meta property="og:description" content="Create a professional cover letter in minutes with our AI-powered tool. Impress recruiters and land your dream job!">
+     <meta property="og:image" content="https://yourwebsite.com/cover-letter-preview.jpg">
+     <meta property="og:url" content="https://yourwebsite.com">
+     <meta property="og:type" content="website">
+     
+     <!-- Twitter Card -->
+     <meta name="twitter:card" content="summary_large_image">
+     <meta name="twitter:title" content="AI Cover Letter Maker – Generate Job-Winning Cover Letters">
+     <meta name="twitter:description" content="Instantly create professional cover letters tailored to any job. Impress recruiters today!">
+     <meta name="twitter:image" content="https://yourwebsite.com/cover-letter-preview.jpg">
+     
+     <!-- Canonical URL -->
+     <link rel="canonical" href="https://yourwebsite.com">
+     
+     <!-- Favicon -->
+     <link rel="icon" type="image/png" href="https://yourwebsite.com/favicon.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-   <style>
- 
-    #root > * {
-        transform: translateX(0); /* Initial position */
-        transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out; /* Smooth transition for horizontal movement and opacity */
-        opacity: 1;
-    }
-
-    /* Hidden state */
-    .d-none {
-        transform: translateX(100%); /* Move out of the view to the right */
-        opacity: 0; /* Fades out as it moves */
-    }
-   </style>
-</head>
-
-
-
-<body class="bg-green-50">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.2.0/remixicon.min.css" integrity="sha512-MqL4+Io386IOPMKKyplKII0pVW5e+kb+PI/I3N87G3fHIfrgNNsRpzIXEi+0MQC0sR9xZNqZqCYVcC61fL5+Vg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="{% static 'public/coverit/css/overriden-globe.css' %}" rel="stylesheet">
+    <!--LineIcons CDN-->
     
+    <link rel="stylesheet" href="https://cdn.lineicons.com/5.0/lineicons.css" />
+    <style>
+      .drop-width{
+        width:max-content!important;
 
-    <div class="container mx-auto mt-4">
-        {% block content %}
-        {% endblock content %}
-    </div>
+        left:-50%!important;
+        right:50%!important;
+        max-width:40rem!important;
+        max-height: 80vh;
+        overflow-y: scroll; /* Allow vertical scrolling */
+        overflow-x: hidden; /* Hide horizontal scrollbar */
+        
+       }
+
+       /* Custom Scrollbar Styling */
+.drop-width {
+
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+
+/* Style the scrollbar itself */
+.drop-width::-webkit-scrollbar {
+  width: 8px; /* Set scrollbar width */
+}
+
+/* Hide the scrollbar arrows (up and down indicators) */
+.drop-width::-webkit-scrollbar-button {
+  display: none; /* Hide the up and down arrows */
+}
+
+/* Style the track (the background of the scrollbar) */
+.drop-width::-webkit-scrollbar-track {
+  background-color: #f0f0f0; /* Track background color */
+  border-radius: 10px; /* Rounded corners for the track */
+}
+
+/* Style the thumb (the draggable part of the scrollbar) */
+.drop-width::-webkit-scrollbar-thumb {
+  background-color: #007bff; /* Scrollbar thumb color */
+  border-radius: 10px; /* Rounded corners for the thumb */
+}
+
+/* Change thumb color on hover */
+.drop-width::-webkit-scrollbar-thumb:hover {
+  background-color: #0056b3; /* Darker thumb color when hovering */
+}
+
+/* Firefox */
+.drop-width {
+  scrollbar-width: thin; /* Thin scrollbar */
+  scrollbar-color:rgb(226, 226, 226) #f0f0f0; /* Thumb color and track color */
+}
+
+.card-ui-color {
+  position: relative;
+  57, 53, 0));
+  background: linear-gradient(to bottom, rgb(53 60 229 / 80%), rgba(229, 57, 53, 0));
+}
+
+/* Adding an overlay image with low opacity */
+.card-ui-color::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('your-image-url.jpg'); /* Replace with your image URL */
+  background-size: cover; /* Ensure the image covers the entire area */
+  background-position: center; /* Keep the image centered */
+  opacity: 0.2; /* Low opacity for the image */
+  pointer-events: none; /* Disable interactions with the overlay image */
+}
+
+
+    </style>
+    {% block head %}{% endblock head %}
+  </head>
+  <body class="">
+    {% include "utility/project/navbar.html" %}
+  
+  
+  
+    <!--Navbar End-->
+    {% block content %}{% endblock content %}
+    {% include "utility/project/footer.html" %}
 
 
 
+<!--Script for Animation-->
+<script type="text/javascript">
+  //Fade-animo
+  const messages = document.querySelectorAll('.fade-animo > *');
+        const displayTime = 3; // Time each message is displayed (in seconds)
+        const fadeTime = 1; // Time for fade in/out (in seconds)
+        const totalCycleTime = displayTime + (2 * fadeTime); // Total time for one message cycle
 
-<script>
-    // Get the root element's first child and the button
-    const rootElementFirstChild = document.getElementById('root').firstElementChild;
-    const button = document.getElementById('sidepane-btn');
+        let currentIndex = 0;
 
-    // Add an event listener for the button click
-    button.addEventListener('click', function() {
-        // Toggle the 'd-none' class on the root element's first child
-        rootElementFirstChild.classList.toggle('d-none');
-    });
+        // Function to show messages with cycle option
+        function showNextMessage(direction, infinite = true) {
+            // Hide all messages
+            messages.forEach((msg) => {
+                msg.style.opacity = '0';
+                msg.style.transform = direction === 'top' ? 'translateY(-100%)' : 'translateY(100%)';
+            });
+
+            // Show the current message
+            const currentMessage = messages[currentIndex];
+            currentMessage.style.opacity = '1';
+            currentMessage.style.transform = 'translateY(0)';
+
+            // Increment index for the next message
+            currentIndex = (currentIndex + 1) % messages.length;
+
+            // Set a timeout for fading out
+            setTimeout(() => {
+                currentMessage.style.opacity = '0';
+                currentMessage.style.transform = direction === 'top' ? 'translateY(-100%)' : 'translateY(100%)';
+            }, displayTime * 1000); // Show for displayTime seconds
+
+            // Set timeout for the next message
+            if (infinite || currentIndex < messages.length) {
+                setTimeout(() => showNextMessage(direction, infinite), totalCycleTime * 1000);
+            }
+        }
+
+        // Start the message cycle with desired direction ('top' or 'bottom')
+        showNextMessage('top', true); // Change 'top' to 'bottom' to animate from the bottom
 </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> 
 {% include 'gtm.html' %}
-</body>
 
+{% comment %} 
+ <script src="https://cdn.tailwindcss.com"></script>
+  <style type="text/tailwindcss">
+    @layer utilities {
+      .content-auto {
+        content-visibility: auto;
+      }
+    }
+  </style> {% endcomment %}
+
+  
+</body>
 </html>

@@ -1,7 +1,59 @@
 {% extends "_base.html" %}
 {% block content %}
 
-<h1 class="">
-    Hello, Tailwind CSS!
-</h1>
+<div class="container text-center p-3">
+    <h1 class="fs-2 lh-base">
+     Creation Tools that you need to make's your work ease.
+    </h1>
+    <h5 class=" text-break  text-nowrap  fs-5 fw-normal lh-base">Free and prodactivity and utility tools. 
+        <br> Project tracker,notes list, daily routine tracker,  bucket list ,password generator, file convereter. </h5>
+</div>
+
+<div class="d-flex align-content-stretch flex-wrap container gap-3 my-4">
+    <a href="{% url "timeline:create_task" %}" class="text-decoration-none border p-2 text-reset">
+        <div class="d-flex flex-column px-2 ">
+        
+            <!-- Logo below Title -->
+            <div alt="Logo"  style="height: 50px; margin-top: 15px; ">
+               <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="45" height="45" style="shape-rendering:geometricPrecision;text-rendering:geometricPrecision;image-rendering:optimizeQuality;fill-rule:evenodd;clip-rule:evenodd" viewBox="0 0 6.827 6.827"><defs><style>.fil2{fill:#fffffe;fill-rule:nonzero}</style></defs><g id="Layer_x0020_1"><rect width="6.827" height="6.827" rx=".853" ry=".853" style="fill:#8bc34a"/><g id="_215564432"><path id="_215564192" d="M2.4 2.607a1.601 1.601 0 0 1 1.606 1.606A1.601 1.601 0 0 1 2.4 5.82 1.601 1.601 0 0 1 .794 4.214 1.601 1.601 0 0 1 2.4 2.607zm.113.533a.107.107 0 0 0-.213 0v1.067c0 .036.018.069.046.088l.573.465a.106.106 0 0 0 .134-.165l-.54-.438V3.14z" style="fill:#fffffe"/><path id="_215564600" class="fil2" d="m1.873 2.583.008-.003h.001l.018-.006h.002l.02-.006.019-.005h.001l.02-.006.019-.005h.002a1.75 1.75 0 0 1 .019-.005h.001l.02-.005a1.714 1.714 0 0 1 .04-.008h.002a1.744 1.744 0 0 1 .04-.007v-.001l.02-.004h.001c.007 0 .013-.002.02-.003h.001l.02-.003h.001a1.731 1.731 0 0 1 .04-.005h.002l.02-.002.02-.002h.002l.02-.002.02-.001h.003l.02-.002h.021l.021-.001H2.4a1.708 1.708 0 0 1 1.713 1.734v.021l-.001.021-.001.021v.001l-.001.02v.001l-.003.042-.002.02v.002l-.002.02-.003.02v.001c0 .007-.002.014-.003.02v.002l-.003.019v.002a1.683 1.683 0 0 1-.01.06v.001a1.697 1.697 0 0 1-.004.02v.001a1.653 1.653 0 0 1-.008.04v.001a1.718 1.718 0 0 1-.01.04l-.001.003a1.705 1.705 0 0 1-.069.213h1.641a.399.399 0 0 0 .4-.4V2.296H1.66v.372c.069-.033.14-.061.213-.085zm2.418 1.086v-.415a.05.05 0 0 1 .05-.05h.405a.05.05 0 0 1 .05.05v.415a.05.05 0 0 1-.05.05h-.404a.05.05 0 0 1-.05-.05zm.05.18h.405a.05.05 0 0 1 .05.05v.415a.05.05 0 0 1-.05.05h-.404a.05.05 0 0 1-.05-.05V3.9a.05.05 0 0 1 .05-.05zm0-1.291h.405a.05.05 0 0 1 .05.05v.415a.05.05 0 0 1-.05.05h-.404a.05.05 0 0 1-.05-.05v-.415a.05.05 0 0 1 .05-.05zm.748 1.161a.05.05 0 0 1-.05-.05v-.415a.05.05 0 0 1 .05-.05h.404a.05.05 0 0 1 .05.05v.415a.05.05 0 0 1-.05.05H5.09zm0 .13h.404a.05.05 0 0 1 .05.05v.415a.05.05 0 0 1-.05.05H5.09a.05.05 0 0 1-.05-.05V3.9a.05.05 0 0 1 .05-.05zm0-1.291h.404a.05.05 0 0 1 .05.05v.415a.05.05 0 0 1-.05.05H5.09a.05.05 0 0 1-.05-.05v-.415a.05.05 0 0 1 .05-.05zm.944-.369v-.614a.399.399 0 0 0-.4-.4h-.187v.365a.213.213 0 0 1-.426 0v-.365h-.498v.365a.213.213 0 0 1-.427 0v-.365h-.497v.365a.213.213 0 0 1-.427 0v-.365h-.498v.365a.213.213 0 0 1-.427 0v-.365H2.06a.399.399 0 0 0-.4.4v.614h4.373z"/><path id="_215564480" class="fil2" d="M2.566 1.007a.107.107 0 0 0-.213 0v.533a.107.107 0 0 0 .213 0v-.533zm2.774 0a.107.107 0 0 0-.214 0v.533a.107.107 0 0 0 .214 0v-.533zm-.925 0a.107.107 0 0 0-.213 0v.533a.107.107 0 0 0 .213 0v-.533zm-.924 0a.107.107 0 0 0-.214 0v.533a.107.107 0 0 0 .214 0v-.533z"/></g></g></svg>
+            </div>
+                <!-- Title -->
+                <h5 class="m-0">Timeline</h5>
+            
+            <!-- Description below Logo -->
+            <p style="width:16.13rem; height:8rem; overflow-wrap:break-word;" class="m-0 mt-2">Track your daily routine, dev-project task's and schedule remainder and many more.</p>
+        </div>
+    </a>
+
+    <a href="{% url "create_cover" %}" class="text-decoration-none border p-2 text-reset">
+        <div class="d-flex flex-column px-2 ">
+        
+            <!-- Logo below Title -->
+            <div alt="Logo" style="height: 50px; margin-top: 15px;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" height="50" width="50">
+                    <path d="M179.503 21.333h225.83A42.667 42.667 0 0 1 448 64v384a42.667 42.667 0 0 1-42.667 42.667H106.667A42.667 42.667 0 0 1 64 448V136.837a21.333 21.333 0 0 1 6.248-15.085l94.17-94.17a21.333 21.333 0 0 1 15.085-6.249z" style="fill:#fffc74"/>
+                    <rect x="106.667" y="384" width="341.333" height="85.333" rx="42.667" ry="42.667" style="fill:#ffea21"/>
+                    <rect x="170.667" y="42.667" width="64" height="149.333" rx="32" ry="32" style="fill:#ffea21"/>
+                    <rect x="106.667" y="234.667" width="149.333" height="42.667" rx="21.333" ry="21.333" style="fill:#33527d"/>
+                    <rect x="106.667" y="320" width="64" height="42.667" rx="21.333" ry="21.333" style="fill:#33527d"/>
+                    <rect x="192" y="320" width="106.667" height="42.667" rx="21.333" ry="21.333" style="fill:#33527d"/>
+                    <rect x="234.667" y="149.333" width="170.667" height="42.667" rx="21.333" ry="21.333" style="fill:#33527d"/>
+                    <rect x="277.333" y="234.667" width="128" height="42.667" rx="21.333" ry="21.333" style="fill:#33527d"/>
+                    <path d="M213.333 51.503v88.994a30.17 30.17 0 0 1-30.17 30.17H94.17A30.17 30.17 0 0 1 64 140.497a30.17 30.17 0 0 1 8.837-21.334L161.83 30.17a30.17 30.17 0 0 1 21.333-8.837 30.17 30.17 0 0 1 30.17 30.17z" style="fill:#ffffc5"/>
+                    <rect x="69.49" y="80.915" width="138.353" height="30.17" rx="15.085" ry="15.085" transform="rotate(-45 138.667 96)" style="fill:#ffffed"/>
+                    <path d="M448 405.333H192A42.666 42.666 0 0 0 149.333 448a42.667 42.667 0 0 1-42.666 42.667H448a42.667 42.667 0 0 0 0-85.334z" style="fill:#ffffc5"/>
+                    <rect x="170.667" y="448" width="277.333" height="42.667" rx="21.333" ry="21.333" style="fill:#ffff9d"/>
+                </svg>
+            </div>
+            
+                <!-- Title -->
+                <h5 class="m-0">Al-Cover Letter</h5>
+            
+            <!-- Description below Logo -->
+            <p style="width:16.13rem; height:8rem; overflow-wrap:break-word;" class="m-0 mt-2">For generating ai powered cover-letter with tailored tricks.</p>
+        </div>
+    </a>
+   
+</div>
+
 {% endblock content %}

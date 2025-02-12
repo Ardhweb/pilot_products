@@ -5,8 +5,10 @@ from .models import ParentTask, ListItem
 from .forms import CreateDailyForm
 from django.urls import reverse
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 
 
+@login_required
 def anchorpoint(request, id):
     try:
         anchor_obj = ParentTask.objects.get(pk=id)
@@ -26,21 +28,23 @@ def anchorpoint(request, id):
         context = {'anchor_obj': anchor_obj,'list_items':list_items}
     return render(request, "timeline/addtask.html", context)
 
-
+@login_required
 def create_parent(request):
     if request.method == "POST":
         form = CreateDailyForm(request.POST)
         if form.is_valid():
-            instance = form.save()
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
             url = reverse("timeline:task_add", kwargs={'id':instance.id})
             return redirect(url)
     else:
         form = CreateDailyForm()
     return render(request, 'timeline/parent.html', {'form': form})
 
-
+@login_required
 def parent_list(request):
-    anchor = ParentTask.objects.all().prefetch_related('listitem_set')
+    anchor = ParentTask.objects.filter(user_id=request.user.id).prefetch_related('listitem_set')
     context = {"anchor":anchor}
     return render(request,'timeline/list.html', context)
 

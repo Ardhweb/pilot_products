@@ -8,9 +8,19 @@
     {% for task in anchor  %}
       <!-- Card 1 -->
       <div class="col-12 col-sm-6 col-md-4 col-lg-3 gap-2 m-2">
-        <div class="card card-ui-color shadow-lg " style="width: 18rem;">
+        <div class="card  shadow-lg " style="width: 18rem;">
           <div class="card-body">
-            <h5 class="card-title">{{forloop.counter}}. {{task.name}}</h5>
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">{{forloop.counter}}. {{task.name}}</h5>
+             
+              <div class="dropdown bone-hover ">
+                <i type="button" data-bs-toggle="dropdown" aria-expanded="false" class="lni lni-menu-meatballs-1 fs-5 "></i>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="{% url "timeline:task_add" id=task.id %}">Edit</a></li>
+                  <li><a class="dropdown-item" href="#">Delete</a></li>
+                </ul>
+              </div>
+            </div>
             <!-- List with Checkboxes -->
              
             <ul class="list-group list-group-flush">
@@ -22,8 +32,7 @@
               {% endfor %}
             </ul>
   
-            <a href="{% url "timeline:task_add" id=task.id %}" class="text-white btn btn-dark btn-sm">Edit</a>
-            <a href="#" class="text-white  btn btn-danger btn-sm">Delete</a>
+           
           </div>
         </div>
       </div>

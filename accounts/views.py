@@ -12,7 +12,7 @@ def logout_user(request):
     #     return HttpResponseRedirect(referer)
     # else:
     #     return redirect('home')  # Fallback to a default page
-    return redirect('index')
+    return redirect('cover-home')
 
 
 from django.contrib import messages
@@ -28,7 +28,7 @@ def login_user(request):
             print(f"Authenticated user: {user}")  # Debug statement
             if user is not None and user.is_active:
                 login(request, user)
-                return redirect('index')
+                return redirect('cover-home')
             else:
                 return HttpResponse("Authentication failed: User not found or inactive")
         else:
@@ -50,7 +50,7 @@ def register(request):
             user = authenticate(request, email=user_form.cleaned_data['email'], password=user_form.cleaned_data['password'])
             if user:
                 login(request, user)
-                return redirect('index')
+                return redirect('cover-home')
             else:
                 return HttpResponse("User not Exist!")   
     else:
