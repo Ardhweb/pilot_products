@@ -2,14 +2,31 @@
 {% comment %} {% load breadcrumbs %} {% endcomment %}
 {% block head %}
 <style>
-  
+  button {
+    transition: all 0.3s ease-in-out;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+    background-color: #007bff !important;
+    color: white !important;
+  }
  
 </style>
 {% endblock head %}
 
 
 {% block content %}
-<div class="container px-5 pt-5 mx-5">
+<div class="container  px-5 pt-1 mx-5 mt-3">
+  <ul class="list-group list-group-horizontal">
+     
+          <button class="btn btn-body  border lh-base px-2 btn-sm ms-2 burf"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fs-2 lni lni-gears-3"></i></button>
+     
+  </ul>
+</div>
+
+<div class="container px-5 pt-1 mx-5">
+
   <div class="d-flex justify-content-center align-items-center text-center shadow bg-light rounded mb-2 py-2" style="font-size: 0.940rem;">
     <p class="mb-0">{{page1}}  &#8594; &nbsp; &nbsp;  &nbsp; </p> <!-- Use a big arrow -->
     <p class="mb-0">{{page2}}  &#8594;  &nbsp;  &nbsp;  &nbsp; </p> <!-- Arrow here too -->
@@ -31,6 +48,58 @@
       {{form.contents}}
     </div>
     <button type="submit" class="btn btn-secondary border">Create Cover</button>
+    <button type="button" class="btn btn-body border">
+      AI <i class="lni lni-gemini lh-base "></i>
+    </button>
   </form>
 </div>
+
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">   
+  <div class="modal-dialog">     
+    <div class="modal-content">       
+      <div class="modal-header">         
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Job Title</h1>         
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>       
+      </div>       
+      <div class="modal-body">         
+        <form class="row g-3">           
+          <div class="col-md-12">             
+            <label for="inputEmail4" class="form-label">Keywords and your description</label>             
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>  
+          </div>                                 
+
+          <div class="row">
+            <div class="col-md-6">             
+              <label for="inputState" class="form-label">Position</label>             
+              <select id="inputState" class="form-select">               
+                <option selected>Choose...</option>               
+                <option>Python Developer</option>             
+              </select>           
+            </div>           
+            <div class="col-md-6">             
+              <label for="category" class="form-label">Category</label>             
+              <select id="category" class="form-select">               
+                <option selected>Choose...</option>               
+                <option>Software</option>               
+                <option>Finance</option>               
+                <option>Marketing</option>             
+              </select>           
+            </div>           
+          </div>
+                
+          <div class="modal-footer mb-0 pb-0">         
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>         
+            <button type="submit" class="btn btn-primary">Submit</button>       
+          </div> 
+        </form>       
+      </div>     
+    </div>   
+  </div> 
+</div>
+
 {% endblock content %}

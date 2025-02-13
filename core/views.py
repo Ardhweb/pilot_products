@@ -31,3 +31,11 @@ def privacy_policy(request):
 
 def homepage(request):
     return render(request, "index.html")
+
+
+
+from django.shortcuts import render
+from django.conf.urls import handler404
+
+def error_404(request, exception):
+    return render(request, 'error_pages/404.html', status=404)

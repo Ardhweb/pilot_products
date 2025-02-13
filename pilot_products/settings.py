@@ -36,7 +36,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
+    # 'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -190,7 +190,6 @@ STATIC_URL = 'static/'
 STATIC_ROOT =  "staticfiles" # Ensure BASE_DIR is defined
 STATICFILES_DIRS = ["static"
 ]
-print("STATICFILES_DIRS:", STATICFILES_DIRS)
  # Your development static folder
 # Optional: for better caching
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
