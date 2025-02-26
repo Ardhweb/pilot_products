@@ -8,9 +8,36 @@ from django.template.loader import get_template
 from weasyprint import HTML
 from django.views import View
 from django.contrib.auth.decorators import login_required
+import google.generativeai as genai
+import os
+from django.http import JsonResponse
+
+from django.conf import settings 
+# Load API Key
+GENAI_API_KEY = settings.FLASH_AI_KEY  # Use environment variable for security
+genai.configure(api_key=GENAI_API_KEY)
+#client = genai.Client(api_key=GENAI_API_KEY)
+
 
 def index(request):
     return render(request, 'coverit/index.html')
+
+@login_required
+def generate_text_view(request):
+    if request.method == "GET":
+        prompt = request.GET.get("prompt", "Hello AI!")
+        max_chars = int(request.GET.get("max_chars", 200))  # Default to 200 characters
+        try:
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            response = model.generate_content(prompt)
+
+            # Trim the response if it exceeds the limit
+            trimmed_response = response.text[:max_chars]
+
+            return JsonResponse({"response": trimmed_response})
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+
 
 @login_required
 def create_cover(request):

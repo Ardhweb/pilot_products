@@ -251,3 +251,5 @@ LOGIN_REDIRECT_URL = "/"  # Change this to your desired route
 
 # Redirect after logout (optional)
 LOGOUT_REDIRECT_URL = "/"  # Redirect users to homepage after logout
+
+FLASH_AI_KEY = os.getenv("GEMINI_API_KEY")
