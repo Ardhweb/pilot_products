@@ -1,0 +1,508 @@
+<style>
+    
+
+:root {
+    --font-family: "Inter", serif;
+    --font-thin: 100;
+    --font-extralight: 200;
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+    --font-black: 900;
+    --nav-link-hover:#f0f0f0;
+  }
+  
+   .hero1{
+    background-color:#b6b6b512!important;
+   }
+   .hero-text-1{
+    border-left:5px solid #7a5dfdda!important ; 
+    margin-right: 8px!important;
+    border-radius: 5px!important;
+    font-weight: var(--font-light);
+   }
+
+   .hero-text-2{
+    margin-right: 8px!important;
+    border-radius: 5px!important;
+    font-weight: var(--font-light);
+   }
+
+   .text-1{
+    font-weight: var(--font-light);
+
+   }
+
+   .btn1{
+        background-color: #7a5dfdda!important;
+    }
+   .btn1:hover{
+    background-color:#4cff4cda!important ;
+    border: none!important;
+    font-weight: 400!important;
+    color: #003300;
+   }
+
+   .btn2-outline {
+    position: relative;
+    overflow: hidden;
+    border: #7a5dfdda 2px solid !important;
+    background-color: transparent !important;
+    transition: transform 0.3s ease-in-out;
+}
+
+.btn2-outline::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background-color: #7a5dfdda;
+    transition: left 0.4s ease-in-out;
+    z-index: -1;
+}
+
+.btn2-outline:hover {
+    color: rgba(255, 255, 255, 0.925) !important;
+    font-weight: 500 !important;
+    transform: scale(1.05);
+}
+
+.btn2-outline:hover::before {
+    left: 0;
+}
+
+
+  .bg-hover-01:hover {
+      background-color: #d5d6d2 !important;
+      color:#312b2bf1;
+  }
+
+  .bg-hover-02:hover {
+      background-color: #f54d239a !important;
+  }
+
+  .bg-hover-03:hover {
+      background-color: #f54d23e5 !important;
+  }
+  .bg-hover-04:hover{
+    background-color: #d9e70db2!important;}
+  .bg-hover-05:hover { background-color: #ffcc00!important; }  
+.bg-hover-06:hover { background-color: #ff9900!important; }  
+.bg-hover-07:hover { background-color: #ff6600!important; }  
+.bg-hover-08:hover { background-color: #ff3300!important; }  
+.bg-hover-09:hover { background-color: #cc0000!important; }  
+.bg-hover-10:hover { background-color: #990000!important; }  
+.bg-hover-11:hover { background-color: #660000!important; }  
+.bg-hover-12:hover { background-color: #4cff4cda!important; color:rgb(51, 49, 49) }  
+.bg-hover-13:hover { background-color: #30d430c5!important; }  
+.bg-hover-14:hover { background-color: #006600!important; }  
+.bg-hover-15:hover { background-color: #003300!important; }  
+.bg-hover-16:hover { background-color: #00cccc!important; }  
+.bg-hover-17:hover { background-color: #0099cc!important; }  
+.bg-hover-18:hover { background-color: #006699!important; }  
+.bg-hover-19:hover { background-color: #003366!important; }  
+.bg-hover-20:hover { background-color: #9900ccd2!important; }  
+.bg-hover-21:hover { background-color: #660099!important; }  
+.bg-hover-22:hover { background-color: #330066!important; }  
+.bg-hover-23:hover { background-color: #ff3399b0!important; }  
+.bg-hover-24:hover { background-color: #cc0066!important; }  
+.bg-hover-25:hover { background-color: #990033!important; }  
+.bg-hover-26:hover { background-color: #ff99cc!important; }  
+.bg-hover-27:hover { background-color: #ff6699!important; }  
+.bg-hover-28:hover { background-color: #ff3366!important; }  
+.bg-hover-29:hover { background-color: #cc0033!important; }  
+.bg-hover-30:hover { background-color: #660033!important; }  
+.bg-hover-31:hover { background-color: #f5e6cc!important; }  
+.bg-hover-32:hover { background-color: #d4af37!important; }  
+.bg-hover-33:hover { background-color: #8c7853!important; }  
+.bg-hover-34:hover { background-color: #b0c4de!important; }  
+.bg-hover-35:hover { background-color: #4682b4!important; }  
+.bg-hover-36:hover { background-color: #db57e7ab!important; }
+
+
+
+
+
+.icon-text {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+}
+.icon-text:hover {
+    background-color: #f8f9fa;
+}
+.icon-text svg {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+}
+.text-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.text-content span {
+    font-weight: 500;
+    line-height: 1.2;
+}
+.small-desc {
+    font-size: 0.875rem;
+    color: #666;
+    margin: 0;
+}
+.small-text {
+    margin-top: 10px;
+    font-size: 0.875rem;
+    color: #666;
+}
+.dropdown-menu {
+    min-width: 600px; /* Ensures enough space for 3 columns */
+    
+}
+
+
+
+:root {
+    --font-family: "Kanit", serif;
+    --font-thin: 100;
+    --font-extralight: 200;
+    --font-light: 300;
+    --font-regular: 400;
+    --font-medium: 500;
+    --font-semibold: 600;
+    --font-bold: 700;
+    --font-extrabold: 800;
+    --font-black: 900;
+    --nav-link-hover:#f0f0f0;
+  }
+  .navbar .megamenu{ padding: 1rem; }
+  @media all and (min-width: 992px) {
+
+    .navbar .has-megamenu{position:static!important;}
+    .navbar .megamenu{left:0; right:0; width:100%; margin-top:0;  }
+  
+  }
+  .dropdown-item .span-text{
+    font-size:1.1rem!important;
+  }
+  .dropdown-item > div > small{
+    font-size: x-small!important;
+
+  }
+
+  .dropdown-item {
+    transition: transform 0.2s ease-in-out;
+}
+
+.dropdown-item:hover {
+    transform: scale(1.02)!important; /* Slightly enlarges on hover */
+}
+
+  body {
+    font-family: "Kanit", sans-serif!important ;/* Replace with your preferred font */
+    font-weight: var(--font-regular);
+}
+
+.as {
+    font-family: var(--font-family);
+    font-weight: var(--font-regular);
+  }
+
+  .bg-hover-01:hover {
+      background-color: #d5d6d2 !important;
+      color:#312b2bf1;
+  }
+
+  .bg-hover-02:hover {
+      background-color: #f54d239a !important;
+  }
+
+  .bg-hover-03:hover {
+      background-color: #f54d23e5 !important;
+  }
+  .bg-hover-04:hover{
+    background-color: #d9e70db2!important;}
+  .bg-hover-05:hover { background-color: #ffcc00!important; }  
+.bg-hover-06:hover { background-color: #ff9900!important; }  
+.bg-hover-07:hover { background-color: #ff6600!important; }  
+.bg-hover-08:hover { background-color: #ff3300!important; }  
+.bg-hover-09:hover { background-color: #cc0000!important; }  
+.bg-hover-10:hover { background-color: #990000!important; }  
+.bg-hover-11:hover { background-color: #660000!important; }  
+.bg-hover-12:hover { background-color: #4cff4cda!important; color:rgb(51, 49, 49) }  
+.bg-hover-13:hover { background-color: #30d430c5!important; }  
+.bg-hover-14:hover { background-color: #006600!important; }  
+.bg-hover-15:hover { background-color: #003300!important; }  
+.bg-hover-16:hover { background-color: #00cccc!important; }  
+.bg-hover-17:hover { background-color: #0099cc!important; }  
+.bg-hover-18:hover { background-color: #006699!important; }  
+.bg-hover-19:hover { background-color: #003366!important; }  
+.bg-hover-20:hover { background-color: #9900ccd2!important; }  
+.bg-hover-21:hover { background-color: #660099!important; }  
+.bg-hover-22:hover { background-color: #330066!important; }  
+.bg-hover-23:hover { background-color: #ff3399b0!important; }  
+.bg-hover-24:hover { background-color: #cc0066!important; }  
+.bg-hover-25:hover { background-color: #990033!important; }  
+.bg-hover-26:hover { background-color: #ff99cc!important; }  
+.bg-hover-27:hover { background-color: #ff6699!important; }  
+.bg-hover-28:hover { background-color: #ff3366!important; }  
+.bg-hover-29:hover { background-color: #cc0033!important; }  
+.bg-hover-30:hover { background-color: #660033!important; }  
+.bg-hover-31:hover { background-color: #f5e6cc!important; }  
+.bg-hover-32:hover { background-color: #d4af37!important; }  
+.bg-hover-33:hover { background-color: #8c7853!important; }  
+.bg-hover-34:hover { background-color: #b0c4de!important; }  
+.bg-hover-35:hover { background-color: #4682b4!important; }  
+.bg-hover-36:hover { background-color: #db57e7ab!important; }
+
+
+
+.text-primary{
+    color:#006699;
+}
+.text-secondary{
+    color: #bdbfc0;
+}
+.text-sucessry{
+    color: #31fc31;
+}
+
+nav{
+    border-bottom: solid 1px rgb(201, 201, 201);
+    padding-top: 0.82rem!important;
+    padding-bottom: 0.82rem!important;
+
+}
+.navbar-brand{
+    color: #4cff4cda!important;
+    font-weight: var(--font-semibold);
+    
+}
+.nav-link{
+    padding-left: 1rem!important;
+    padding-right: 1rem!important;
+}
+
+
+
+.nav-hover:hover{
+    background-color:var(--nav-link-hover);
+    border-radius: 9px;
+}
+
+
+  .custom-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Toggle */
+.custom-dropdown > .nav-link {
+  
+    border-radius: 5px;
+    display: inline-block;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.custom-dropdown > .nav-link:hover {
+    
+}
+
+/* Dropdown Content (Now Using Grid) */
+.dropdown-content {
+    position: absolute;
+    top: calc(100% + 10px); /* Spacing between toggle and dropdown */
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: max-content;
+    background: white;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 9999;
+    border-radius: 5px;
+    padding: 10px;
+
+    /* Grid Layout */
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    align-items: center;
+    justify-items: center;
+}
+
+.dropdown-header{
+    font-weight: var(--font-regular);
+    color: #2b2b2be5;
+    font-size: small!important;
+}
+/* Dropdown Arrow */
+.dropdown-content::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid white;
+}
+
+/* Show on Hover (For Desktops) */
+@media (hover: hover) {
+    .custom-dropdown:hover .dropdown-content {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Mobile-Friendly Styling */
+@media (max-width: 768px) {
+    .dropdown-content {
+        position: absolute;
+        left: 0;
+        right: 0;
+        transform: none;
+        text-align: center;
+    }
+
+    .dropdown-content::before {
+        display: none;
+    }
+}
+
+.span-tag-primary{
+    font-size: small;
+    font-weight:var(--font-medium);
+    background-color: #9246df;
+    color: white;
+    padding: 3px 7px 3px 7px;
+    margin: 5px;
+
+}
+
+.span-tag-secondary{
+    font-size: small;
+    font-weight:var(--font-medium);
+    background-color: #fd5858;
+    color: rgb(107, 101, 101);
+    padding: 3px 7px 3px 7px;
+    margin: 5px;
+
+}
+
+
+footer div > h5{
+    font-weight: var(--font-light);
+}
+footer div > ul >li > a{
+    font-weight: var(--font-extralight);
+    font-size: medium;
+}
+
+
+/* Base animation styles */
+.animated {
+    opacity: 0;
+    transform: translateX(0) translateY(0);
+    animation-fill-mode: forwards;
+    --speed: 1s;  /* Default speed */
+    --delay: 0s;  /* Default delay */
+}
+
+/* Apply dynamic speed and delay */
+.animated {
+    animation-duration: var(--speed);
+    animation-delay: var(--delay);
+}
+
+/* Right to Left - "Shadow Dash" */
+.shadow-dash {
+    animation-name: shadowDash;
+}
+
+@keyframes shadowDash {
+    from {
+        opacity: 0;
+        transform: translateX(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Left to Right - "Flash Strike" */
+.flash-strike {
+    animation-name: flashStrike;
+}
+
+@keyframes flashStrike {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Top to Bottom - "Meteor Drop" */
+.meteor-drop {
+    animation-name: meteorDrop;
+}
+
+@keyframes meteorDrop {
+    from {
+        opacity: 0;
+        transform: translateY(-100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Bottom to Top - "Rising Dragon" */
+.rising-dragon {
+    animation-name: risingDragon;
+}
+
+@keyframes risingDragon {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Custom Speed Classes */
+.speed-05s { --speed: 0.5s; }
+.speed-1s  { --speed: 1s; }
+.speed-2s  { --speed: 2s; }
+.speed-3s  { --speed: 3s; }
+
+/* Custom Delay Classes */
+.delay-05s { --delay: 0.5s; }
+.delay-1s  { --delay: 1s; }
+.delay-2s  { --delay: 2s; }
+</style>

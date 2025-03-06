@@ -30,7 +30,7 @@ def privacy_policy(request):
 
 
 def homepage(request):
-    return render(request, "index.html")
+    return render(request, "core/index.html")
 
 
 

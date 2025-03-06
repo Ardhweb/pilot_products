@@ -1,0 +1,88 @@
+{% load static %}
+<nav class="navbar border-bottom border-1 navbar-expand-lg bg-body border-0 shadow-regular sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img class="img-fluid object-fit" width="150" src="{% static "public/core/logo-transparent-png.png" %}" alt="Navbar">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav me-auto">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                <a class="nav-link" href="#pricing">Pricing</a>
+                <div class="dropdown nav-link ">
+                    <a class="dropdown-toggle text-decoration-none text-reset " type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                     Services & Common
+                    </a>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="#">Random Password Generator<span class="span-tag-primary rounded-pill">Open</span></a></li>
+                    </ul>
+                  </div>
+                  
+                  <!--Custom Dropdown-->
+                  <li class="nav-item dropdown has-megamenu">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Products & Tools
+                    </a>
+                    <ul class="dropdown-menu megamenu py-3 px-4 shadow-md border-top-0">
+                        <div class="row">
+                            <div class="col-md-4 p-3">
+                                <li><h6 class="dropdown-header  text-uppercase">Edit & Objects</h6></li>
+    
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-start" href="#">
+                                        <svg class="me-2 lh-sm" id="dynamic-svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+                                            <defs>
+                                              <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                                <stop offset="0%" style="stop-color:#F37335;stop-opacity:1"></stop>
+                                                <stop offset="100%" style="stop-color:#FDC830;stop-opacity:1"></stop>
+                                              </linearGradient>
+                                            </defs><rect width="24" height="24" rx="2" ry="2" fill="url(#gradient)"></rect>
+                                            <g transform="translate(3.6000000000000005, 3.6000000000000005) scale(0.7)">
+                                                                <path xmlns="http://www.w3.org/2000/svg" d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                                                             </g>
+                                          </svg>
+                                        <div class="d-flex flex-column">
+                                            <span class="span-text">SVG Icon<span class="span-tag-primary rounded-pill">Open</span></span>
+                                            <small class="text-muted">Add different color bg to your svg.</small>
+                                        </div>
+                                    </a>
+                                </li>
+                              
+                                
+                            </div>
+                            <div class="col-md-4 p-3">
+                                <li><h6 class="dropdown-header  text-uppercase">Writing & Personlized</h6></li>
+    
+                                <li>
+                                    <a class="dropdown-item d-flex align-items-start" href="#">
+                                       
+<svg class="me-2 lh-sm" id="dynamic-svg" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round">
+<rect width="24" height="24" rx="2" ry="2" fill="#8e44ad"/>
+<g transform="translate(1.200000000000001, 1.200000000000001) scale(0.8999999999999999)">
+                    <path xmlns="http://www.w3.org/2000/svg" stroke="none" d="M0 0h24v24H0z" fill="none"/><path xmlns="http://www.w3.org/2000/svg" d="M8 16v-6a2 2 0 1 1 4 0v6"/><path xmlns="http://www.w3.org/2000/svg" d="M8 13h4"/><path xmlns="http://www.w3.org/2000/svg" d="M16 8v8"/>
+                 </g>
+</svg>
+                                        <div class="d-flex flex-column">
+                                            <span class="span-text">Cover Letter Generator</span>
+                                            <small class="text-muted">AI Tailored Cover Letter Generator.</small>
+                                        </div>
+                                    </a>
+                                </li>
+                              
+                                
+                            </div>
+                        </div>
+                     
+                    </ul>
+                  </li>
+                  <!--Custom Dropdown-->
+            </div>
+            <div class="d-flex">
+                <a href="#" class="btn btn-outline-body  me-2 rounded">Login</a>
+                <a href="#" class="btn btn-primary rounded px-3 btn1">Sign Up</a>
+            </div>
+        </div>
+    </div>
+</nav>
