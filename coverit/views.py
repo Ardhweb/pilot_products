@@ -19,8 +19,7 @@ genai.configure(api_key=GENAI_API_KEY)
 #client = genai.Client(api_key=GENAI_API_KEY)
 
 
-def index(request):
-    return render(request, 'coverit/index.html')
+
 
 @login_required
 def generate_text_view(request):
@@ -110,4 +109,4 @@ def indexing_cover_l(request):
         context = {'letter':letter}
         return render(request,'coverit/listing.html', context)
     else:
-        return redirect('cover-home')
+        return redirect('index')

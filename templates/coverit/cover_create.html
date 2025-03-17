@@ -1,7 +1,9 @@
-{% extends "coverit/base.html" %}
+{% extends "core/base.html" %}
+{% comment %} {% extends "coverit/base.html" %} {% endcomment %}
 {% comment %} {% load breadcrumbs %} {% endcomment %}
+
 {% block head %}
-<style>
+
   button {
     transition: all 0.3s ease-in-out;
   }
@@ -12,12 +14,11 @@
     color: white !important;
   }
  
-</style>
 {% endblock head %}
 
 
 {% block content %}
-<div class="container  px-5 pt-1 mx-5 mt-3">
+<div class="container  px-5 pt-1  mt-3">
   <ul class="list-group list-group-horizontal">
      
           <button class="btn btn-body  border lh-base px-2 btn-sm ms-2 burf"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fs-2 lni lni-gears-3"></i></button>
@@ -44,12 +45,12 @@
       <div id="emailHelp" class="form-text">Give any title like python-cover, frontend-cover-letter etc.</div>
     </div>
     <div class="mb-3">
-      <label class="form-label text-w1">Content for letter*</label>
+      <label class="form-label text-w1">Describe or write your own.*</label>
       {{form.contents}}
     </div>
-    <button type="submit" class="btn btn-secondary border">Create Cover</button>
+    <button type="submit" class="btn btn-secondary border ">Save Letter </button>
     <button type="button" class="btn btn-body border">
-      AI <i class="lni lni-gemini lh-base "></i>
+     Fix or Generate AI <i class="lni lni-gemini lh-base "></i>
     </button>
   </form>
 </div>
@@ -83,11 +84,19 @@
             </div>           
             <div class="col-md-6">             
               <label for="category" class="form-label">Category</label>             
-              <select id="category" class="form-select">               
-                <option selected>Choose...</option>               
-                <option>Software</option>               
+              <select id="category" class="form-select">                           
+                <option selected>Software</option>               
                 <option>Finance</option>               
                 <option>Marketing</option>             
+              </select>           
+            </div>
+            
+            <div class="col-md-6">             
+              <label for="category" class="form-label">Style</label>             
+              <select id="category" class="form-select">               
+                     
+                <option selected>Casule</option>               
+                <option>Professional</option>                   
               </select>           
             </div>           
           </div>

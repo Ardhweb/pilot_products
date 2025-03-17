@@ -122,14 +122,14 @@
     {% block head %}{% endblock head %}
   </head>
   <body class="">
-    {% include "utility/coverit/navbar.html" %}
-  
+    {% comment %} {% include "utility/coverit/navbar.html" %} {% endcomment %}
+    {% include "core/navbar.html" %}
   
   
     <!--Navbar End-->
     {% block content %}{% endblock content %}
-    {% include "utility/coverit/footer.html" %}
-
+    {% comment %} {% include "utility/coverit/footer.html" %} {% endcomment %}
+    {% include "core/footer.html" %}
 
 
 <!--Script for Animation-->
