@@ -13,6 +13,7 @@ import os
 from django.http import JsonResponse
 
 from django.conf import settings 
+from .utils import  dynamic_spinner_script
 # Load API Key
 GENAI_API_KEY = settings.FLASH_AI_KEY  # Use environment variable for security
 genai.configure(api_key=GENAI_API_KEY)
@@ -21,21 +22,56 @@ genai.configure(api_key=GENAI_API_KEY)
 
 
 
+# @login_required
+# def generate_text_view(request):
+#     if request.method == "GET":
+#         prompt = request.GET.get("prompt", "Hello AI!")
+#         max_chars = int(request.GET.get("max_chars", 200))  # Default to 200 characters
+#         try:
+#             model = genai.GenerativeModel("gemini-1.5-flash")
+#             response = model.generate_content(prompt)
+
+#             # Trim the response if it exceeds the limit
+#             trimmed_response = response.text[:max_chars]
+
+#             return JsonResponse({"response": trimmed_response})
+#         except Exception as e:
+#             return JsonResponse({"error": str(e)}, status=500)
+
+
+from django.http import JsonResponse, HttpResponseForbidden
+from django.contrib.auth.decorators import login_required
+import json
+import google.generativeai as genai
+
 @login_required
 def generate_text_view(request):
-    if request.method == "GET":
-        prompt = request.GET.get("prompt", "Hello AI!")
-        max_chars = int(request.GET.get("max_chars", 200))  # Default to 200 characters
+    """ Securely generate text using Gemini Flash """
+
+    # Only allow AJAX requests (prevents direct access)
+    if not request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return HttpResponseForbidden("Access Denied")
+
+    if request.method == "POST":
         try:
+            data = json.loads(request.body)
+            prompt = data.get("prompt", "Hello AI!")
+            max_chars = int(data.get("max_chars", 200))  # Default 200 chars
+
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(prompt)
 
-            # Trim the response if it exceeds the limit
+            # Trim response
             trimmed_response = response.text[:max_chars]
 
             return JsonResponse({"response": trimmed_response})
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
+
+    return HttpResponseForbidden("Invalid Request")
+
+
+
 
 
 @login_required
@@ -66,6 +102,7 @@ def create_cover(request):
         {'name': 'Page 2', 'url': '/about/'},
         {'name': 'Contact', 'url': None},  # Current page with no URL
         ]
+        
 
         context = {'form':form,'breadcrumbs': breadcrumbs,
         'page1':'Writeup', 'page2':'Gen', 'page3':'Thank you'}

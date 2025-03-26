@@ -1,23 +1,16 @@
 {% extends "core/base.html" %}
-{% comment %} {% extends "coverit/base.html" %} {% endcomment %}
-{% comment %} {% load breadcrumbs %} {% endcomment %}
 
-{% block head %}
+{% block header %}
 
-  button {
-    transition: all 0.3s ease-in-out;
-  }
+{% endblock header %}
 
-  button:hover {
-    transform: scale(1.1);
-    background-color: #007bff !important;
-    color: white !important;
-  }
- 
-{% endblock head %}
 
 
 {% block content %}
+<div id="fullpage-spinner" data-state="off">
+  <div class="spinner"></div>
+</div>
+
 <div class="container  px-5 pt-1  mt-3">
   <ul class="list-group list-group-horizontal">
      
@@ -49,9 +42,14 @@
       {{form.contents}}
     </div>
     <button type="submit" class="btn btn-secondary border ">Save Letter </button>
-    <button type="button" class="btn btn-body border">
-     Fix or Generate AI <i class="lni lni-gemini lh-base "></i>
-    </button>
+    <a onclick="askGemini()" type="button" class="btn btn-body border">
+    Generate AI <i class="lni lni-gemini lh-base "></i>
+    </a>
+
+    
+    <a id="clear" type="button" class="btn btn-danger border">
+   Clear
+    </a>
   </form>
 </div>
 
@@ -93,10 +91,10 @@
             
             <div class="col-md-6">             
               <label for="category" class="form-label">Style</label>             
-              <select id="category" class="form-select">               
+              <select id="style-theme-format" class="form-select">               
                      
-                <option selected>Casule</option>               
-                <option>Professional</option>                   
+                <option >Casule</option>               
+                <option value="professional" selected>Professional</option>                   
               </select>           
             </div>           
           </div>
@@ -112,3 +110,48 @@
 </div>
 
 {% endblock content %}
+
+
+{% block scripts %}
+
+
+<script src="{% url 'spinner_script' %}" defer></script>
+
+<script>
+
+  async function askGemini() {
+      toggleSpinner("on");
+      let userInput = document.getElementById("prompt-content-response")
+      let maxChars = 600;  // Adjust max length if 
+      let style = document.getElementById("style-theme-format").value;
+      //let userName = {{user.first_name}}
+      //let email = {{request.user.email}}
+      let finalPrompt = "Put the date today and for email {{request.user.email}} and for my name use this {{user.first_name}}" + userInput.value + " " + "format style:" + style + " "
+
+      let response = await fetch("{% url 'generate_gemini' %}", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-Requested-With": "XMLHttpRequest",  // Internal API check
+              "X-CSRFToken": "{{ csrf_token }}"  // CSRF protection
+          },
+          body: JSON.stringify({ prompt: finalPrompt, max_chars: maxChars })
+      });
+
+      let data = await response.json();
+      userInput.value = "";
+      userInput.value = data.response || data.error;
+      toggleSpinner("off")
+     
+  }
+
+  document.getElementById("clear").addEventListener("click", function() {
+    document.getElementById("prompt-content-response").value = ""; // Clears the textarea
+});
+
+</script>
+
+
+
+
+{% endblock scripts %}
