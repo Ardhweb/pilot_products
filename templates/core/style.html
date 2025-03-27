@@ -1,6 +1,6 @@
 <style>
     
-{% block style %}{% endblock style %}
+
 :root {
     --font-family: "Inter", serif;
     --font-thin: 100;
@@ -505,4 +505,27 @@ footer div > ul >li > a{
 .delay-05s { --delay: 0.5s; }
 .delay-1s  { --delay: 1s; }
 .delay-2s  { --delay: 2s; }
+
+
+
+.page-thu {
+    width: 105px; height: 148px; 
+    border: 2px solid #ddd;
+  
+    justify-content:center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+
+}
+/* Highlight when selected */
+.form-check-input:checked + .page-thu {
+    border-color: #007bff;
+    background-color: #f0f8ff;
+    box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+}
+/* Hide radio buttons */
+.form-check-input {
+    display: none;
+}
 </style>
