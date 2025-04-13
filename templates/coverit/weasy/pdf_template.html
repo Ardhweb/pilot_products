@@ -1,25 +1,85 @@
 <!DOCTYPE html>
-{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <link href="{% static 'public/coverit/css/overriden-globe.css' %}" rel="stylesheet">
-    <title>{{data.title}}</title>
+
     <style>
-        body {
-            font-family: Rubik, Arial, sans-serif;
+        @page {
+            size: A4;
+            margin: 0cm;
         }
-      
+
+        body {
+            margin: 1cm;
+            font-family: "Helvetica", "Arial", sans-serif;
+            {% comment %} font-size: 12pt; {% endcomment %}
+            line-height: 1.6;
+            color: #333;
+        }
+
+        h1, h2, h3 {
+            color: #2c3e50;
+            margin-bottom: 0.3em;
+        }
+
+        h1 {
+            font-size: 20pt;
+        }
+
+        h2 {
+            font-size: 16pt;
+            margin-top: 1.5em;
+        }
+
+        .section {
+            margin-bottom: 1.5em;
+        }
+
+        .markdown-content {
+            white-space: pre-wrap;
+        }
+
+        .footer {
+            margin-top: 3cm;
+            text-align: center;
+            font-size: 10pt;
+            color: #888;
+        }
+
+        /* Optional page numbering */
+        @page {
+            @bottom-center {
+                content: "Page " counter(page) " of " counter(pages);
+                {% comment %} font-size: 10pt; {% endcomment %}
+                color: #aaa;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="d-flex pt-3">
-        {% block content %}
-        <p>{{data.contents|linebreaks }}</p>
-        {% endblock content %}
+    <header class="" style="border-bottom:1px solid black;">
+        <h1 style="font-size:2.5rem!important">{{name}}</h1>
+        <p>{{email}}</p>
+    </header>
+    <div class="section">
+        <div class="markdown-content">
+            <br>
+            {{ letter.contents }}
+            {% comment %} {{letter_content_markdown}} {% endcomment %}
+        </div>
+    </div>
+
+    {% if notes %}
+    <div class="section">
+        <h2>Additional Notes</h2>
+        <div class="markdown-content">
+            {{ notes|safe }}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="footer">
+        Generated with CoverIt · {{ username }}
     </div>
 </body>
 </html>

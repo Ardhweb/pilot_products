@@ -11,7 +11,7 @@ from django.contrib.auth.decorators import login_required
 import google.generativeai as genai
 import os
 from django.http import JsonResponse
-
+import markdown
 from django.conf import settings 
 from .utils import  dynamic_spinner_script
 # Load API Key
@@ -56,7 +56,7 @@ def generate_text_view(request):
         try:
             data = json.loads(request.body)
             prompt = data.get("prompt", "Hello AI!")
-            max_chars = int(data.get("max_chars", 200))  # Default 200 chars
+            max_chars = int(data.get("max_chars", 500))  # Default 200 chars
 
             model = genai.GenerativeModel("gemini-1.5-flash")
             response = model.generate_content(prompt)
@@ -117,7 +117,7 @@ def cover_th(request,title,id):
     downlload_cover = CoverLetter.objects.get(id=id)
     return render(request,'coverit/thank.html', {'cover_data':cover_data, 'downlload_cover':downlload_cover})
 
-
+'''
 class PDFView(View):
     def get(self, request, id,*args, **kwargs):
         letter_id = id
@@ -137,13 +137,37 @@ class PDFView(View):
         
         return response
 
+'''
+class PDFView(View):
+    def get(self, request, id, *args, **kwargs):
+        letter = CoverLetter.objects.get(id=id)
+        letter_content_markdown = markdown.markdown(letter.contents)
+        context = {
+            'letter': letter,
+            'name':request.user.get_full_name(),
+            'email': request.user.email,
+            "letter_content_markdown":letter_content_markdown,
+            # pass as-is
+        }
+
+        template = get_template('coverit/weasy/pdf_template.html')
+        html = template.render(context)
+        pdf = HTML(string=html).write_pdf()
+
+        is_download = request.GET.get('download', '0') == '1'
+        response = HttpResponse(pdf, content_type='application/pdf')
+        disposition = 'attachment' if is_download else 'inline'
+        response['Content-Disposition'] = f'{disposition}; filename="document.pdf"'
+
+        return response
+
 
 
 @login_required
 def indexing_cover_l(request):
     if request.user.is_authenticated:
-        letter = CoverLetter.objects.filter(candidate_id=request.user.id)
-        context = {'letter':letter}
+        letters = CoverLetter.objects.filter(candidate_id=request.user.id)
+        context = {'letters':letters}
         return render(request,'coverit/listing.html', context)
     else:
         return redirect('index')

@@ -213,11 +213,32 @@
   async function askGemini() {
       toggleSpinner("on");
       let userInput = document.getElementById("prompt-content-response")
-      let maxChars = 600;  // Adjust max length if 
+      let maxChars = 1200;  // Adjust max length if 
       let style = document.getElementById("style-theme-format").value;
       //let userName = {{user.first_name}}
       //let email = {{request.user.email}}
-      let finalPrompt = "Put the date today and for email {{request.user.email}} and for my name use this {{user.first_name}}" + userInput.value + " " + "format style:" + style + " "
+    
+let finalPrompt = `
+Generate a professional cover letter based on the following:
+
+- Content: ${userInput.value}
+- Formatting style: ${style}
+
+Guidelines:
+1. Do **not** include platform references (e.g., LinkedIn) or placeholders like "[Platform where you saw the advert]".
+2. Do **not** include personal info (address, phone, email).
+3. Use "Dear Hiring Manager" (no specific names).
+4. Ensure the letter is structured, coherent, and follows the user's style (formal, casual, etc.).
+5. Include a **thank you** gesture, like "Thank you for your time and consideration."
+6. Include a closing like "Sincerely" or "Best regards," followed by a space for the user’s name.
+
+**Technical Skills**:
+- If mentioned, reference specific technologies or frameworks (e.g., React, Node.js, Ruby on Rails) naturally, based on the user’s input.
+
+Focus only on the requested sections and avoid adding extra content keep  use the Guidelines please.
+`;
+
+
 
       let response = await fetch("{% url 'generate_gemini' %}", {
           method: "POST",
