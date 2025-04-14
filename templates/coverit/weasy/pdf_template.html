@@ -1,85 +1,119 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
+  <style>
+    @page {
+      size: A4;
+      margin: 0;
+      padding: 0;
+    }
 
-    <style>
-        @page {
-            size: A4;
-            margin: 0cm;
-        }
+    body {
+      margin: 0;
+      font-family: "Helvetica", "Arial", sans-serif;
+      color: #333;
+      line-height: 1.4;
+    }
 
-        body {
-            margin: 1cm;
-            font-family: "Helvetica", "Arial", sans-serif;
-            {% comment %} font-size: 12pt; {% endcomment %}
-            line-height: 1.6;
-            color: #333;
-        }
+    .page {
+      width: 210mm;
+      height: 297mm;
+      position: relative;
+      padding: 1.8cm 2cm 1.8cm; /* reduced vertical padding */
+      box-sizing: border-box;
+      background: #F6F0F0;
+      overflow: hidden;
+    }
 
-        h1, h2, h3 {
-            color: #2c3e50;
-            margin-bottom: 0.3em;
-        }
+    .top-element, .bottom-element {
+      position: absolute;
+      width: 100%;
+      height: 60px;
+      overflow: hidden;
+      z-index: 0;
+    }
 
-        h1 {
-            font-size: 20pt;
-        }
+    .top-element {
+      top: 1;
+    }
 
-        h2 {
-            font-size: 16pt;
-            margin-top: 1.5em;
-        }
+    .bottom-element {
+      bottom: 0;
+      transform: rotate(180deg);
+    }
 
-        .section {
-            margin-bottom: 1.5em;
-        }
+    .top-element svg, .bottom-element svg {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
-        .markdown-content {
-            white-space: pre-wrap;
-        }
+    .header, .section, .footer {
+      position: relative;
+      z-index: 1;
+    }
 
-        .footer {
-            margin-top: 3cm;
-            text-align: center;
-            font-size: 10pt;
-            color: #888;
-        }
+    .header {
+      text-align: left;
+      border-bottom: 2px solid black;
+      margin-bottom: 1.5rem;
+    }
 
-        /* Optional page numbering */
-        @page {
-            @bottom-center {
-                content: "Page " counter(page) " of " counter(pages);
-                {% comment %} font-size: 10pt; {% endcomment %}
-                color: #aaa;
-            }
-        }
-    </style>
+    .header h1 {
+      margin: 0;
+      font-size: 18pt; /* slightly reduced */
+      color: inherit;
+    }
+
+    .header p {
+      margin: 0.2em 0 0;
+      font-size: 10pt; /* slightly reduced */
+      color: inherit;
+    }
+
+    h2 {
+      font-size: 14pt;
+      margin-top: 1.2em;
+      color: #2c3e50;
+    }
+
+    .markdown-content {
+      white-space: pre-line;
+      font-size: 11pt; /* reduced */
+    }
+
+  
+  </style>
 </head>
 <body>
-    <header class="" style="border-bottom:1px solid black;">
-        <h1 style="font-size:2.5rem!important">{{name}}</h1>
-        <p>{{email}}</p>
-    </header>
-    <div class="section">
-        <div class="markdown-content">
-            <br>
-            {{ letter.contents }}
-            {% comment %} {{letter_content_markdown}} {% endcomment %}
-        </div>
+  <div class="top-element">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <rect width="100%" height="100%" fill="#F6F0F0" />
+      <path fill="#0099ff" fill-opacity="1" d="M0,64L360,160L720,0L1080,32L1440,128L1440,0L1080,0L720,0L360,0L0,0Z"></path>
+    </svg>
+  </div>
+
+  <div class="page">
+    
+
+    <div class="header">
+      <h1>{{name}}</h1>
+      <p>{{email}}</p>
     </div>
 
-    {% if notes %}
     <div class="section">
-        <h2>Additional Notes</h2>
-        <div class="markdown-content">
-            {{ notes|safe }}
-        </div>
+      <div class="markdown-content">
+          {{letter.contents}}
+      </div>
     </div>
-    {% endif %}
-
-    <div class="footer">
-        Generated with CoverIt · {{ username }}
-    </div>
+  </div>
+  <div class="bottom-element">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+      <rect width="100%" height="100%" fill="#F6F0F0" />
+      <path fill="#0099ff" fill-opacity="1" d="M0,64L360,160L720,0L1080,32L1440,128L1440,0L1080,0L720,0L360,0L0,0Z"></path>
+    </svg>
+  </div>
 </body>
 </html>

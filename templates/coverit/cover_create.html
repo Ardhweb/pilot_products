@@ -15,69 +15,28 @@
 
 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
   <div class="offcanvas-header">
-    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
   <div class="offcanvas-body">
-   
-    <div class="dropdown mt-3">
-      <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-        View and Export
-      </button>
-      <ul class="dropdown-menu w-25">
-        <li><a class="dropdown-item" href="#">Download</a></li>
-        <li><a class="dropdown-item" href="#">Export</a></li>
-        <li><a class="dropdown-item" href="#">Preview</a></li>
-      </ul>
-    </div>
-
-    <h4>Pages</h4>
-
     <ul class="nav flex-column">
       <li><a class="nav-link" href="{% url "cover_listing" %}">My Covers</a></li>
-      
     </ul>
 
     <!--Select the Template for Rendering page-->
-    <h4 class="fs-4">Select the Template</h4>
+    {% comment %} <h4 class="fs-4">Select the Template</h4> {% endcomment %}
 <div class="container mt-3">
   <div class="row d-flex flex-wrap justify-content-start g-2"> <!-- Flexible wrapping row -->
       <!-- Thumbnail Item 1 -->
-      <div class="col-auto">
+      {% comment %} <div class="col-auto">
           <label class="d-block">
               <input class="form-check-input" type="radio" name="thumbnail" id="thumb1">
               <div class="page-thu">Blank</div>
               <p class="thumbnail-name text-center">Blank Template</p>
           </label>
-      </div>
+      </div> {% endcomment %}
 
-      <!-- Thumbnail Item 2 -->
-      <div class="col-auto">
-          <label class="d-block">
-              <input class="form-check-input" type="radio" name="thumbnail" id="thumb2">
-              <div class="page-thu">Thumbnail 2</div>
-              <p class="thumbnail-name text-center">Thumbnail 2</p>
-          </label>
-      </div>
-
-      <!-- Thumbnail Item 3 -->
-      <div class="col-auto">
-          <label class="d-block">
-              <input class="form-check-input" type="radio" name="thumbnail" id="thumb3">
-              <div class="page-thu">Thumbnail 3</div>
-              <p class="thumbnail-name text-center">Thumbnail 3</p>
-          </label>
-      </div>
-
-      <!-- Thumbnail Item 4 -->
-      <div class="col-auto">
-          <label class="d-block">
-              <input class="form-check-input" type="radio" name="thumbnail" id="thumb4">
-              <div class="page-thu">Thumbnail 4</div>
-              <p class="thumbnail-name text-center">Thumbnail 4</p>
-          </label>
-      </div>
-
+     
       <!-- Add more thumbnails if needed -->
   </div>
 </div>
@@ -96,7 +55,7 @@
      
           <button class="btn btn-body  border lh-base px-2 btn-sm ms-2 burf"  data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fs-2 lni lni-gears-3"></i></button>
           <button class="btn btn-primary ms-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-            Export or Download
+           File and Options
           </button>
 
          
