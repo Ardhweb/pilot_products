@@ -48,6 +48,11 @@ INSTALLED_APPS = [
     'accounts',
     'generators',
     'timeline',
+    'inventory',
+    'invoice',
+    'customer',
+    'firm',
+    'aiapp',
     'django.contrib.sites',  # Required for django-allauth
 
     'allauth',

@@ -28,3 +28,27 @@ Here’s the table in a copyable format:
 | **HarfBuzz**                    | Text shaping library for WeasyPrint                    | `sudo apt install -y libharfbuzz-dev`                    | `weasyprint`                    | `pip install weasyprint`         |
 | **FriBidi**                     | Bidirectional text support for WeasyPrint              | `sudo apt install -y libfribidi-dev`                     | `weasyprint`                    | `pip install weasyprint`         |
 | **Gunicorn**                    | WSGI HTTP server for running Django in production     | -                                                        | `gunicorn`                      | `pip install gunicorn`           |
+
+
+
+Requiremtns:
+DataTable to load dyanmic data 
+add FastAPI for prdoocution internal  api
+User → owns Firm
+
+Firm → owns multiple Inventories
+
+Inventory → contains many Products
+
+Product → can optionally belong to a Category (which belongs to the Inventory)
+
+| Entity      | Belongs To  | Description                              |
+| ----------- | ----------- | ---------------------------------------- |
+| `User`      | -           | Account holder                           |
+| `Firm`      | `User`      | Shop or business                         |
+| `Inventory` | `Firm`      | Storage/catalog of products              |
+| `Category`  | `Inventory` | Group of products (optional per product) |
+| `Product`   | `Inventory` | Actual item with price/stock/etc.        |
+
+
+AI Apps the Senetecnce- transforms remaing  because its ususe pytroch  with  cus 800mb

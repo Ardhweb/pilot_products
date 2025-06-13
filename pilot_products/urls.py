@@ -29,6 +29,7 @@ urlpatterns = [
     path('accounts/', include("accounts.urls")),
     path('accounts/', include('allauth.urls')),  # Google OAuth login URL
     path('timeline/', include("timeline.urls")),
+    path('',include("aiapp.urls")),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
