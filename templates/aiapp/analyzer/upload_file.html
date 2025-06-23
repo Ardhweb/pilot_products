@@ -1,0 +1,34 @@
+{% extends "_base.html" %}
+
+{% block title %}
+Analyzer Document
+{% endblock title %}
+{% block content %}
+<div class="py-5 " style="max-height:auto; max-width: 500px; margin: 0 auto;">
+    <h4>Upload Your Document Here</h4>
+    <label for="fileInput" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
+      Select multiple files
+    </label>
+
+    <input 
+      type="file" 
+      id="fileInput" 
+      multiple 
+      style="display: block; width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background-color: #ffffff; color: #111827; font-size: 1rem;"
+    >
+
+    <div id="fileList" style="margin-top: 1rem;"></div>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const fileList = document.getElementById('fileList');
+
+    fileInput.addEventListener('change', () => {
+      const files = Array.from(fileInput.files);
+      fileList.innerHTML = files.map(file => `<div style="margin-bottom: 0.25rem;">📄 ${file.name}</div>`).join('');
+    });
+  </script>
+
+
+{% endblock content %}

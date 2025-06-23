@@ -6,7 +6,8 @@ altair==5.5.0
 annotated-types==0.7.0
 anyio==4.9.0
 asgiref==3.8.1
-async-timeout==5.0.1
+# async-timeout==5.0.1
+async-timeout==4.0.3
 attrs==25.3.0
 backoff==2.2.1
 beautifulsoup4==4.13.4
@@ -34,12 +35,16 @@ fonttools==4.56.0
 frozenlist==1.6.2
 gitdb==4.0.12
 GitPython==3.1.44
-google-ai-generativelanguage==0.6.15
+# google-ai-generativelanguage==0.6.15
+#google-ai-generativelanguage==0.6.10
+google-ai-generativelanguage==0.6.18
 google-api-core==2.24.1
 google-api-python-client==2.163.0
 google-auth==2.38.0
 google-auth-httplib2==0.2.0
-google-generativeai==0.8.4
+#google-generativeai==0.8.4
+#google-generativeai==0.8.3
+#google-generativeai==0.8.4
 googleapis-common-protos==1.69.0
 greenlet==3.2.2
 grpcio==1.70.0
@@ -66,6 +71,7 @@ langchain==0.3.25
 langchain-community==0.3.24
 langchain-core==0.3.63
 langchain-google-genai==2.1.5
+#langchain-google-genai==2.1.5
 langchain-text-splitters==0.3.8
 langdetect==1.0.9
 langsmith==0.3.44

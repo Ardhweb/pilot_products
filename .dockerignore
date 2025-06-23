@@ -1,0 +1,39 @@
+# Version control
+.git
+.gitignore
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.pyc
+
+# Pip
+*.egg-info/
+.eggs/
+dist/
+build/
+*.whl
+
+# Django and Python env
+<!-- db.sqlite3 -->
+.env
+*.env
+*.log
+
+# IDEs/editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker itself
+Dockerfile
+docker-compose.yml
+.dockerignore

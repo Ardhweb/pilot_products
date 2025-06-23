@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  web:
+    build:
+      context: D:/FreelancingTools2/5Projects/pilot-products/pilot_products
+    volumes:
+      - /pilot_products:/app
+    ports:
+      - "8000:8000"
+    working_dir: /app
+    command: ["python", "manage.py", "runserver", "0.0.0.0:8000"]

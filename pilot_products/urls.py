@@ -23,7 +23,6 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('', include("coverit.urls")),
     path('', include("core.urls")),
     path('gene/', include("generators.urls")),
     path('accounts/', include("accounts.urls")),
