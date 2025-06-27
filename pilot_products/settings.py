@@ -43,15 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'webnode',
     'accounts',
-    'generators',
     'timeline',
     'inventory',
     'invoice',
     'customer',
     'firm',
     'aiapp',
+    'rest_framework',
     'django.contrib.sites',  # Required for django-allauth
 
     'allauth',

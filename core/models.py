@@ -18,3 +18,4 @@ class SeoTags(BaseModel):
     def __str__(self):
         return self.keyword
     
+    

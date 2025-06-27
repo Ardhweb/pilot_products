@@ -1,4 +1,4 @@
-{% extends "_base.html" %}
+{% extends "core/base.html" %}
 
 {% block title %}
 Analyzer Document
@@ -7,15 +7,23 @@ Analyzer Document
 <div class="py-5 " style="max-height:auto; max-width: 500px; margin: 0 auto;">
     <h4>Upload Your Document Here</h4>
     <label for="fileInput" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">
-      Select multiple files
+      Select file
     </label>
 
-    <input 
+    {% comment %} <input 
       type="file" 
       id="fileInput" 
       multiple 
       style="display: block; width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background-color: #ffffff; color: #111827; font-size: 1rem;"
-    >
+    > {% endcomment %}
+
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="form-control btn btn-primary" type="submit">Upload</button>
+  </form>
+  
 
     <div id="fileList" style="margin-top: 1rem;"></div>
   </div>

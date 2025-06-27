@@ -3,7 +3,8 @@ version: "3"
 services:
   web:
     build:
-      context: D:/FreelancingTools2/5Projects/pilot-products/pilot_products
+      # context: D:/FreelancingTools2/5Projects/pilot-products/pilot_products
+      context: .
     volumes:
       - /pilot_products:/app
     ports:
