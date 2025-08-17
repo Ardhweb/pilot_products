@@ -4,7 +4,7 @@ from aiapp.models  import CoverLetter ,CoverLetterHistory
 class CoverLetterSerializer(serializers.ModelSerializer):
     class Meta:
         model = CoverLetter
-        fields = ['id', 'title', 'description', 'content', 'finalized', 'created_at']
+        fields = ['id', 'description', 'content', 'finalized', 'created_at']
         read_only_fields = ['id', 'finalized', 'created_at']
 
 class CoverLetterHistorySerializer(serializers.ModelSerializer):

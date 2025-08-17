@@ -1,11 +1,11 @@
-# pilot_products
+# pilotproducts
 #RunnerUp
 
 
 **Render Free Tier Deployment **
-Stat Command:  gunicorn pilot_products.wsgi:application
+Stat Command:  gunicorn pilotproducts.wsgi:application
 
-use this command *$ gunicorn pilot_products.wsgi:application *
+use this command *$ gunicorn pilotproducts.wsgi:application *
 for deploying put this into Render Project Settings below pre-Command
 
 **Unix Sub-system**

@@ -7,7 +7,7 @@ import subprocess
 @csrf_exempt
 def github_webhook(request):
     if request.method == 'POST':
-        repo_dir = '/home/pilotprojects/pilot_products/'
+        repo_dir = '/home/pilotprojects/pilotproducts/'
         try:
             os.chdir(repo_dir)
             subprocess.run(['git', 'fetch', 'origin'], check=True)
@@ -21,15 +21,17 @@ def github_webhook(request):
 
 
 
-def about_us(request):
-    return render(request, "utility/project/about.html")
-
-
-def privacy_policy(request):
-    return render(request, "utility/project/privacy.html")
 
 
 def homepage(request):
+    from sentence_transformers import SentenceTransformer
+
+    model = SentenceTransformer('all-MiniLM-L6-v2')  # Downloads model if needed
+    sentence = "This is a test sentence."
+    embedding = model.encode(sentence)
+    
+    print("Embedding shape:", embedding.shape)
+
     return render(request, "core/index.html")
 
 

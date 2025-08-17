@@ -141,7 +141,8 @@
 # CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
 # Use a slim Python image based on Debian Bookworm
 
-FROM python:3.10-slim-bullseye
+#FROM python:3.10-slim-bullseye
+FROM python:3.13-slim-bullseye
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -169,8 +170,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+# COPY requirements.txt .
+# RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
+
+COPY package.txt .
+RUN pip install --upgrade pip && pip install --no-cache-dir -r package.txt
 
 COPY . .
 

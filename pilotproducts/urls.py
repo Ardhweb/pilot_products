@@ -1,5 +1,5 @@
 """
-URL configuration for pilot_products project.
+URL configuration for pilotproducts project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/5.1/topics/http/urls/
@@ -26,7 +26,6 @@ urlpatterns = [
     path('', include("core.urls")),
     path('accounts/', include("accounts.urls")),
     path('accounts/', include('allauth.urls')),  # Google OAuth login URL
-    path('timeline/', include("timeline.urls")),
     path('',include("aiapp.urls")),
     path('rest-api/',include('rest_api.urls', namespace="rest_api")),
     path('api-auth/', include('rest_framework.urls')),
