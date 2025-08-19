@@ -1,1 +1,0 @@
-#Plug in a vector-store hook in process_cover.py
