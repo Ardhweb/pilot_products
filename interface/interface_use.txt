@@ -1,0 +1,99 @@
+ai_wrapper/
+│
+├── core/                          # Core reusable modules
+│   ├── base.py                    # Base setup (shared configs, interfaces)
+│   ├── llm_manager.py             # Low-level LLM initialization (Gemini, OpenAI, etc.)
+│   ├── tokenizer.py               # Tokenization utilities (count, split, etc.)
+│   ├── prompt_manager.py          # Prompt templates & formatting logic
+│   ├── response_parser.py         # Normalize/parse AI responses
+│   └── utils.py                   # Common helpers (logging, retries, etc.)
+│
+├── features/                      # High-level use-cases
+│   ├── prompt_runner.py           # Runs a single prompt → LLM → response pipeline
+│   └── rag_runner.py              # (Future) RAG pipeline (vector DB + retriever)
+│
+├── pipelines/                     # Orchestration layer
+│   ├── simple_prompt_pipeline.py  # Combines tokenizer + llm_manager + parser
+│   └── rag_pipeline.py            # (Future) Full RAG pipeline
+│
+├── tests/                         # Unit tests for each module
+│   ├── test_tokenizer.py
+│   ├── test_llm_manager.py
+│   ├── test_prompt_runner.py
+│   └── ...
+│
+└── main.py                        # Entry point (demo: send input → get AI response)
+
+
+
+
+Great question 👍 Let’s break it down in **our architecture’s context** (since we’re building incrementally):
+
+---
+
+### 1️⃣ **`pipeliner` module**
+
+* **Purpose** → orchestrates **multi-step AI workflows**.
+* Right now we’re only doing **prompt → LLM → response** (single step).
+* Later, when we add **RAG, multi-turn reasoning, summaries, or tool-use**, the **pipeline will chain these steps**.
+
+✅ **Use Case Examples**:
+
+* **Prompt Only (today)**:
+
+  * Input → `PromptManager` → `LLMManager` → Output
+* **Future RAG**:
+
+  * Input → `PromptManager` → `Retriever` → `LLMManager` → Output
+* **Future Summarization Pipeline**:
+
+  * Input → `Splitter` → `Summarizer` → `LLMManager` → Final Response
+
+So `pipeliner` will contain things like:
+
+* `pipeline_base.py` → defines a common pipeline class (add, run steps).
+* `prompt_pipeline.py` → simple direct pipeline for prompts.
+* `rag_pipeline.py` → extended pipeline when we add retrieval.
+
+---
+
+### 2️⃣ **`features` module**
+
+* **Purpose** → implements **user-facing AI features** (business logic).
+* Uses the pipeline(s) under the hood.
+* This is where things get **domain-specific**.
+
+✅ **Use Case Examples**:
+
+* **Today**:
+
+  * `features/prompt_service.py` → exposes a `generate_response(user_input)` function that internally calls the **prompt pipeline**.
+* **Future**:
+
+  * `features/cover_letter_service.py` → builds cover letters.
+  * `features/file_analyzer_service.py` → analyzes uploaded docs.
+  * `features/chatbot_service.py` → multi-turn dialogue system.
+
+So **`features` = high-level features your app provides**, built **on top of core + pipeliner**.
+
+---
+
+### 🔗 How it flows today (only prompt):
+
+```
+User → features/prompt_service.py 
+        → pipeliner/prompt_pipeline.py 
+            → core/prompt_manager.py + core/llm_manager.py 
+                → LangChain (LLM) → Response
+```
+
+---
+
+👉 So right now:
+
+* **We don’t need `pipeliner` yet** (we can still keep it empty or with a dummy prompt pipeline).
+* **`features` should have a `prompt_service.py`** which calls `LLMManager` directly (through the pipeline stub).
+
+---
+
+Do you want me to **write the actual code for `features/prompt_service.py` + `pipeliner/prompt_pipeline.py` (minimal working)** so that you can send a text to the AI and get a response **with our architecture**?

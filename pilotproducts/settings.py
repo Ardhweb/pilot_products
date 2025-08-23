@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'invoice',
     'customer',
     'firm',
-    'aiapp',
     'rest_framework',
     'django.contrib.sites',  # Required for django-allauth
     'allauth',

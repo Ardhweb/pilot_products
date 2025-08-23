@@ -26,7 +26,6 @@ urlpatterns = [
     path('', include("core.urls")),
     path('accounts/', include("accounts.urls")),
     path('accounts/', include('allauth.urls')),  # Google OAuth login URL
-    path('',include("aiapp.urls")),
     path('rest-api/',include('rest_api.urls', namespace="rest_api")),
     path('api-auth/', include('rest_framework.urls')),
 
