@@ -41,3 +41,7 @@ from django.conf.urls import handler404
 
 def error_404(request, exception):
     return render(request, 'error_pages/404.html', status=404)
+
+
+def a4_letter(request):
+    return render(request,'pages/a4_template.html')

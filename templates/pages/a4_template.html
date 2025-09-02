@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Canvas Editor with Vanilla JS Drag & Resize</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      background-color: #eee;
+      margin: 0;
+      font-family: "TASA Orbiter", sans-serif;
+    }
+  
+    /* Global Toolbar */
+    .toolbar {
+      width: 100%;
+      padding: 10px 20px;
+      background: #fff;
+      border-bottom: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+  
+    .toolbar label {
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      user-select: none;
+    }
+  
+    /* Canvas */
+    .canvas {
+      width: 210mm;
+      height: 297mm;
+      margin: 20mm auto;
+      padding: 10mm;
+      background-color: #fff;
+      position: relative;
+      box-sizing: border-box;
+      user-select: none; /* Prevent accidental text selection while dragging/resizing */
+    }
+  
+    .section {
+      position: absolute;
+      padding: 10px;
+      background: transparent;
+      user-select: text;
+      cursor: default;
+      box-sizing: border-box;
+      border-radius: 2px;
+    }
+  
+    .section.selected {
+      border: 1px dashed #333;
+    }
+  
+    .section.selected.movable {
+      cursor: move;
+    }
+  
+    /* Resize Handles */
+    .resize-handle {
+      width: 12px;
+      height: 12px;
+      background-color: #333;
+      position: absolute;
+      z-index: 9999;
+      border-radius: 50%;
+      display: none;
+      user-select: none;
+    }
+  
+    /* Show handles only when selected */
+    .section.selected .resize-handle {
+      display: block;
+    }
+  
+    /* Resize cursor directions */
+    .resize-handle.tl {
+      top: -6px;
+      left: -6px;
+      cursor: nwse-resize; /* top-left corner */
+    }
+  
+    .resize-handle.tr {
+      top: -6px;
+      right: -6px;
+      cursor: nesw-resize; /* top-right corner */
+    }
+  
+    .resize-handle.bl {
+      bottom: -6px;
+      left: -6px;
+      cursor: nesw-resize; /* bottom-left corner */
+    }
+  
+    .resize-handle.br {
+      bottom: -6px;
+      right: -6px;
+      cursor: nwse-resize; /* bottom-right corner */
+    }
+  
+    /* Image inside a section */
+    .image-element {
+      width: 100px;
+      height: auto;
+    }
+  
+    /* Red bar below first element */
+    #section-1::after {
+      content: "";
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background-color: red;
+      margin-top: 8px;
+      pointer-events: none;
+    }
+  
+    /* Print view cleanup */
+    @media print {
+      .resize-handle,
+      .toolbar {
+        display: none !important;
+      }
+  
+      .section {
+        border: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="toolbar">
+    <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
+  </div>
+
+  <div class="canvas" id="canvas">
+
+    <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
+      <header contenteditable="true">John Doe / Acme Corp.</header>
+      <p contenteditable="true">123 Business Rd, Suite 101</p>
+      <p contenteditable="true">Cityville, USA 54321</p>
+      <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
+      <div class="resize-handle tl"></div>
+      <div class="resize-handle tr"></div>
+      <div class="resize-handle bl"></div>
+      <div class="resize-handle br"></div>
+    </div>
+
+    <div class="section resizable" style="top: 70mm; left: 10mm; width: 400px;" id="section-2">
+      <header contenteditable="true">Cover Letter / Job Application</header>
+      <p contenteditable="true">Dear Hiring Manager,</p>
+      <p contenteditable="true">I am writing to express my interest in the Software Engineer position...</p>
+      <p contenteditable="true">Sincerely,</p>
+      <p contenteditable="true">John Doe</p>
+      <div class="resize-handle tl"></div>
+      <div class="resize-handle tr"></div>
+      <div class="resize-handle bl"></div>
+      <div class="resize-handle br"></div>
+    </div>
+
+    <div class="section resizable" style="top: 170mm; left: 10mm; width: 200px;" id="section-3">
+      <header contenteditable="true">Profile Image</header>
+      <img src="https://via.placeholder.com/100" class="image-element" alt="Profile Image" />
+      <div class="resize-handle tl"></div>
+      <div class="resize-handle tr"></div>
+      <div class="resize-handle bl"></div>
+      <div class="resize-handle br"></div>
+    </div>
+
+    <div class="section resizable" style="bottom: 10mm; left: 10mm; width: 300px;" id="section-4">
+      <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
+      <p contenteditable="true">LinkedIn: linkedin.com/in/johndoe</p>
+      <div class="resize-handle tl"></div>
+      <div class="resize-handle tr"></div>
+      <div class="resize-handle bl"></div>
+      <div class="resize-handle br"></div>
+    </div>
+
+  </div>
+
+  <script>
+    let moveEnabled = false;
+    let currentSelected = null;
+
+    const moveCheckbox = document.getElementById('moveToolToggle');
+
+    // Update moveEnabled flag on checkbox toggle
+    moveCheckbox.addEventListener('change', () => {
+      moveEnabled = moveCheckbox.checked;
+
+      if (currentSelected) {
+        if (moveEnabled) {
+          currentSelected.classList.add('movable');
+          currentSelected.style.cursor = 'move';
+        } else {
+          currentSelected.classList.remove('movable');
+          currentSelected.style.cursor = 'default';
+        }
+      }
+    });
+
+    // Variables to track dragging
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+    let dragging = false;
+
+    // Variables to track resizing
+    let resizing = false;
+    let resizeHandle = null;
+    let originalWidth, originalHeight, originalX, originalY;
+    let originalMouseX, originalMouseY;
+
+    // Make sections selectable, draggable, and resizable
+    document.querySelectorAll('.section').forEach(section => {
+      // Clicking a section selects it
+      section.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        // Deselect others
+        document.querySelectorAll('.section').forEach(s => {
+          s.classList.remove('selected', 'movable');
+          s.style.cursor = 'default';
+        });
+
+        // Select this one
+        section.classList.add('selected');
+        currentSelected = section;
+
+        if (moveEnabled) {
+          section.classList.add('movable');
+          section.style.cursor = 'move';
+        } else {
+          section.style.cursor = 'default';
+        }
+      });
+
+      // Drag start
+      section.addEventListener('mousedown', (e) => {
+        // If clicked on a resize handle, do NOT start dragging
+        if (e.target.classList.contains('resize-handle')) return;
+
+        if (!moveEnabled || section !== currentSelected) return;
+
+        dragging = true;
+
+        const rect = section.getBoundingClientRect();
+        dragOffsetX = e.clientX - rect.left;
+        dragOffsetY = e.clientY - rect.top;
+
+        section.style.position = 'absolute';
+
+        e.preventDefault();
+      });
+
+      // Setup resize handles
+      section.querySelectorAll('.resize-handle').forEach(handle => {
+        handle.addEventListener('mousedown', (e) => {
+          e.stopPropagation(); // Prevent selecting the section
+          resizing = true;
+          resizeHandle = handle;
+
+          const rect = section.getBoundingClientRect();
+
+          originalWidth = rect.width;
+          originalHeight = rect.height;
+          originalX = rect.left;
+          originalY = rect.top;
+
+          originalMouseX = e.clientX;
+          originalMouseY = e.clientY;
+
+          // Position must be absolute to update left/top during resize
+          section.style.position = 'absolute';
+
+          e.preventDefault();
+        });
+      });
+    });
+
+    // Drag move handler on whole document
+    document.addEventListener('mousemove', (e) => {
+      if (dragging && currentSelected) {
+        let newX = e.clientX - dragOffsetX;
+        let newY = e.clientY - dragOffsetY;
+
+        // Restrict movement within canvas bounds (optional)
+        const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+        const secRect = currentSelected.getBoundingClientRect();
+
+        newX = Math.min(
+          Math.max(newX, canvasRect.left),
+          canvasRect.right - secRect.width
+        );
+        newY = Math.min(
+          Math.max(newY, canvasRect.top),
+          canvasRect.bottom - secRect.height
+        );
+
+        // Update position relative to canvas
+        const canvasLeft = canvasRect.left + window.pageXOffset;
+        const canvasTop = canvasRect.top + window.pageYOffset;
+
+        currentSelected.style.left = (newX - canvasLeft) + 'px';
+        currentSelected.style.top = (newY - canvasTop) + 'px';
+      }
+
+      if (resizing && currentSelected && resizeHandle) {
+        const dx = e.clientX - originalMouseX;
+        const dy = e.clientY - originalMouseY;
+
+        let newWidth = originalWidth;
+        let newHeight = originalHeight;
+        let newX = originalX;
+        let newY = originalY;
+
+        const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+
+        if (resizeHandle.classList.contains('br')) {
+          newWidth = originalWidth + dx;
+          newHeight = originalHeight + dy;
+        } else if (resizeHandle.classList.contains('bl')) {
+          newWidth = originalWidth - dx;
+          newHeight = originalHeight + dy;
+          newX = originalX + dx;
+        } else if (resizeHandle.classList.contains('tr')) {
+          newWidth = originalWidth + dx;
+          newHeight = originalHeight - dy;
+          newY = originalY + dy;
+        } else if (resizeHandle.classList.contains('tl')) {
+          newWidth = originalWidth - dx;
+          newHeight = originalHeight - dy;
+          newX = originalX + dx;
+          newY = originalY + dy;
+        }
+
+        // Minimum size limits
+        newWidth = Math.max(newWidth, 50);
+        newHeight = Math.max(newHeight, 30);
+
+        // Restrict position inside canvas
+        newX = Math.min(Math.max(newX, canvasRect.left), canvasRect.right - newWidth);
+        newY = Math.min(Math.max(newY, canvasRect.top), canvasRect.bottom - newHeight);
+
+        // Update size and position relative to canvas
+        const canvasLeft = canvasRect.left + window.pageXOffset;
+        const canvasTop = canvasRect.top + window.pageYOffset;
+
+        currentSelected.style.width = newWidth + 'px';
+        currentSelected.style.height = newHeight + 'px';
+        currentSelected.style.left = (newX - canvasLeft) + 'px';
+        currentSelected.style.top = (newY - canvasTop) + 'px';
+      }
+    });
+
+    // Drag / Resize end
+    document.addEventListener('mouseup', () => {
+      dragging = false;
+      resizing = false;
+      resizeHandle = null;
+    });
+
+    // Clicking outside deselects all
+    document.addEventListener('click', () => {
+      if (currentSelected) {
+        currentSelected.classList.remove('selected', 'movable');
+        currentSelected.style.cursor = 'default';
+        currentSelected = null;
+      }
+    });
+  </script>
+</body>
+</html>
