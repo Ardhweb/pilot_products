@@ -18,26 +18,38 @@
   
     /* Global Toolbar */
     .toolbar {
-      width: 100%;
-      padding: 10px 20px;
+      width: fit-content;
+      padding: 10px 20px 10px 20px;
+      margin:12px;
       background: #fff;
       border-bottom: 1px solid #ccc;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      position: fixed; /* Position fixed to keep it at the top */
+      top: 0; /* Stay at the top of the viewport */
+      left: 0; /* Align with the left edge of the viewport */
+      right: 0; /* Align with the right edge of the viewport */
+      border-radius: 12px; /* Make corners rounded */
       display: flex;
       align-items: center;
       gap: 20px;
+      z-index: 1000; /* Ensure it stays above other elements */
+      padding-top: 10px; /* Optional, adjust as needed */
     }
+    
   
     .toolbar label {
-      font-size: 14px;
+      font-size: 18px;
       display: flex;
       align-items: center;
       gap: 5px;
       user-select: none;
     }
+    .toolbar     input[type="checkbox"] {
+      width: 18px; /* Desired width */
+      height: 18px; /* Desired height */
+  }
+
+    
   
     /* Canvas */
     .canvas {
@@ -144,8 +156,10 @@
   </style>
 </head>
 <body>
-
+<p style="pos">Toolbar</p>
+<div><h3>Preview & Edit</h3></div>
   <div class="toolbar">
+   
     <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
   </div>
 
@@ -156,10 +170,6 @@
       <p contenteditable="true">123 Business Rd, Suite 101</p>
       <p contenteditable="true">Cityville, USA 54321</p>
       <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
-      <div class="resize-handle tl"></div>
-      <div class="resize-handle tr"></div>
-      <div class="resize-handle bl"></div>
-      <div class="resize-handle br"></div>
     </div>
 
     <div class="section resizable" style="top: 70mm; left: 10mm; width: 400px;" id="section-2">
@@ -168,28 +178,16 @@
       <p contenteditable="true">I am writing to express my interest in the Software Engineer position...</p>
       <p contenteditable="true">Sincerely,</p>
       <p contenteditable="true">John Doe</p>
-      <div class="resize-handle tl"></div>
-      <div class="resize-handle tr"></div>
-      <div class="resize-handle bl"></div>
-      <div class="resize-handle br"></div>
     </div>
 
     <div class="section resizable" style="top: 170mm; left: 10mm; width: 200px;" id="section-3">
       <header contenteditable="true">Profile Image</header>
       <img src="https://via.placeholder.com/100" class="image-element" alt="Profile Image" />
-      <div class="resize-handle tl"></div>
-      <div class="resize-handle tr"></div>
-      <div class="resize-handle bl"></div>
-      <div class="resize-handle br"></div>
     </div>
 
     <div class="section resizable" style="bottom: 10mm; left: 10mm; width: 300px;" id="section-4">
       <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
       <p contenteditable="true">LinkedIn: linkedin.com/in/johndoe</p>
-      <div class="resize-handle tl"></div>
-      <div class="resize-handle tr"></div>
-      <div class="resize-handle bl"></div>
-      <div class="resize-handle br"></div>
     </div>
 
   </div>
@@ -226,6 +224,17 @@
     let originalWidth, originalHeight, originalX, originalY;
     let originalMouseX, originalMouseY;
 
+    // Function to append resize handles to the selected section
+    function addResizeHandles(section) {
+      const handlePositions = ['tl', 'tr', 'bl', 'br'];
+
+      handlePositions.forEach(pos => {
+        const handle = document.createElement('div');
+        handle.classList.add('resize-handle', pos);
+        section.appendChild(handle);
+      });
+    }
+
     // Make sections selectable, draggable, and resizable
     document.querySelectorAll('.section').forEach(section => {
       // Clicking a section selects it
@@ -236,11 +245,17 @@
         document.querySelectorAll('.section').forEach(s => {
           s.classList.remove('selected', 'movable');
           s.style.cursor = 'default';
+          // Remove any existing resize handles from non-selected sections
+          const handles = s.querySelectorAll('.resize-handle');
+          handles.forEach(handle => handle.remove());
         });
 
         // Select this one
         section.classList.add('selected');
         currentSelected = section;
+
+        // Add resize handles to the selected section
+        addResizeHandles(section);
 
         if (moveEnabled) {
           section.classList.add('movable');
@@ -269,11 +284,11 @@
       });
 
       // Setup resize handles
-      section.querySelectorAll('.resize-handle').forEach(handle => {
-        handle.addEventListener('mousedown', (e) => {
+      section.addEventListener('mousedown', (e) => {
+        if (e.target.classList.contains('resize-handle')) {
           e.stopPropagation(); // Prevent selecting the section
           resizing = true;
-          resizeHandle = handle;
+          resizeHandle = e.target;
 
           const rect = section.getBoundingClientRect();
 
@@ -289,7 +304,7 @@
           section.style.position = 'absolute';
 
           e.preventDefault();
-        });
+        }
       });
     });
 

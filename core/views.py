@@ -24,13 +24,13 @@ def github_webhook(request):
 
 
 def homepage(request):
-    from sentence_transformers import SentenceTransformer
+    # from sentence_transformers import SentenceTransformer
 
-    model = SentenceTransformer('all-MiniLM-L6-v2')  # Downloads model if needed
-    sentence = "This is a test sentence."
-    embedding = model.encode(sentence)
+    # model = SentenceTransformer('all-MiniLM-L6-v2')  # Downloads model if needed
+    # sentence = "This is a test sentence."
+    # embedding = model.encode(sentence)
     
-    print("Embedding shape:", embedding.shape)
+    # print("Embedding shape:", embedding.shape)
 
     return render(request, "core/index.html")
 

@@ -2,13 +2,12 @@
 <footer class="bg-dark text-light py-5">
     <div class="container-fluid px-4">
         <div class="row gap-1">
-            <!-- Column 1 -->
+            <!-- Column 1 (Logo) -->
             <div class="col-md-6 col-lg-3">
-                <h5><img class="img-fluid object-fit" width="150" src="{% static "public/core/logo-transparent-white-png.png" %}" alt="Navbar"></h5>
-
+                <h5><img class="img-fluid object-fit" width="150" src="{% static 'public/core/logo-transparent-white-png.png' %}" alt="Navbar"></h5>
             </div>
 
-            <!-- Column 2 -->
+            <!-- Column 2 (Quick Links) -->
             <div class="col-md-6 col-lg-3">
                 <h5>Quick Links</h5>
                 <ul class="list-unstyled">
@@ -19,28 +18,23 @@
                 </ul>
             </div>
 
-            <!-- Uncomment below when you need all four columns -->
-            <!-- Column 3 -->
-            <!-- 
+            <!-- Column 3 (Services) -->
             <div class="col-md-6 col-lg-3">
                 <h5>Services</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-light text-decoration-none">Web Design</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">SEO</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Marketing</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Consulting and Software</a></li>
+                    <li><a href="#" class="text-light text-decoration-none">Digital Business Help</a></li>
                 </ul>
             </div>
-            -->
+        </div> <!-- End of Row -->
+    </div> <!-- End of Container Fluid -->
 
-            <!-- Column 4 -->
-            <!-- 
-            <div class="col-md-6 col-lg-3">
-                <h5>Contact Us</h5>
-                <p>Email: info@example.com</p>
-                <p>Phone: +123 456 7890</p>
-            </div>
-            -->
+    <!-- Separate div for Feedback & Community, aligned to the right -->
+    <div class="container-fluid px-4 mt-4">
+        <div class="d-flex justify-content-end gap-3" style="font-size: 0.75rem;">
+            <a href="https://forms.gle/qGxjtnPvvn2Qhxhv9" class="text-decoration-none" style="color: rgba(181, 186, 191, 0.5); font-weight: normal;">Feedback & Report</a>
+            <a href="#" class="text-decoration-none" style="color: rgba(181, 186, 191, 0.5); font-weight: normal;">Community help</a>
+            <a href="#" class="text-decoration-none" style="color: rgba(181, 186, 191, 0.5); font-weight: normal;">Sitemap</a>
         </div>
     </div>
-    
 </footer>
