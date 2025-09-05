@@ -45,3 +45,6 @@ def error_404(request, exception):
 
 def a4_letter(request):
     return render(request,'pages/a4_template.html')
+
+def test_page(request):
+    return render(request,'pages/testpage.html')
