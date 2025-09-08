@@ -106,7 +106,7 @@ init(autoreset=True)
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+tmpPostgres = urlparse(os.getenv("POSTGRESQL_DATABASE_URL"))
 # Environment variables for database selection
 USE_MYSQL = os.getenv('USE_MYSQL', 'False').lower() in ('true', '1', 't')
 USE_POSTGRESQL = os.getenv('USE_POSTGRESQL', 'False').lower() in ('true', '1', 't')
