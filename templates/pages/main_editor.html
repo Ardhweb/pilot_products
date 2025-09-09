@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Editor</title>
+    <style>
+        /* General Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header Styling */
+header {
+    background-color: #2e3a59;
+    padding: 20px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+header .controls button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+header .controls button:hover {
+    background-color: #45a049;
+}
+
+/* Main Container */
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 20%;
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar nav ul li {
+    margin: 15px 0;
+}
+
+.sidebar nav ul li button {
+    background-color: #5c6bc0;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    width: 100%;
+    cursor: pointer;
+}
+
+.sidebar nav ul li button:hover {
+    background-color: #3f51b5;
+}
+
+/* Iframe Design Area */
+.design-area {
+    width: 75%;
+    position: relative;
+}
+
+.design-area iframe {
+    width: 100%;
+    height: 600px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">My Design Editor</div>
+        <div class="controls">
+            <button id="add-text">Add Text</button>
+            <button id="save-design">Save</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Sidebar with design tools -->
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><button id="add-text-tool">Text</button></li>
+                    <li><button id="add-image-tool">Images</button></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Iframe for design canvas -->
+        <section class="design-area">
+            <iframe src="{% url 'canvas' %}" id="design-canvas" width="100%" height="600px"></iframe>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('add-text-tool').addEventListener('click', function () {
+    const iframe = document.getElementById('design-canvas');
+    iframe.contentWindow.postMessage({ action: 'add-text', text: 'Hello, World!' }, '*');
+});
+
+    </script>
+</body>
+</html>

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sitemaps',
     'core',
     'accounts',
     'inventory',
@@ -255,3 +256,6 @@ LOGIN_REDIRECT_URL = "/"  # Change this to your desired route
 LOGOUT_REDIRECT_URL = "/"  # Redirect users to homepage after logout
 
 FLASH_AI_KEY = os.getenv("GEMINI_API_KEY")
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'  # Only allow embedding from the same origin.
+

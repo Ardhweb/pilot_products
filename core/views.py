@@ -48,3 +48,12 @@ def a4_letter(request):
 
 def test_page(request):
     return render(request,'pages/testpage.html')
+
+
+# View for the main editor page
+def main_editor(request):
+    return render(request, 'pages/main_editor.html')
+
+# View for the iframe canvas (the actual design area)
+def design_canvas(request):
+    return render(request, 'pages/canvas.html')
