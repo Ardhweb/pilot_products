@@ -1,8 +1,11 @@
-from django.shortcuts import render
-from django.http import JsonResponse
+from django.shortcuts import render,redirect
+from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
 import subprocess
+from .export import html_to_pdf, html_to_pdf_view
+import weasyprint
+from django.template.loader import render_to_string
 
 @csrf_exempt
 def github_webhook(request):
@@ -47,4 +50,14 @@ def a4_letter(request):
     return render(request,'pages/a4_template.html')
 
 def test_page(request):
+    context_content = None
     return render(request,'pages/testpage.html')
+
+def view_page_pdf(request):
+    input_html = 'pages/testpage.html'
+    html_content = render_to_string(input_html) 
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=page_cover_letter'
+    weasyprint.HTML(string=html_content).write_pdf(response)
+    return response
+    

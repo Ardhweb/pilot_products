@@ -153,10 +153,10 @@ threadpoolctl==3.6.0
 tinycss2==1.4.0
 tinyhtml5==2.0.0
 tokenizers==0.21.2
-torch==2.7.1+cpu
-tqdm==4.67.1
-transformers==4.53.0
-triton==3.3.1
+#torch==2.7.1+cpu
+#tqdm==4.67.1
+#transformers==4.53.0
+#triton==3.3.1
 types-python-dateutil==2.9.0.20240906
 typing-inspect==0.9.0
 typing-inspection==0.4.1
