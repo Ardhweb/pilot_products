@@ -49,7 +49,9 @@
       width: 18px; /* Desired width */
       height: 18px; /* Desired height */
   }
-
+@page {
+  margin: 2mm;  /* Adjust the margin for all sides */
+}
     
   
     /* Canvas */
@@ -160,7 +162,7 @@
 <p style="pos">Toolbar</p>
 <div><h3>Preview & Edit</h3></div>
   <div class="toolbar">
-   
+   <button id="save-progress" class="btn btn-sm btn-outline-primary">Save</button>
     <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
     <label> <button class="btn btn-none  fwt-bold">B</button></label>
     <label> <button class="btn btn-none  fwt-semibold">U</button></label>
@@ -171,8 +173,9 @@
     <form  method="get">
 
   <button id="export-to-pdf" class="btn btn-danger btn-sm" type="submit">Export as pdf</button>
-  <a href="{% url "view_page_pdf" %}" value="true"  id="viewPDF" class="btn btn-primary btn-sm" >View</a>
+  <a target="_blank" href="{% url "view_page_pdf" %}" value="true"  id="viewPDF" class="btn btn-primary btn-sm" >View</a>
 </form>
+
   </div>
 
   <div class="canvas" id="canvas">

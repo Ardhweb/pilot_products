@@ -53,11 +53,30 @@ def test_page(request):
     context_content = None
     return render(request,'pages/testpage.html')
 
+from bs4 import BeautifulSoup
+
 def view_page_pdf(request):
     input_html = 'pages/testpage.html'
     html_content = render_to_string(input_html) 
+    soup = BeautifulSoup(html_content, 'html.parser')
+    canvas_design = soup.find(id="canvas") 
+    if canvas_design:
+        head_content = soup.head
+        body_content = soup.body
+
+        # Create a new body content with only the canvas content
+        new_body = soup.new_tag('body')
+        new_body.append(canvas_design)  # Add canvas div to new body
+
+        # Reconstruct the full HTML with head and new body content
+        new_html = soup.new_tag('html')
+        new_html.append(head_content)
+        new_html.append(new_body)
+        reconstructed_html = str(new_html)
+
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = f'filename=page_cover_letter'
-    weasyprint.HTML(string=html_content).write_pdf(response)
+    # weasyprint.HTML(string=html_content).write_pdf(response)
+    weasyprint.HTML(string=reconstructed_html).write_pdf(response)
     return response
     

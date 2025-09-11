@@ -1,5 +1,6 @@
 from django.db import models
-
+import uuid
+from accounts.models import User
 # Create your models here.
 
 class BaseModel(models.Model):
@@ -17,5 +18,11 @@ class SeoTags(BaseModel):
 
     def __str__(self):
         return self.keyword
+
+
+class LetterDesign(BaseModel):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='letter_design')
+    data = models.JSONField(blank=True, null=True) 
     
     
