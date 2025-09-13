@@ -483,7 +483,82 @@
 
 <!--JsonBatchTrack-->
 
-  <script>
+<script>
+let GraphData = [];
+
+function initializeGraph(e) {
+  if (e.id === "canvas") {
+    GraphData = [
+      {
+        c: {
+          d: {
+            e: {
+              f: "RootLayer"
+            }
+          }
+        }
+      }
+    ];
+
+    // Get all children of the 'canvas' element that have an ID
+    const childrens = Array.from(e.children)
+      .filter(el => el.id)
+      .map(el => el.id);
+
+    // Insert the array of children's IDs into the 's' key inside GraphData[0].c.d
+    GraphData[0].c.d.s = childrens;
+
+    return JSON.stringify(GraphData, null, 2);
+  }
+}
+
+const e = document.getElementById("canvas");
+const json = initializeGraph(e); // Initialize the json template data objects base just only with rootlayer or so called canvas.
+console.log(json);
+
+function createContentLayerObj(jsonData) {
+  if (
+    Array.isArray(jsonData) &&
+    jsonData.length > 0 &&
+    jsonData[0].c &&
+    jsonData[0].c.d &&
+    jsonData[0].c.d.e &&
+    jsonData[0].c.d.e.f === "RootLayer" &&
+    Array.isArray(jsonData[0].c.d.s)
+  ) {
+    const obj = jsonData[0]; // the root object inside the array
+
+    jsonData[0].c.d.s.forEach(item => {
+      // Create a new key in the root object with the name of the item
+      obj[item] = { name: item };
+    });
+  }
+
+  return jsonData;
+}
+
+createContentLayerObj(GraphData) // This constructor of new objects on the data json each children which id present on rootlayer sibling array or so calld s:[].
+
+//Final Data Prepration call for template.
+const result = JSON.stringify(GraphData, null, 2);
+console.log(result)
+
+
+
+
+
+
+ 
+</script>
+
+
+
+
+
+<!--E.g. graphdata below above is actual grpah which we gone use.-->
+
+
+<script>
 // Graph Data like Canava Editor to  track  design changes on client .section.selected.movab
 var jsonGraphData = [
   {
