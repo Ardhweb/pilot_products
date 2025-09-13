@@ -162,7 +162,7 @@
 <p style="pos">Toolbar</p>
 <div><h3>Preview & Edit</h3></div>
   <div class="toolbar">
-   <button id="save-progress" class="btn btn-sm btn-outline-primary">Save</button>
+   <button id="saveBtn" class="btn btn-sm btn-outline-primary">Save</button>
     <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
     <label> <button class="btn btn-none  fwt-bold">B</button></label>
     <label> <button class="btn btn-none  fwt-semibold">U</button></label>
@@ -481,7 +481,71 @@
     
   </script>
 
+<!--JsonBatchTrack-->
 
-  
+  <script>
+// Graph Data like Canava Editor to  track  design changes on client .section.selected.movab
+var jsonGraphData = [
+  {
+    "c": {
+      "d": {
+        "e": { "f": "RootLayer" },
+        "g": {
+          "h": { "i": 1200, "j": 800 }, // width & height
+          "k": { "l": 0, "m": 0 },      // x & y
+          "n": 0,
+          "o": "rgb(255, 255, 255)"
+        },
+        "s": ["TextLayer_1", "ShapeLayer_1", "ImageLayer_1"],
+        "t": null
+      }
+    },
+    'nodes':{
+    "TextLayer_1": {
+      "e": { "f": "TextLayer" },
+      "g": {
+        "h": { "i": 200, "j": 50 },
+        "k": { "l": 100, "m": 150 }
+      },
+      "content": "Hello World",
+      "style": { "fontSize": 24, "color": "#000000" },
+      "s": []
+    },
+    "ShapeLayer_1": {
+      "e": { "f": "RectangleLayer" },
+      "g": {
+        "h": { "i": 300, "j": 150 },
+        "k": { "l": 200, "m": 300 }
+      },
+      "style": { "fill": "#ff0000", "stroke": "#000000" },
+      "s": ["TextLayer_2"]
+    },
+    "TextLayer_2": {
+      "e": { "f": "TextLayer" },
+      "g": {
+        "h": { "i": 150, "j": 40 },
+        "k": { "l": 20, "m": 40 }
+      },
+      "content": "Inside Shape",
+      "style": { "fontSize": 18, "color": "#ffffff" },
+      "s": []
+    },
+    "ImageLayer_1": {
+      "e": { "f": "ImageLayer" },
+      "g": {
+        "h": { "i": 200, "j": 200 },
+        "k": { "l": 600, "m": 100 }
+      },
+      "src": "https://example.com/image.png",
+      "s": []
+    }
+  },
+  }
+];
+
+
+
+</script>
+
 </body>
 </html>
