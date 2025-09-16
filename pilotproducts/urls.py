@@ -20,7 +20,21 @@ from django.conf import settings
 from django.conf.urls.static import static 
 from django.conf import settings
 from django.conf.urls.static import static
-
+from .api_routers import router as main_router
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+# Set up Swagger schema view
+schema_view = get_schema_view(
+    openapi.Info(
+        title="PilotProducts API Docs",
+        default_version='v1',
+        description="API documentation for managing letter designs.",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="contact@letterdesign.com"),
+        license=openapi.License(name="BSD License"),
+    ),
+    public=True,
+)
 
 urlpatterns = [
     path('', include("core.urls")),
@@ -28,6 +42,8 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),  # Google OAuth login URL
    # path('rest-api/',include('rest_api.urls', namespace="rest_api")),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(main_router.urls)),
+    path('api-docs', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
     path('admin/', admin.site.urls),
 
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

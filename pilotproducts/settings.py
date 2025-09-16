@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'customer',
     'firm',
     'rest_framework',
+    'drf_yasg',
     'django.contrib.sites',  # Required for django-allauth
     'allauth',
     'allauth.account',

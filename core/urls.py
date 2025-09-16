@@ -8,6 +8,4 @@ urlpatterns = [
     path('test-page',views.test_page, name="test_page"),
     path('view-page-pdf',views.view_page_pdf, name="view_page_pdf"),
 
-   
-   
 ]
