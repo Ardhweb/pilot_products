@@ -13,7 +13,7 @@
                 <a class="nav-link" href="#pricing">Pricing</a>
                 <div class="dropdown nav-link ">
                     <a class="dropdown-toggle text-decoration-none text-reset " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                     Services & Common
+                    Free Tools
                     </a>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="#">Random Password Generator<span class="span-tag-primary rounded-pill">Open</span></a></li>
@@ -23,11 +23,11 @@
                   <!--Custom Dropdown-->
                   <li class="nav-item dropdown has-megamenu">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Products & Tools
+                    Productivity
                     </a>
                     <ul class="dropdown-menu megamenu py-3 px-4 shadow-md border-top-0">
                         <div class="row">
-                            <div class="col-md-4 p-3">
+                            {% comment %} <div class="col-md-4 p-3">
                                 <li><h6 class="dropdown-header  text-uppercase">Edit & Objects</h6></li>
     
                                 <li class="my-2">
@@ -51,11 +51,13 @@
                                 </li>
                               
                                 
-                            </div>
+                            </div> {% endcomment %}
                             <div class="col-md-4 p-3">
                                 <li><h6 class="dropdown-header  text-uppercase">Writing & Personlized</h6></li>
     
-                               
+                                 <a class="dropdown-item d-flex align-items-start" href="{% url "test_page" %}">
+                                    Write Letter 
+                                 </a>
 
                              
                               
