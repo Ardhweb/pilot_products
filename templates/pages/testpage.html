@@ -174,6 +174,8 @@
 
   <button id="export-to-pdf" class="btn btn-danger btn-sm" type="submit">Export as pdf</button>
   <a target="_blank" href="{% url "view_page_pdf" %}" value="true"  id="viewPDF" class="btn btn-primary btn-sm" >View</a>
+<button id="mapDataBtn" class="btn btn-sm btn-outline-primary">Json Map Data</button>
+
 </form>
 
   </div>
@@ -348,6 +350,9 @@
 
         currentSelected.style.left = (newX - canvasLeft) + 'px';
         currentSelected.style.top = (newY - canvasTop) + 'px';
+        
+         const sectionId = currentSelected.id;
+       
       }
 
       if (resizing && currentSelected && resizeHandle) {
@@ -399,11 +404,31 @@
     });
 
     // Drag / Resize end
-    document.addEventListener('mouseup', () => {
-      dragging = false;
-      resizing = false;
-      resizeHandle = null;
-    });
+    // document.addEventListener('mouseup', () => {
+    //   dragging = false;
+    //   resizing = false;
+    //   resizeHandle = null;
+    // });
+    document.addEventListener('mouseup', (e) => {
+  if (dragging && currentSelected) {
+    const rect = currentSelected.getBoundingClientRect();
+    const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+
+    const canvasLeft = canvasRect.left + window.pageXOffset;
+    const canvasTop = canvasRect.top + window.pageYOffset;
+
+    const finalX = rect.left - canvasLeft;
+    const finalY = rect.top - canvasTop;
+
+    // Update position only once, at the end of drag
+    updateSectionPosition(currentSelected.id, finalX, finalY);
+  }
+
+  dragging = false;
+  resizing = false;
+  resizeHandle = null;
+});
+
 
  // Make sections selectable
  document.querySelectorAll('.section').forEach(section => {
@@ -477,6 +502,39 @@
     });
 
     
+
+
+
+    // Function to update section position in jsonGraphData
+// Function to update section position in jsonGraphData
+function updateSectionPosition(sectionId, newX, newY) {
+  const section = document.getElementById(sectionId);
+  const nodeKey = section?.dataset?.nodeKey;
+
+  if (!nodeKey) {
+    console.warn(`⚠️ No nodeKey found for section ${sectionId}`);
+    return;
+  }
+
+  const graph = GraphRegistry.get();
+  const node = graph?.[0]?.nodes?.[nodeKey];
+
+  if (!node) {
+    console.warn(`⚠️ Node not found for key ${nodeKey}`);
+    return;
+  }
+
+  // Update position (g.k.l = x, g.k.m = y)
+  node.g.k.l = newX;
+  node.g.k.m = newY;
+
+  console.log(`✅ Updated ${nodeKey} position → x:${newX}, y:${newY}`);
+
+  // Store updated graph back to registry
+  GraphRegistry.set(graph);
+}
+
+
 
     
   </script>
@@ -618,6 +676,51 @@ var jsonGraphData = [
   }
 ];
 
+
+
+// re-sync or re-mapping id with node element after the page log jsonData re-render and stractured -Graph registry.
+//Add a global graph registry
+// --- Graph Registry Utility ---
+window.GraphRegistry = {
+  current: null,
+  set(data) {
+    this.current = typeof data === "string" ? JSON.parse(data) : structuredClone(data);
+    console.log("✅ GraphRegistry set with latest data");
+  },
+  get() {
+    return this.current;
+  },
+  getNode(key) {
+    return this.current?.[0]?.nodes?.[key] || null;
+  },
+  getNodeKeys() {
+    return Object.keys(this.current?.[0]?.nodes || {});
+  }
+};
+
+// Register initial JSON
+GraphRegistry.set(jsonGraphData);
+
+// Map the element id with nodes values.
+// Link each .section to a node key
+function rebindSectionsToGraph() {
+  const nodeKeys = GraphRegistry.getNodeKeys();
+  const sections = document.querySelectorAll('.section');
+
+  sections.forEach((section, index) => {
+    // Simple mapping by order or name (can improve with metadata later)
+    const nodeKey = nodeKeys[index];
+    if (nodeKey) {
+      section.dataset.nodeKey = nodeKey;
+      console.log(`🔗 Bound ${section.id} → ${nodeKey}`);
+    } else {
+      console.warn(`⚠️ No node found for ${section.id}`);
+    }
+  });
+}
+rebindSectionsToGraph();
+
+// Handle "Save" button click
 
 
 </script>
