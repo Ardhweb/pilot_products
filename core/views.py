@@ -6,6 +6,9 @@ import subprocess
 from .export import html_to_pdf, html_to_pdf_view
 import weasyprint
 from django.template.loader import render_to_string
+from core.forms import BlankDesignForm
+from django.contrib.auth.decorators import login_required
+from core.models import LetterDesign
 
 @csrf_exempt
 def github_webhook(request):
@@ -49,9 +52,15 @@ def error_404(request, exception):
 def a4_letter(request):
     return render(request,'pages/a4_template.html')
 
-def test_page(request):
+@login_required
+def test_page(request,id):
     context_content = None
-    return render(request,'pages/tp-20251104-s4cU.html')
+    cu = LetterDesign.objects.filter(user=request.user, id=id)
+    if cu.exists():
+        return render(request, 'pages/tp-20251104-s4cU.html')
+    else:
+        print(f"No LetterDesign found for user {request.user} and id {id}")
+        return HttpResponse("Not Allowed couldn't find Letter")
 
 from bs4 import BeautifulSoup
 
@@ -79,4 +88,23 @@ def view_page_pdf(request):
     # weasyprint.HTML(string=html_content).write_pdf(response)
     weasyprint.HTML(string=reconstructed_html).write_pdf(response)
     return response
+
+@login_required
+def _blank_design_generate(request):
+    
+    if request.method == 'POST':
+        form = BlankDesignForm(request.POST)
+        if form.is_valid():
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
+            print(f"Saved D:{instance.id}")
+            return redirect('test_page', id="6fc4ea3b0c554369822d9fe3f0a09759")
+        else:
+            print(form.errors)
+            return HttpResponse("<h1>Hello from Django!</h1>")
+    else:
+        form = BlankDesignForm()
+        
+        return render(request,'forms/select_design.html',{'form':form})
     

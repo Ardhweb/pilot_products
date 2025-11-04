@@ -1,0 +1,78 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    <div class="container mt-4">
+        <!-- Heading for Template Selection -->
+        <h3>Select Template Type</h3>
+
+        <!-- Row for Template Options -->
+        <div class="row">
+            <!-- Blank Template Tiles (8 small squares total, 2 rows and 4 columns) -->
+            <div class="col-3 mb-3">
+                <div class="template-tile" id="blankTemplate1" onclick="selectTemplate('blankTemplate1', 'blank')" style="cursor: pointer;">
+                    <p class="tile-text">Blank 1</p>
+                </div>
+            </div>
+
+            
+        </div>
+
+        <!-- Hidden Form for Template Selection -->
+        <form method="post" class="mt-4">
+            {% csrf_token %}
+            {{ forms.as_p }}
+            <input type="hidden" name="template_choice" id="templateChoiceInput" value="blank" />
+            <input class="btn btn-primary" type="submit" value="Next" />
+        </form>
+    </div>
+
+    <script>
+        // JavaScript to set the selected template when a tile is clicked and highlight it
+        function selectTemplate(selectedId, templateChoice) {
+            // Remove selected class from any other tile
+            var allTiles = document.querySelectorAll('.template-tile');
+            allTiles.forEach(function(tile) {
+                tile.classList.remove('selected-tile');
+            });
+
+            // Add selected class to the clicked tile
+            document.getElementById(selectedId).classList.add('selected-tile');
+
+            // Update the hidden input to the selected template
+            document.getElementById('templateChoiceInput').value = templateChoice;
+        }
+    </script>
+
+    <style>
+        /* Basic styling for template tiles */
+        .template-tile {
+            border: 2px solid #ccc;
+            height: 250px; /* Small tile size */
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-radius: 8px;
+            width:80%;
+        }
+
+        .tile-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Style for the selected tile */
+        .selected-tile {
+            border: 2px solid #007bff; /* Blue border when selected */
+            background-color: #e7f1ff; /* Light blue background */
+        }
+
+        /* Optional: Hover effect for better interactivity */
+        .template-tile:hover {
+            border-color: #007bff;
+            background-color: #f0f8ff; /* Light background when hovering */
+        }
+    </style>
+{% endblock content %}
