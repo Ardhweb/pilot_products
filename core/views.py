@@ -51,12 +51,12 @@ def a4_letter(request):
 
 def test_page(request):
     context_content = None
-    return render(request,'pages/testpage.html')
+    return render(request,'pages/tp-20251104-s4cU.html')
 
 from bs4 import BeautifulSoup
 
 def view_page_pdf(request):
-    input_html = 'pages/testpage.html'
+    input_html = 'pages/tp-20251104-s4cU.html'
     html_content = render_to_string(input_html) 
     soup = BeautifulSoup(html_content, 'html.parser')
     canvas_design = soup.find(id="canvas") 

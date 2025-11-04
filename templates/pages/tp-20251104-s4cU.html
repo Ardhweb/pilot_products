@@ -174,7 +174,7 @@
 
   <button id="export-to-pdf" class="btn btn-danger btn-sm" type="submit">Export as pdf</button>
   <a target="_blank" href="{% url "view_page_pdf" %}" value="true"  id="viewPDF" class="btn btn-primary btn-sm" >View</a>
-<button id="mapDataBtn" class="btn btn-sm btn-outline-primary">Json Map Data</button>
+
 
 </form>
 
@@ -721,7 +721,48 @@ function rebindSectionsToGraph() {
 rebindSectionsToGraph();
 
 // Handle "Save" button click
+function UpdateStates(payload=jsonGraphData, id=null){
+  if (id===null){
+  const source = `http://localhost:8000/coverletter`
 
+// Data you want to send in the POST request (can be an object, string, etc.)
+const data = {
+  state_data:payload,
+  user:``
+  
+};
+
+// Send POST request using fetch
+fetch(source, {
+  method: 'POST', // Specify the HTTP method
+  headers: {
+    'Content-Type': 'application/json' // Specify the content type of the request body
+  },
+  body: JSON.stringify(data) // Convert the data to a JSON string
+})
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.json(); // Parse the JSON response from the server
+  })
+  .then(responseData => {
+    console.log('Success:', responseData); // Handle the response data
+  })
+  .catch(error => {
+    console.error('There was a problem with the fetch operation:', error); // Handle errors
+  });
+  }
+  else{
+    alert.error('Please provide current design letter canvas id :DB error!')
+  }
+}
+
+document.getElementById('saveBtn').addEventListener('click', function() {
+  
+  // You can either pass the custom data or just call it without arguments
+  UpdateStates(id=null);
+});
 
 </script>
 
