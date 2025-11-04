@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http import JsonResponse,HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import os
@@ -55,8 +55,9 @@ def a4_letter(request):
 @login_required
 def test_page(request,id):
     context_content = None
-    cu = LetterDesign.objects.filter(user=request.user, id=id)
-    if cu.exists():
+    cu = get_object_or_404(LetterDesign, id=id,user=request.user)
+    if cu:
+        print(cu)
         return render(request, 'pages/tp-20251104-s4cU.html')
     else:
         print(f"No LetterDesign found for user {request.user} and id {id}")
