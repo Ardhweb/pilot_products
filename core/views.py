@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from core.forms import BlankDesignForm
 from django.contrib.auth.decorators import login_required
 from core.models import LetterDesign
+from uuid import UUID
 
 @csrf_exempt
 def github_webhook(request):
@@ -53,11 +54,10 @@ def a4_letter(request):
     return render(request,'pages/a4_template.html')
 
 @login_required
-def test_page(request,id):
+def test_page(request,l_id:UUID):
     context_content = None
-    cu = get_object_or_404(LetterDesign, id=id,user=request.user)
+    cu = get_object_or_404(LetterDesign, id=l_id)
     if cu:
-        print(cu)
         return render(request, 'pages/tp-20251104-s4cU.html')
     else:
         print(f"No LetterDesign found for user {request.user} and id {id}")

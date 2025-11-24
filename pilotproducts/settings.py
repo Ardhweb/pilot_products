@@ -31,6 +31,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
+# Print DEBUG value to check its value
+print(f"DEBUG is set to: {DEBUG}")
 
 ALLOWED_HOSTS = ['*', '8000','localhost']
 
