@@ -39,14 +39,30 @@ class LetterDesignViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-    def retrieve(self, request, pk=None):
-        pass
+    # def retrieve(self, request, pk=None):
+    #     pass
 
     def update(self, request, pk=None):
-        pass
+        # Retrieve the object to update based on the pk from the URL
+        # Ensure that the object belongs to the current user
+        try:
+            letter_design = self.get_queryset().get(pk=pk)
+        except LetterDesign.DoesNotExist:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
 
-    def partial_update(self, request, pk=None):
-        pass
+        # Serialize the data for the update
+        serializer = self.get_serializer(letter_design, data=request.data)
 
-    def destroy(self, request, pk=None):
-        pass
+        # Validate the serializer
+        if serializer.is_valid():
+            self.perform_update(serializer)
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    # def partial_update(self, request, pk=None):
+    #     pass
+
+    # def destroy(self, request, pk=None):
+    #     pass
