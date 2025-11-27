@@ -51,4 +51,56 @@ Product → can optionally belong to a Category (which belongs to the Inventory)
 | `Product`   | `Inventory` | Actual item with price/stock/etc.        |
 
 
-AI Apps the Senetecnce- transforms remaing  because its ususe pytroch  with  cus 800mb
+AI Apps the Senetecnce- transforms remain  because its use pytroch  with  800mb
+
+
+### **Locust Load Test**
+
+LoadTest with locust
+
+---
+
+### **How to Run Locust**
+
+Follow these steps to successfully set up and run your load test:
+
+#### 1. Prepare the Locust Environment
+
+* Open a **PowerShell/Terminal window** (this will be your second shell).
+* **Activate your virtual environment** (`venv` or `virtualenv`):
+
+    * *Example:*
+        ```bash
+        source venv/bin/activate
+        ```
+
+* **Verify Locust installation** (check the version):
+
+    ```bash
+    locust --version
+    ```
+
+#### 2. Start the Locust Test
+
+* Navigate to the **project main root folder** (e.g., `pilotproducts`).
+* Execute the Locust command, specifying the test file:
+
+    ```bash
+    locust -f locustfile.py
+    ```
+    * *Or:*
+    ```bash
+    locust -f filename.py
+    ```
+
+---
+
+### **Note- Remember Before This**
+
+* On another separate PowerShell/Terminal window, you **must already have the server running** by executing:
+
+    ```bash
+    python manage.py runserver
+    ```
+
+---
