@@ -7,9 +7,12 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.decorators import action
 from drf_yasg.utils import swagger_auto_schema
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.permissions import IsAuthenticated,AllowAny
 
 class LetterDesignViewSet(viewsets.ModelViewSet):
     serializer_class = LetterDesignSerializer
+    permission_classes = [IsAuthenticated]
 
     # Override `get_queryset` to only return objects for the authenticated user
     def get_queryset(self):
@@ -41,7 +44,8 @@ class LetterDesignViewSet(viewsets.ModelViewSet):
 
     # def retrieve(self, request, pk=None):
     #     pass
-
+    
+    #@csrf_exempt
     def update(self, request, pk=None):
         # Retrieve the object to update based on the pk from the URL
         # Ensure that the object belongs to the current user
@@ -49,12 +53,18 @@ class LetterDesignViewSet(viewsets.ModelViewSet):
             letter_design = self.get_queryset().get(pk=pk)
         except LetterDesign.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # if letter_design.user != request.user:
+        #     return Response({"detail": "You do not have permission to edit this letter."}, 
+        #                      status=status.HTTP_403_FORBIDDEN)
+
 
         # Serialize the data for the update
         serializer = self.get_serializer(letter_design, data=request.data)
 
         # Validate the serializer
         if serializer.is_valid():
+            #serializer.validated_data['user'] = request.user
             self.perform_update(serializer)
             return Response(serializer.data)
         else:

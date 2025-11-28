@@ -163,6 +163,7 @@
 <div><h3>Preview & Edit</h3></div>
   <div class="toolbar">
    <button id="saveBtn" class="btn btn-sm btn-outline-primary">Save</button>
+   {% csrf_token %}
     <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
     <label> <button class="btn btn-none  fwt-bold">B</button></label>
     <label> <button class="btn btn-none  fwt-semibold">U</button></label>
@@ -208,6 +209,8 @@
     </div>
 
   </div>
+
+   
  
   <script>
     let moveEnabled = false;
@@ -618,7 +621,7 @@ console.log(result)
 
 <script>
 // Graph Data like Canava Editor to  track  design changes on client .section.selected.movab
-var jsonGraphData = [
+let jsonGraphData = [
   {
     "c": {
       "d": {
@@ -721,46 +724,54 @@ function rebindSectionsToGraph() {
 rebindSectionsToGraph();
 
 // Handle "Save" button click
-function UpdateStates(payload=jsonGraphData, id=null){
-  if (id===null){
-  const source = `http://localhost:8000/coverletter`
+function UpdateStates(id = null) {
+  console.log(jsonGraphData);
 
-// Data you want to send in the POST request (can be an object, string, etc.)
-const data = {
-  state_data:payload
-  
-};
+  // Move the existing logic inside the `else` block.
+  if (id === null) {
+    console.error('Error: ID is null!');
+  } else {
+    const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;
 
-// Send POST request using fetch
-fetch(source, {
-  method: 'POST', // Specify the HTTP method
-  headers: {
-    'Content-Type': 'application/json' // Specify the content type of the request body
-  },
-  body: JSON.stringify(data) // Convert the data to a JSON string
-})
-  .then(response => {
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    return response.json(); // Parse the JSON response from the server
-  })
-  .then(responseData => {
-    console.log('Success:', responseData); // Handle the response data
-  })
-  .catch(error => {
-    console.error('There was a problem with the fetch operation:', error); // Handle errors
-  });
-  }
-  else{
-    alert.error('Please provide current design letter canvas id :DB error!')
+    const data = {
+      state_data: jsonGraphData[0],  // assuming jsonGraphData[0] holds the data you want to send
+      user: 1
+    };
+
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+    console.log(csrfToken.value);
+
+    // Send PUT request using fetch
+    fetch(source, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': csrfToken.value,  // Send CSRF token here
+      },
+      body: JSON.stringify(data), // Convert the data to a JSON string
+      credentials: 'same-origin',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(response.error);
+        }
+        return response.json(); // Parse the JSON response from the server
+      })
+      .then(responseData => {
+        console.log('Success:', responseData); // Handle the response data
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error); // Handle errors
+      });
   }
 }
+
 
 document.getElementById('saveBtn').addEventListener('click', function() {
   
   // You can either pass the custom data or just call it without arguments
-  UpdateStates(id=null);
+  UpdateStates(id='75bf606fdbb44972a178095c9ad1c15a');
+ 
 });
 
 </script>
