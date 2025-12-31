@@ -54,9 +54,9 @@ class LetterDesignViewSet(viewsets.ModelViewSet):
         except LetterDesign.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
         
-        # if letter_design.user != request.user:
-        #     return Response({"detail": "You do not have permission to edit this letter."}, 
-        #                      status=status.HTTP_403_FORBIDDEN)
+        if letter_design.user != request.user:
+            return Response({"detail": "You do not have permission to edit this letter."}, 
+                             status=status.HTTP_403_FORBIDDEN)
 
 
         # Serialize the data for the update

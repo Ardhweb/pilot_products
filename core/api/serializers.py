@@ -4,7 +4,7 @@ from core.models import LetterDesign
 class LetterDesignSerializer(serializers.ModelSerializer):
     class Meta:
         model = LetterDesign
-        fields = "__all__"
+        fields = ['state_data']
 
     # def update(self, instance, validated_data):
     #     # Ensure the user is automatically set to the currently logged-in user

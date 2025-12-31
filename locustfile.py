@@ -12,12 +12,12 @@ class DjangoAppUser(HttpUser):
     # This method simulates logging in
     @task(2)  # This task is weighted more (i.e., it will be executed more frequently)
     def login(self):
-        self.client.post("/login/", {
-            "username": "testuser",
-            "password": "password123"
+        self.client.post("/accounts/login/", {
+            "username": "admin",
+            "password": "admin"
         })
 
     # Simulate other tasks, like browsing to specific pages, submitting forms, etc.
     @task
     def view_product(self):
-        self.client.get("/product/1/")  # Replace with your actual product URL
+        self.client.get("/test-page/3b0a0e75154844f982ddbd7e55e749d9/")  # Replace with your actual product URL
