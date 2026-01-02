@@ -56,11 +56,11 @@ def a4_letter(request):
 @login_required
 def test_page(request,l_id:UUID):
     context_content = None
-    cu = get_object_or_404(LetterDesign, id=l_id)
+    cu = get_object_or_404(LetterDesign, lc_id=l_id)
     if cu:
         return render(request, 'pages/tp-20251104-s4cU.html')
     else:
-        print(f"No LetterDesign found for user {request.user} and id {id}")
+        print(f"No LetterDesign found for user {request.user} and id {lc_id}")
         return HttpResponse("Not Allowed couldn't find Letter")
 
 from bs4 import BeautifulSoup
@@ -99,8 +99,8 @@ def _blank_design_generate(request):
             instance = form.save(commit=False)
             instance.user = request.user
             instance.save()
-            print(f"Saved D:{instance.id}")
-            return redirect('test_page', id="6fc4ea3b0c554369822d9fe3f0a09759")
+            print(f"Saved D:{instance.lc_id}")
+            return redirect('test_page', lc_id="6fc4ea3b0c554369822d9fe3f0a09759")
         else:
             print(form.errors)
             return HttpResponse("<h1>Hello from Django!</h1>")

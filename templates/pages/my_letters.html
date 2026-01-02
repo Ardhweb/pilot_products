@@ -12,9 +12,12 @@ My Letters
           <div class="card">
             <img src="{{ item.image_url }}" class="card-img-top" alt="{{ item.name }}">
             <div class="card-body">
-              <h5 class="card-title">{{ item.id }}</h5>
+              <h5 class="card-title">{{ item.lc_id }}</h5>
+                  <p class="card-text mb-0 pb-0">{{ item.name | default:"Untitled" }}
+</p>
+
               <p class="card-text">{{ item.created_at }}</p>
-              <a href="{% url "test_page" l_id=item.id %}">Edit</a>
+              <a href="{% url "test_page" l_id=item.lc_id %}">Edit</a>
             </div>
           </div>
         </div>

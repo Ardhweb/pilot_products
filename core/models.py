@@ -21,8 +21,7 @@ class SeoTags(BaseModel):
 
 
 class LetterDesign(BaseModel):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    lc_id = models.UUIDField(primary_key=False, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='letter_design')
     state_data = models.JSONField(blank=True, null=True) # keep storing the user editor canvas changes and its value css,variable,state and context data.
-    
-    
+    name = models.CharField(max_length=50, blank=False, null=True)
