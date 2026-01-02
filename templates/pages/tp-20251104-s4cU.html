@@ -162,7 +162,7 @@
 <p style="pos">Toolbar</p>
 <div><h3>Preview & Edit</h3></div>
   <div class="toolbar">
-   <button id="saveBtn" class="btn btn-sm btn-outline-primary">Save</button>
+   <button id="saveBtn" class="btn btn-sm btn-outline-primary">Update State Save</button>
    {% csrf_token %}
     <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
     <label> <button class="btn btn-none  fwt-bold">B</button></label>
@@ -768,9 +768,24 @@ function UpdateStates(id = null) {
 
 
 document.getElementById('saveBtn').addEventListener('click', function() {
-  
-  // You can either pass the custom data or just call it without arguments
-  UpdateStates(id='75bf606fdbb44972a178095c9ad1c15a');
+const urlPath = window.location.pathname;
+let lId = null;
+// Adjusted regex to handle different URL formats
+const match = urlPath.match(/\/test-page\/([0-9a-fA-F-]{36})/);
+
+if (match) {
+    // If a match is found, extract the UUID and log it to the console
+    lId = match[1];  // The UUID is the first captured group
+    console.log('Letter Design ID (UUID):', lId);
+} else {
+    console.log('UUID not found in URL');
+}
+
+console.log("Test", lId);
+
+// Now you can use the `lId` as needed
+UpdateStates(id=lId);
+
  
 });
 

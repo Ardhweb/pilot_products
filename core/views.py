@@ -108,4 +108,14 @@ def _blank_design_generate(request):
         form = BlankDesignForm()
         
         return render(request,'forms/select_design.html',{'form':form})
+
+@login_required
+def my_letters(request):
+    """ 
+    This code is responsobile to  fetach each letter related current requested user 
+    and then show to  my letters page of that related user all data.
+    """
+    cover_letters = LetterDesign.objects.filter(user=request.user)
+    print(cover_letters)
+    return render(request, "pages/my_letters.html", {'cover_letters':cover_letters})
     

@@ -9,5 +9,6 @@ urlpatterns = [
     # path('test-page/<uuid:id>',views.test_page, name="test_page"),
     path('test-page/<str:l_id>/',views.test_page, name="test_page"),
     path('view-page-pdf',views.view_page_pdf, name="view_page_pdf"),
+    path('my_letters', views.my_letters, name="my_letters"),
 
 ]
