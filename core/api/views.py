@@ -60,7 +60,14 @@ class LetterDesignViewSet(viewsets.ModelViewSet):
             return Response({"detail": "You do not have permission to edit this letter."}, 
                              status=status.HTTP_403_FORBIDDEN)
 
+        # 1. LOGGING: See exactly what is arriving
+        print("DEBUG: Request Data Keys:", request.data.keys())
+        print("DEBUG: State Data Content:", request.data.get('state_data'))
 
+        # 2. Extract state_data specifically
+        # If your JS sends it as an object, DRF JSONField handles it.
+        # If your field is a TextField, you need to stringify in JS or here.
+        incoming_state = request.data.get('state_data')
         # Serialize the data for the update
         serializer = self.get_serializer(letter_design, data=request.data)
 

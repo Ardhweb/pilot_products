@@ -618,167 +618,190 @@ console.log(result)
  
 </script>
 
-
-
+<button onclick="applyStylesToCanvas(updatedData)" id="Up">Apply Data from DB for State</button>
+<button id="log-graph-btn">Log Groa</button>
 
 
 <!--E.g. graphdata below above is actual grpah which we gone use.-->
 
 
 <script>
-// Graph Data like Canava Editor to  track  design changes on client .section.selected.movab
-let jsonGraphData = [
-  {
-    "c": {
-      "d": {
-        "e": { "f": "RootLayer" },
-        "g": {
-          "h": { "i": 1200, "j": 800 }, // width & height
-          "k": { "l": 0, "m": 0 },      // x & y
-          "n": 0,
-          "o": "rgb(255, 255, 255)"
+  let updatedData = null;
+  const urlPath = window.location.pathname;
+let lId = null;
+// Adjusted regex to handle different URL formats
+const match = urlPath.match(/\/test-page\/([0-9a-fA-F-]{36})/);
+
+
+function captureAndLogGraph() {
+    const canvas = document.getElementById('canvas');
+    const sections = document.querySelectorAll('.section');
+    
+    // Get Canvas (Root) current styles
+    const canvasStyle = window.getComputedStyle(canvas);
+
+    // 1. Initialize the root structure following your schema
+    let currentGraphState = {
+        "c": {
+            "d": {
+                "e": { "f": "RootLayer" },
+                "g": {
+                    "h": { "i": canvas.offsetWidth, "j": canvas.offsetHeight },
+                    "k": { "l": 0, "m": 0 },
+                    "n": 0,
+                    "o": canvasStyle.backgroundColor
+                },
+                "s": [], // Successors (child IDs) will go here
+                "t": null
+            }
         },
-        "s": ["TextLayer_1", "ShapeLayer_1", "ImageLayer_1"],
-        "t": null
-      }
-    },
-    'nodes':{
-    "TextLayer_1": {
-      "e": { "f": "TextLayer" },
-      "g": {
-        "h": { "i": 200, "j": 50 },
-        "k": { "l": 100, "m": 150 }
-      },
-      "content": "Hello World",
-      "style": { "fontSize": 24, "color": "#000000" },
-      "s": []
-    },
-    "ShapeLayer_1": {
-      "e": { "f": "RectangleLayer" },
-      "g": {
-        "h": { "i": 300, "j": 150 },
-        "k": { "l": 200, "m": 300 }
-      },
-      "style": { "fill": "#ff0000", "stroke": "#000000" },
-      "s": ["TextLayer_2"]
-    },
-    "TextLayer_2": {
-      "e": { "f": "TextLayer" },
-      "g": {
-        "h": { "i": 150, "j": 40 },
-        "k": { "l": 20, "m": 40 }
-      },
-      "content": "Inside Shape",
-      "style": { "fontSize": 18, "color": "#ffffff" },
-      "s": []
-    },
-    "ImageLayer_1": {
-      "e": { "f": "ImageLayer" },
-      "g": {
-        "h": { "i": 200, "j": 200 },
-        "k": { "l": 600, "m": 100 }
-      },
-      "src": "https://example.com/image.png",
-      "s": []
-    }
-  },
-  }
-];
-
-
-
-// re-sync or re-mapping id with node element after the page log jsonData re-render and stractured -Graph registry.
-//Add a global graph registry
-// --- Graph Registry Utility ---
-window.GraphRegistry = {
-  current: null,
-  set(data) {
-    this.current = typeof data === "string" ? JSON.parse(data) : structuredClone(data);
-    console.log("✅ GraphRegistry set with latest data");
-  },
-  get() {
-    return this.current;
-  },
-  getNode(key) {
-    return this.current?.[0]?.nodes?.[key] || null;
-  },
-  getNodeKeys() {
-    return Object.keys(this.current?.[0]?.nodes || {});
-  }
-};
-
-// Register initial JSON
-GraphRegistry.set(jsonGraphData);
-
-// Map the element id with nodes values.
-// Link each .section to a node key
-function rebindSectionsToGraph() {
-  const nodeKeys = GraphRegistry.getNodeKeys();
-  const sections = document.querySelectorAll('.section');
-
-  sections.forEach((section, index) => {
-    // Simple mapping by order or name (can improve with metadata later)
-    const nodeKey = nodeKeys[index];
-    if (nodeKey) {
-      section.dataset.nodeKey = nodeKey;
-      console.log(`🔗 Bound ${section.id} → ${nodeKey}`);
-    } else {
-      console.warn(`⚠️ No node found for ${section.id}`);
-    }
-  });
-}
-rebindSectionsToGraph();
-
-// Handle "Save" button click
-function UpdateStates(id = null) {
-  console.log(jsonGraphData);
- let lc_id = id;
-  // Move the existing logic inside the `else` block.
-  if (id === null) {
-    console.error('Error: ID is null!');
-  } else {
-    const source = `http://127.0.0.1:8000/api/core/coverletter/${lc_id}/`;
-
-    const data = {
-      state_data: jsonGraphData[0],  // assuming jsonGraphData[0] holds the data you want to send
-      user: 1
+        "nodes": {}
     };
 
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
-    console.log(csrfToken.value);
+    // 2. Iterate through all dynamic sections
+    sections.forEach((section) => {
+        const id = section.id;
+        const style = window.getComputedStyle(section);
+        
+        // Add ID to the root's children array
+        currentGraphState.c.d.s.push(id);
 
-    // Send PUT request using fetch
-    fetch(source, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRFToken': csrfToken.value,  // Send CSRF token here
-      },
-      body: JSON.stringify(data), // Convert the data to a JSON string
-      credentials: 'same-origin',
-    })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(response.error);
+        // Determine the type based on elements inside
+        let layerType = "TextLayer";
+        if (section.querySelector('img')) layerType = "ImageLayer";
+        if (section.classList.contains('shape')) layerType = "ShapeLayer";
+
+        // 3. Construct the specific Node data
+        let nodeData = {
+            "e": { "f": layerType },
+            "g": {
+                "h": { "i": section.offsetWidth, "j": section.offsetHeight },
+                "k": { "l": section.offsetLeft, "m": section.offsetTop }
+            },
+            "s": [] 
+        };
+
+        // Capture Content/Styles dynamically
+        if (layerType === "TextLayer") {
+            nodeData.content = section.innerText.trim();
+            nodeData.style = {
+                "fontSize": style.fontSize,
+                "color": style.color,
+                "fontFamily": style.fontFamily
+            };
+        } else if (layerType === "ImageLayer") {
+            const img = section.querySelector('img');
+            nodeData.src = img ? img.src : "";
         }
-        return response.json(); // Parse the JSON response from the server
-      })
-      .then(responseData => {
-        console.log('Success:', responseData); // Handle the response data
-         alert("Updated State Data!"); // This will run once the update is successful
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error); // Handle errors
-      });
-  }
+
+        // Add node to the main object
+        currentGraphState.nodes[id] = nodeData;
+    });
+
+    // 4. Update the Registry
+    if (window.GraphRegistry) {
+        window.GraphRegistry.set([currentGraphState]);
+    }
+
+    // 5. THE CONSOLE LOGS
+    console.group("📊 GRAPH DATA UPDATE");
+    console.log("Timestamp:", new Date().toLocaleTimeString());
+    console.log("Full Object:", currentGraphState);
+    console.log("JSON String:", JSON.stringify(currentGraphState));
+    console.groupEnd();
+
+    return currentGraphState;
+}
+
+// Attach to the button
+// Make sure your HTML has: <button id="log-graph-btn">Check Graph</button>
+const logButton = document.getElementById('log-graph-btn');
+if (logButton) {
+    logButton.addEventListener('click', () => {
+        console.clear(); // Clears old logs to show only the latest
+        captureAndLogGraph();
+    });
+}
+
+
+
+// Handle "Save" button click with Integrated Capture
+function UpdateStates(id = null) {
+    if (id === null) {
+        console.error('❌ Error: ID is null!');
+        return;
+    }
+
+    // 1. Capture the fresh graph data from the DOM
+    let graphResult = captureAndLogGraph();
+    console.log("Result",graphResult)                                                   
+
+    // 2. VERIFY IN CONSOLE BEFORE SENDING
+    console.log("🛠️ Preparing Payload...");
+    console.log("Type of graphResult:", typeof graphResult);
+    
+    // 3. Construct the payload EXPLICITLY
+    // Ensure the key name matches EXACTLY what your backend expects
+    const payload = {
+        "state_data": graphResult, 
+        "user": 1
+    };
+
+    // 4. FINAL LOG CHECK: Does this look like { state_data: {...}, user: 1 }?
+    console.log("📤 FINAL PAYLOAD:", payload);
+
+    const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+    fetch(source, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken ? csrfToken.value : '',
+        },
+        body: JSON.stringify(payload), // This turns the object into the JSON string for Python
+        credentials: 'same-origin',
+    })
+    .then(response => response.json())
+    .then(responseData => {
+        console.log('✅ Success:', responseData);
+        alert("Updated Successfully!");
+        updatedData = graphResult
+    })
+    .catch(error => console.error('❌ Error:', error));
+}
+// Get Latest Update State Data
+function get_latest_state(id = null, user = null) {
+    const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;     
+    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+
+    return fetch(source, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': csrfToken ? csrfToken.value : '',
+        },
+        credentials: 'same-origin',
+    })
+    .then(response => response.json())  // Parse JSON response
+    .then(responseData => {
+        console.log('✅ Success GET:', responseData);
+
+        // You can access the state data here and return it from the promise
+        //alert("Updated Successfully!");
+
+        // If you just want to return the `state_data`, extract it from the response
+        return responseData.state_data;  // Assuming `state_data` is part of the response
+    })
+    .catch(error => {
+        console.error('❌ Error:', error);
+        alert("Error updating data.");
+        return null;  // Return `null` if there's an error
+    });
 }
 
 
 document.getElementById('saveBtn').addEventListener('click', function() {
-const urlPath = window.location.pathname;
-let lId = null;
-// Adjusted regex to handle different URL formats
-const match = urlPath.match(/\/test-page\/([0-9a-fA-F-]{36})/);
 
 if (match) {
     // If a match is found, extract the UUID and log it to the console
@@ -790,13 +813,128 @@ if (match) {
 
 console.log("Test", lId);
 
-// Now you can use the `lId` as needed
+// Now you can use the `lId` as needed Here we updating backend and frontedn at same time via calling PUT and GET method through function UpdatesState and getlatest state  but now we stopped get_latest_stateand only run for PUT
 UpdateStates(id=lId);
-
+//get_latest_state(lc_id=lId,user=1)
  
 });
 
+
 </script>
+
+
+
+
+<script>
+  /**
+ * REVERSE LOGIC: Hydrates the Canvas DOM based on a Graph JSON structure.
+ * This function ensures that the DOM perfectly mirrors the JSON state.
+ */
+function applyStylesToCanvas(data) {
+    const canvas = document.getElementById('canvas');
+    if (!canvas) return console.error('Canvas container not found!');
+
+    const nodes = data.nodes;
+    const rootChildren = data.c.d.s; // The top-level layers
+
+    // 1. Update Canvas (Root) Properties
+    const rootGeom = data.c.d.g;
+    canvas.style.width = `${rootGeom.h.i}px`;
+    canvas.style.height = `${rootGeom.h.j}px`;
+    canvas.style.backgroundColor = rootGeom.o;
+    canvas.style.position = 'relative'; // Ensure children can be absolute
+
+    /**
+     * Internal helper to create or update a specific node
+     */
+    function processNode(nodeKey, parentElement) {
+        const node = nodes[nodeKey];
+        if (!node) return;
+
+        let element = document.getElementById(nodeKey);
+        const type = node.e.f;
+
+        // A. CREATE element if it doesn't exist
+        if (!element) {
+            console.log(`✨ Creating new ${type}: ${nodeKey}`);
+            if (type === 'ImageLayer') {
+                element = document.createElement('img');
+            } else {
+                element = document.createElement('div');
+                element.classList.add('section', 'resizable');
+            }
+            element.id = nodeKey;
+            parentElement.appendChild(element);
+        }
+
+        // B. APPLY GEOMETRY (Position & Size)
+        const g = node.g;
+        element.style.position = 'absolute';
+        element.style.left = `${g.k.l}px`;
+        element.style.top = `${g.k.m}px`;
+        element.style.width = `${g.h.i}px`;
+        element.style.height = `${g.h.j}px`;
+
+        // C. APPLY VISUAL STYLES
+        if (node.style) {
+            const s = node.style;
+            if (s.color) element.style.color = s.color;
+            if (s.fontSize) element.style.fontSize = `${s.fontSize}px`;
+            if (s.fill) element.style.backgroundColor = s.fill;
+            if (s.stroke) element.style.border = `1px solid ${s.stroke}`;
+        }
+
+        // D. APPLY CONTENT
+        if (type === 'TextLayer' || type === 'RootLayer') {
+            // Only update innerText if it's different to prevent losing cursor focus
+            if (node.content && element.innerText !== node.content) {
+                element.innerText = node.content;
+            }
+            element.setAttribute('contenteditable', 'true');
+        } else if (type === 'ImageLayer' && node.src) {
+            element.src = node.src;
+        }
+
+        // E. RECURSIVE HIERARCHY (Handle Successors/Children)
+        if (node.s && node.s.length > 0) {
+            node.s.forEach(childKey => {
+                processNode(childKey, element); // Nest the child inside this element
+            });
+        }
+    }
+
+    // 2. Start processing from the Root successors
+    rootChildren.forEach(nodeKey => {
+        processNode(nodeKey, canvas);
+    });
+
+    console.log('✅ Canvas Hydration Complete.');
+}
+
+
+
+/// Corrected Button Trigger
+document.getElementById('Up')?.addEventListener('click', function() {
+    if (match) {
+        lId = match[1];
+    }
+
+    // 1. Call the API
+    get_latest_state(lId, 1).then(dataFromAPI => {
+        // 2. dataFromAPI is now the actual JSON object
+        if (dataFromAPI) {
+            console.log("✅ Data received from API, now applying:", dataFromAPI);
+            
+            // 3. ONLY call this once we have the real data
+            applyStylesToCanvas(dataFromAPI); 
+        } else {
+            console.error("❌ No state_data found in the API response");
+        }
+    });
+});
+</script>
+
+
 
 </body>
 </html>

@@ -58,7 +58,7 @@ def test_page(request,l_id:UUID):
     context_content = None
     cu = get_object_or_404(LetterDesign, lc_id=l_id)
     if cu:
-        return render(request, 'pages/tp-20251104-s4cU.html')
+        return render(request, 'pages/tp-20251104-s4cU.html', {"cu":cu})
     else:
         print(f"No LetterDesign found for user {request.user} and id {lc_id}")
         return HttpResponse("Not Allowed couldn't find Letter")
@@ -70,6 +70,9 @@ def view_page_pdf(request):
     html_content = render_to_string(input_html) 
     soup = BeautifulSoup(html_content, 'html.parser')
     canvas_design = soup.find(id="canvas") 
+    state_data = LetterDesign.objects.get(id=1)
+    updated_json_data = state_data.state_data 
+    print(updated_json_data)
     if canvas_design:
         head_content = soup.head
         body_content = soup.body
@@ -77,6 +80,14 @@ def view_page_pdf(request):
         # Create a new body content with only the canvas content
         new_body = soup.new_tag('body')
         new_body.append(canvas_design)  # Add canvas div to new body
+        script_tag = soup.new_tag('script', type="text/javascript")
+        script_tag.string = f"""
+            var updatedData = {updated_json_data};  // Inject the JSON data as JavaScript variable
+            applyStylesToCanvas(updatedData);  // Call your JS function to apply styles
+        """
+        
+        # Step 6: Add the script to the head or body
+        head_content.append(script_tag) 
 
         # Reconstruct the full HTML with head and new body content
         new_html = soup.new_tag('html')
