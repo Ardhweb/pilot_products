@@ -183,12 +183,18 @@
 
   <div class="canvas" id="canvas">
 
-    <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
-      <header contenteditable="true">John Doe / Acme Corp.</header>
+ <!--    <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
+     <header contenteditable="true">John Doe / Acme Corp.</header>
       <p contenteditable="true">123 Business Rd, Suite 101</p>
       <p contenteditable="true">Cityville, USA 54321</p>
-      <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
-    </div>
+      <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p> 
+    </div> -->
+   <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
+John Doe / Acme Corp.
+123 Business Rd, Suite 101
+Cityville, USA 54321
+Phone: +1 555 1234 | Email: john.doe@acmecorp.com
+</div>
 
     <div class="section resizable" style="top: 70mm; left: 10mm; width: 400px;" id="section-2">
       <header contenteditable="true">Cover Letter / Job Application</header>
@@ -726,12 +732,12 @@ rebindSectionsToGraph();
 // Handle "Save" button click
 function UpdateStates(id = null) {
   console.log(jsonGraphData);
-
+ let lc_id = id;
   // Move the existing logic inside the `else` block.
   if (id === null) {
     console.error('Error: ID is null!');
   } else {
-    const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;
+    const source = `http://127.0.0.1:8000/api/core/coverletter/${lc_id}/`;
 
     const data = {
       state_data: jsonGraphData[0],  // assuming jsonGraphData[0] holds the data you want to send
@@ -759,6 +765,7 @@ function UpdateStates(id = null) {
       })
       .then(responseData => {
         console.log('Success:', responseData); // Handle the response data
+         alert("Updated State Data!"); // This will run once the update is successful
       })
       .catch(error => {
         console.error('There was a problem with the fetch operation:', error); // Handle errors

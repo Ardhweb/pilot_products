@@ -9,10 +9,12 @@ from rest_framework.decorators import action
 from drf_yasg.utils import swagger_auto_schema
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.permissions import IsAuthenticated,AllowAny
+from uuid import UUID
 
 class LetterDesignViewSet(viewsets.ModelViewSet):
     serializer_class = LetterDesignSerializer
     permission_classes = [IsAuthenticated]
+    lookup_field = 'lc_id'
 
     # Override `get_queryset` to only return objects for the authenticated user
     def get_queryset(self):
@@ -46,11 +48,11 @@ class LetterDesignViewSet(viewsets.ModelViewSet):
     #     pass
     
     #@csrf_exempt
-    def update(self, request, pk=None):
-        # Retrieve the object to update based on the pk from the URL
+    def update(self, request, lc_id=UUID):
+        # Retrieve the object to update based on the lc_id from the URL
         # Ensure that the object belongs to the current user
         try:
-            letter_design = self.get_queryset().get(pk=pk)
+            letter_design = self.get_queryset().get(lc_id=lc_id)
         except LetterDesign.DoesNotExist:
             return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
         
