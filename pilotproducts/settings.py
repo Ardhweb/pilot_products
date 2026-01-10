@@ -253,10 +253,6 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 ACCOUNT_ADAPTER = "allauth.account.adapter.DefaultAccountAdapter"
 ACCOUNT_SIGNUP_DISABLED = False  # Ensure this is set to False
 
-
-# Redirect after login
-LOGIN_REDIRECT_URL = "/"  # Change this to your desired route
-
 # Redirect after logout (optional)
 LOGOUT_REDIRECT_URL = "/"  # Redirect users to homepage after logout
 

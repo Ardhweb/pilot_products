@@ -3,6 +3,10 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib import messages
 from .forms import LoginForm,SignupForm
+from django.contrib import messages
+from .forms import LoginForm  # Ensure you have your LoginForm imported
+from django.contrib.auth.models import User
+
 def logout_user(request):
     logout(request)  # Log the user out
     # # Get the HTTP_REFERER from the request headers
@@ -14,13 +18,10 @@ def logout_user(request):
     #     return redirect('home')  # Fallback to a default page
     return redirect('index')
 
-
-from django.contrib import messages
-from .forms import LoginForm  # Ensure you have your LoginForm imported
-from django.contrib.auth.models import User
 def login_user(request):
 
     if request.method == 'POST':
+        next_url = request.GET.get('next', '') 
         form = LoginForm(request.POST)
         if form.is_valid():
             cd = form.cleaned_data
@@ -28,7 +29,8 @@ def login_user(request):
             print(f"Authenticated user: {user}")  # Debug statement
             if user is not None and user.is_active:
                 login(request, user)
-                return redirect('index')
+                #return redirect('index')
+                return redirect(next_url if next_url else 'index')
             else:
                 return HttpResponse("Authentication failed: User not found or inactive")
         else:
