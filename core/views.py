@@ -10,6 +10,11 @@ from core.forms import BlankDesignForm
 from django.contrib.auth.decorators import login_required
 from core.models import LetterDesign
 from uuid import UUID
+from bs4 import BeautifulSoup
+from django.shortcuts import render
+from django.conf.urls import handler404
+import json
+from weasyprint import HTML
 
 @csrf_exempt
 def github_webhook(request):
@@ -27,9 +32,6 @@ def github_webhook(request):
     return JsonResponse({'error': 'Invalid request method'}, status=405)
 
 
-
-
-
 def homepage(request):
     # from sentence_transformers import SentenceTransformer
 
@@ -42,13 +44,8 @@ def homepage(request):
     return render(request, "core/index.html")
 
 
-
-from django.shortcuts import render
-from django.conf.urls import handler404
-
 def error_404(request, exception):
     return render(request, 'error_pages/404.html', status=404)
-
 
 def a4_letter(request):
     return render(request,'pages/a4_template.html')
@@ -63,45 +60,48 @@ def test_page(request,l_id:UUID):
         print(f"No LetterDesign found for user {request.user} and id {lc_id}")
         return HttpResponse("Not Allowed couldn't find Letter")
 
-from bs4 import BeautifulSoup
 
-def view_page_pdf(request):
-    input_html = 'pages/tp-20251104-s4cU.html'
-    html_content = render_to_string(input_html) 
-    soup = BeautifulSoup(html_content, 'html.parser')
-    canvas_design = soup.find(id="canvas") 
-    state_data = LetterDesign.objects.get(id=1)
-    updated_json_data = state_data.state_data 
-    print(updated_json_data)
-    if canvas_design:
-        head_content = soup.head
-        body_content = soup.body
+# def view_page_pdf(request):
+#     input_html = 'pages/tp-20251104-s4cU.html'
+#     html_content = render_to_string(input_html) 
+#     soup = BeautifulSoup(html_content, 'html.parser')
+#     canvas_design = soup.find(id="canvas") 
+#     state_data = LetterDesign.objects.get(lc_id='9ee024ee-ee0c-455f-ac0b-b40bd057072d')
+#     updated_json_data = state_data.state_data 
+#     print(updated_json_data)
+#     if canvas_design:
+#         head_content = soup.head
+#         body_content = soup.body
 
-        # Create a new body content with only the canvas content
-        new_body = soup.new_tag('body')
-        new_body.append(canvas_design)  # Add canvas div to new body
-        script_tag = soup.new_tag('script', type="text/javascript")
-        script_tag.string = f"""
-            var updatedData = {updated_json_data};  // Inject the JSON data as JavaScript variable
-            applyStylesToCanvas(updatedData);  // Call your JS function to apply styles
-        """
+#         # Create a new body content with only the canvas content
+#         new_body = soup.new_tag('body')
+#         new_body.append(canvas_design)  # Add canvas div to new body
+#         script_tag = soup.new_tag('script', type="text/javascript")
+#         script_tag.string = f"""
+#         var updatedData = {updated_json_data};  // Inject the JSON data as JavaScript variable
+#         document.addEventListener('DOMContentLoaded', function() {{
+#         applyStylesToCanvas(updatedData);  // Call your JS function to apply styles
+#         }});
+#         """
+
         
-        # Step 6: Add the script to the head or body
-        head_content.append(script_tag) 
+#         # Step 6: Add the script to the head or body
+#         head_content.append(script_tag) 
 
-        # Reconstruct the full HTML with head and new body content
-        new_html = soup.new_tag('html')
-        new_html.append(head_content)
-        new_html.append(new_body)
-        reconstructed_html = str(new_html)
+#         # Reconstruct the full HTML with head and new body content
+#         new_html = soup.new_tag('html')
+#         new_html.append(head_content)
+#         new_html.append(new_body)
+#         reconstructed_html = str(new_html)
 
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'filename=page_cover_letter'
-    # weasyprint.HTML(string=html_content).write_pdf(response)
-    weasyprint.HTML(string=reconstructed_html).write_pdf(response)
-    return response
+#     response = HttpResponse(content_type='application/pdf')
+#     response['Content-Disposition'] = f'filename=page_cover_letter'
+#     # weasyprint.HTML(string=html_content).write_pdf(response)
+#     weasyprint.HTML(string=reconstructed_html).write_pdf(response)
+#     return response
 
-@login_required
+
+# @login_required
 def _blank_design_generate(request):
     
     if request.method == 'POST':
@@ -119,6 +119,131 @@ def _blank_design_generate(request):
         form = BlankDesignForm()
         
         return render(request,'forms/select_design.html',{'form':form})
+
+
+
+def view_page_pdf(request):
+    # Step 1: Load the HTML template
+    input_html = 'pages/tp-20251104-s4cU.html'
+    html_content = render_to_string(input_html)
+
+    # Step 2: Parse the HTML
+    soup = BeautifulSoup(html_content, 'html.parser')
+
+    # Step 3: Extract only the canvas
+    canvas_design = soup.find(id="canvas")
+    if not canvas_design:
+        return HttpResponse("Canvas not found!", status=404)
+
+    # Step 4: Fetch state data from DB
+    state_data = LetterDesign.objects.get(lc_id='9ee024ee-ee0c-455f-ac0b-b40bd057072d')
+    updated_json_data = state_data.state_data
+
+    # Ensure it's a dict
+    if isinstance(updated_json_data, str):
+        updated_data = json.loads(updated_json_data)
+    else:
+        updated_data = updated_json_data
+
+    # Step 5: Update the canvas and child nodes in Python
+    # Update canvas (root) properties
+    root_geom = updated_data['c']['d']['g']
+    canvas_design['style'] = f"""
+        width: {root_geom['h']['i']}px;
+        height: {root_geom['h']['j']}px;
+        background-color: {root_geom['o']};
+        position: relative;
+    """
+
+    # Update all nodes (TextLayer, ImageLayer, etc.)
+    nodes = updated_data['nodes']
+    root_children = updated_data['c']['d']['s']
+    
+    def process_node(node_key, parent_element):
+        node = nodes.get(node_key)
+        if not node:
+            return
+        
+        element = soup.find(id=node_key)
+        if not element:
+            # Create element if missing
+            if node['e']['f'] == 'ImageLayer':
+                element = soup.new_tag('img', id=node_key)
+            else:
+                element = soup.new_tag('div', id=node_key)
+                element['class'] = "section resizable"
+            parent_element.append(element)
+
+        # Apply geometry
+        g = node['g']
+        element['style'] = f"""
+            position: absolute;
+            left: {g['k']['l']}px;
+            top: {g['k']['m']}px;
+            width: {g['h']['i']}px;
+            height: {g['h']['j']}px;
+        """
+        # Apply style
+        if 'style' in node:
+            s = node['style']
+            if 'color' in s:
+                element['style'] += f" color: {s['color']};"
+            if 'fontSize' in s:
+                element['style'] += f" font-size: {s['fontSize']}px;"
+            if 'fill' in s:
+                element['style'] += f" background-color: {s['fill']};"
+            if 'stroke' in s:
+                element['style'] += f" border: 1px solid {s['stroke']};"
+
+        # Apply content
+        if node['e']['f'] in ['TextLayer', 'RootLayer'] and 'content' in node:
+            element.string = node['content']
+            element['contenteditable'] = 'true'
+        if node['e']['f'] == 'ImageLayer' and 'src' in node:
+            element['src'] = node['src']
+
+        # Recursively process children
+        for child_key in node.get('s', []):
+            process_node(child_key, element)
+
+    # Process root-level children
+    for node_key in root_children:
+        process_node(node_key, canvas_design)
+
+    # Step 6: Build a new body with only the canvas
+    new_body = soup.new_tag('body')
+    new_body.append(canvas_design)
+
+    # Step 7: Reconstruct full HTML
+    new_html = soup.new_tag('html')
+
+    # Get the existing <style> tag from <head>
+    head_content = soup.head
+    style_tag = head_content.find('style')
+
+    # Create a new <style> tag and copy the contents of the old one
+    if style_tag:
+        new_style_tag = soup.new_tag('style')
+        new_style_tag.string = style_tag.string  # Copy the content of the old <style> tag
+
+        # Append the new <style> tag to the new head
+        new_html.append(new_style_tag)
+
+    # Add the new body content (canvas)
+    new_html.append(new_body)
+
+    reconstructed_html = str(new_html)
+    print(reconstructed_html)
+
+    # Step 8: Generate PDF
+    pdf = HTML(string=reconstructed_html).write_pdf()
+
+    # Step 9: Return PDF as page (inline)
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="page_cover_letter.pdf"'
+    return response
+
+
 
 @login_required
 def my_letters(request):

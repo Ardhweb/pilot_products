@@ -79,6 +79,8 @@ Follow these steps to successfully set up and run your load test:
     ```bash
     locust --version
     ```
+```http://localhost:8089 ```
+For visitng locaust
 
 #### 2. Start the Locust Test
 
