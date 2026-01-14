@@ -59,48 +59,7 @@ def test_page(request,l_id:UUID):
     else:
         print(f"No LetterDesign found for user {request.user} and id {lc_id}")
         return HttpResponse("Not Allowed couldn't find Letter")
-
-
-# def view_page_pdf(request):
-#     input_html = 'pages/tp-20251104-s4cU.html'
-#     html_content = render_to_string(input_html) 
-#     soup = BeautifulSoup(html_content, 'html.parser')
-#     canvas_design = soup.find(id="canvas") 
-#     state_data = LetterDesign.objects.get(lc_id='9ee024ee-ee0c-455f-ac0b-b40bd057072d')
-#     updated_json_data = state_data.state_data 
-#     print(updated_json_data)
-#     if canvas_design:
-#         head_content = soup.head
-#         body_content = soup.body
-
-#         # Create a new body content with only the canvas content
-#         new_body = soup.new_tag('body')
-#         new_body.append(canvas_design)  # Add canvas div to new body
-#         script_tag = soup.new_tag('script', type="text/javascript")
-#         script_tag.string = f"""
-#         var updatedData = {updated_json_data};  // Inject the JSON data as JavaScript variable
-#         document.addEventListener('DOMContentLoaded', function() {{
-#         applyStylesToCanvas(updatedData);  // Call your JS function to apply styles
-#         }});
-#         """
-
         
-#         # Step 6: Add the script to the head or body
-#         head_content.append(script_tag) 
-
-#         # Reconstruct the full HTML with head and new body content
-#         new_html = soup.new_tag('html')
-#         new_html.append(head_content)
-#         new_html.append(new_body)
-#         reconstructed_html = str(new_html)
-
-#     response = HttpResponse(content_type='application/pdf')
-#     response['Content-Disposition'] = f'filename=page_cover_letter'
-#     # weasyprint.HTML(string=html_content).write_pdf(response)
-#     weasyprint.HTML(string=reconstructed_html).write_pdf(response)
-#     return response
-
-
 # @login_required
 def _blank_design_generate(request):
     
