@@ -1,6 +1,6 @@
 from locust import HttpUser, between, task
 
-class DjangoAppUser(HttpUser):
+class PilotProductsApp(HttpUser):
     # Time between tasks (in seconds)
     wait_time = between(1, 3)
 
@@ -21,3 +21,4 @@ class DjangoAppUser(HttpUser):
     @task
     def view_product(self):
         self.client.get("/test-page/3b0a0e75154844f982ddbd7e55e749d9/")  # Replace with your actual product URL
+    

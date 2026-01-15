@@ -45,7 +45,7 @@ urlpatterns = [
 
 urlpatterns+=static(settings.STATIC_URL,
 document_root=settings.STATIC_ROOT)
-
+print(settings.STATIC_URL)
 """
 SECURITY CONFIGURATION: Production vs. Development Environment
 --------------------------------------------------------------
@@ -58,6 +58,8 @@ SECURITY CONFIGURATION: Production vs. Development Environment
 """
 if settings.DEBUG and server_stage == 'dev':
     urlpatterns += [
+        path('api-auth/', include('rest_framework.urls')),
+        path('api/', include(main_router.urls)),
         path('admin/', admin.site.urls),
         path('', include("core.urls")),
         path('accounts/', include("accounts.urls")),

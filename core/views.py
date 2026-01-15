@@ -15,7 +15,7 @@ from django.shortcuts import render
 from django.conf.urls import handler404
 import json
 from weasyprint import HTML
-
+from django.conf import settings
 @csrf_exempt
 def github_webhook(request):
     if request.method == 'POST':
@@ -81,11 +81,14 @@ def _blank_design_generate(request):
 
 
 
+@login_required
 def view_page_pdf(request):
     # Step 1: Load the HTML template
     input_html = 'pages/tp-20251104-s4cU.html'
     html_content = render_to_string(input_html)
 
+    css_path = os.path.join(settings.BASE_DIR, 'static', 'public', 'pdfengine', 'override_weasyprint.css')
+    print(f"DEBUG: Looking for file at: {css_path}") # Check your terminal output!
     # Step 2: Parse the HTML
     soup = BeautifulSoup(html_content, 'html.parser')
 
@@ -180,7 +183,7 @@ def view_page_pdf(request):
     head_content = soup.head
     style_tag = head_content.find('style')
 
-    # Create a new <style> tag and copy the contents of the old one
+    # # Create a new <style> tag and copy the contents of the old one
     if style_tag:
         new_style_tag = soup.new_tag('style')
         new_style_tag.string = style_tag.string  # Copy the content of the old <style> tag
@@ -195,12 +198,17 @@ def view_page_pdf(request):
     print(reconstructed_html)
 
     # Step 8: Generate PDF
-    pdf = HTML(string=reconstructed_html).write_pdf()
-
+    #pdf = HTML(string=reconstructed_html).write_pdf()
+    # Step 8.2: Generate PDF with the external CSS applied
+    pdf = HTML(string=html_content, base_url=request.build_absolute_uri()).write_pdf(stylesheets=[css_path])
+ 
     # Step 9: Return PDF as page (inline)
     response = HttpResponse(pdf, content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="page_cover_letter.pdf"'
+    #print(response)
     return response
+     # Step 8: Return HTML as response
+    #return HttpResponse(reconstructed_html)
 
 
 
