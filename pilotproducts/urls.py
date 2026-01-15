@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 from .api_routers import router as main_router
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
+from .config.serverconfig import server_stage
+from django.urls import re_path
+from django.views.defaults import page_not_found
+
 # Set up Swagger schema view
 schema_view = get_schema_view(
     openapi.Info(
@@ -37,19 +41,41 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('', include("core.urls")),
-    path('accounts/', include("accounts.urls")),
-    path('accounts/', include('allauth.urls')),  # Google OAuth login URL
-   # path('rest-api/',include('rest_api.urls', namespace="rest_api")),
-    path('api-auth/', include('rest_framework.urls')),
-    path('api/', include(main_router.urls)),
-    path('api-docs', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
-    path('admin/', admin.site.urls),
-
 ]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns+=static(settings.STATIC_URL,
 document_root=settings.STATIC_ROOT)
 
+"""
+SECURITY CONFIGURATION: Production vs. Development Environment
+--------------------------------------------------------------
+- DEVELOPMENT: Allows access to all app endpoints, test views, and Django templates
+  for feature verification and debugging.
+- PRODUCTION: Restricts access to API and Admin endpoints only. 
+- PURPOSE: Prevents exposure of 'unfitted' test code and template logic to the public.
+  By isolating the backend, we reduce the attack surface and prevent exploitation 
+  of internal development routes.
+"""
+if settings.DEBUG and server_stage == 'dev':
+    urlpatterns += [
+        path('admin/', admin.site.urls),
+        path('', include("core.urls")),
+        path('accounts/', include("accounts.urls")),
+        path('accounts/', include('allauth.urls')),
+        path('api-docs', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-docs'),
+    ]
+else:
+    urlpatterns += [
+    # path('rest-api/',include('rest_api.urls', namespace="rest_api")),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/', include(main_router.urls)),
+    ]
+
 handler404 = 'core.views.error_404'
+
+if not settings.DEBUG or server_stage != 'dev':
+    urlpatterns += [
+        # This returns the standard Django 404 page
+        re_path(r'^.*$', lambda request: page_not_found(request, exception=Exception("Page not Found"))),
+    ]
 
