@@ -1,45 +1,54 @@
+/* Set the page size and narrow margins for printing */
+@page { 
+        size: A4; 
+        margin: 0; 
+    }
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+    }
 
-        @page {
-            margin: 0;
-            size: A4;
-        }
+/* Ensure your design starts at the absolute top-left */
+/*#canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}*/
 
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: white;
-        }
+/* Remove any default WeasyPrint header or footer */
+.weasyprint-header, .default-header, header {
+    display: none !important;
+}
 
-        /* Remove any default WeasyPrint header or footer */
-        .weasyprint-header, .default-header, header {
-            display: none !important;
-        }
+/* Ensure the content starts from the correct position */
+/*.content {
+    margin-top: 0;
+    padding: 10mm; /* Adjust padding for narrow design */
+}
+*/
+/* Hide any unwanted footer */
+footer {
+    display: none !important;
+}
 
-        /* Ensure the content starts from the correct position */
-        .content {
-            margin-top: 0;
-            padding: 20px;
-        }
+/* Hide any graphic boxes or unwanted areas */
+.weasyprint-graphic {
+    display: none !important;
+}
 
-        footer {
-            display: none !important; /* Hide any unwanted footer */
-        }
+/* Optional: Define a custom header if necessary */
+/* header {
+    padding: 10px;
+    text-align: center;
+    background-color: #f0f0f0;
+    border-bottom: 1px solid #ccc;
+} */
 
-        /* Hide any graphic boxes or unwanted areas */
-        .weasyprint-graphic {
-            display: none !important;
-        }
-
-        /* Optional: Define a custom header if necessary */
-        header {
-            padding: 10px;
-            text-align: center;
-            background-color: #f0f0f0;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .content {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            padding-top: 50px;  /* Adjust this if you have a custom header */
-        }
+/* Adjust content font settings */
+/*.content {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+*/

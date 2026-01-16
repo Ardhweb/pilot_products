@@ -193,17 +193,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 MEDIA_ROOT  = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-# STATIC_URL = 'static/'
-# STATIC_ROOT =  "staticfiles" # Ensure BASE_DIR is defined
-# TOP_LEVEL_BASE =  Path(__file__).resolve().parent
-# STATICFILES_DIRS = [ TOP_LEVEL_BASE / "static"
-# ]
-
-# settings.py
-
 # 1. This tells Django to look for 'static' folder in your Top Level Root
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'), 
+'static',
+    #os.path.join(BASE_DIR, 'static'), 
 ]
 
 # 2. This is where files are collected for production (keep it separate)
