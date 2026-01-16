@@ -33,7 +33,7 @@
       display: flex;
       align-items: center;
       gap: 20px;
-      z-index: 1000; /* Ensure it stays above other elements */
+      /*z-index: 1000; /* Ensure it stays above other elements */
       padding-top: 10px; /* Optional, adjust as needed */
     }
     
@@ -158,27 +158,82 @@
         border: none !important;
       }
     }
+  
+  #main-ul-sidebar li a.active {
+  color: red;
+  font-weight: bold;
+  transition: scale(1.1);
+}
+
+#main-ul-sidebar li a:hover {
+  transform: scale(1.1); /* Example hover effect for scaling */
+}
   </style>
 </head>
 <body>
-  <div class="toolbar">
-   <button id="saveBtn" class="btn btn-sm btn-outline-primary">Update State Save</button>
-   {% csrf_token %}
-    <label><input type="checkbox" id="moveToolToggle"> Move Tool</label>
-    <label> <button class="btn btn-none  fwt-bold">B</button></label>
-    <label> <button class="btn btn-none  fwt-semibold">U</button></label>
-    <label>| </label>
-    <label> <button class="btn-sm btn btn-none  fwt-semibold">H1</button></label>
-    <label> <button class="btn-sm btn btn-none  fwt-semibold">H2</button></label>
+
+<div class="d-flex" style="min-height: 100vh;">
     
-    <form  method="get">
-  <a target="_blank" href="{% url "view_page_pdf" %}" value="true"  id="viewPDF" class="btn btn-primary btn-sm" >View</a>
+    <div id="sidebar" class="sidebar bg-none border-end d-flex flex-column align-items-center py-3" 
+         style="width: 80px; height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
+        
+        <div class="nav flex-column align-items-center w-100 gap-4">
+            <div id="main-ul-sidebar" class="rounded-circle bg-primary opacity-75" style="width: 40px; height: 40px;"></div>
 
+            <li class="nav-item d-flex flex-column align-items-center list-unstyled">
+                <a onclick="setActive(this)" class=" rounded-4 text-secondary bg-none text-center d-flex align-items-center justify-content-center " 
+                   href="#" 
+                   style="width: 40px; height: 40px; text-decoration: none; transition: 0.2s;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-fonts" viewBox="0 0 16 16">
+                        <path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479z"/>
+                    </svg>
+                </a>
+                <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Text</small>
+            </li>
+        </div>
+    </div>
 
-</form>
+    <div class="d-flex flex-column w-100" style="margin-left: 80px;">
+        
+        <div class="toolbar bg-white border-bottom d-flex align-items-center px-4 shadow-sm" 
+             style="height: 64px; position: sticky; top: 0; z-index: 1020; gap: 15px;">
+            
+            <button id="saveBtn" class="btn btn-sm btn-outline-primary fw-semibold rounded-pill px-3">Update State Save</button>
+            
+            <div class="vr mx-2 text-black-50" style="height: 30px;"></div>
 
-  </div>
+            <div class="form-check form-switch mb-0">
+                <input class="form-check-input" type="checkbox" id="moveToolToggle">
+                <label class="form-check-label small fw-bold" for="moveToolToggle">Move Tool</label>
+            </div>
 
+            <div class="btn-group shadow-sm">
+                <button class="btn btn-white border btn-sm fw-bold">B</button>
+                <button class="btn btn-white border btn-sm fw-bold">U</button>
+            </div>
+
+            <div class="btn-group shadow-sm">
+                <button class="btn btn-white border btn-sm fw-medium">H1</button>
+                <button class="btn btn-white border btn-sm fw-medium">H2</button>
+            </div>
+
+            <div class="ms-auto">
+                <form method="get" class="m-0">
+                    {% csrf_token %}
+                    <a target="_blank" href="{% url 'view_page_pdf' %}" class="btn btn-primary btn-sm rounded-pill px-4 fw-bold">View PDF</a>
+                </form>
+            </div>
+        </div>
+
+        <div class="canvas-container p-4 flex-grow-1">
+            <!-- <div id="canvas" class="bg-white border rounded-4 shadow-sm p-5" style="min-height: 80vh;">
+                <h4 class="text-secondary opacity-50">Editor Canvas</h4>
+                <hr>
+                <p>The main section is now isolated and will scroll independently of the sidebar.</p>
+            </div> -->
+     
+
+<!--Main Canavas Start here-->
   <div class="canvas" id="canvas">
    <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
 John Doe / Acme Corp.
@@ -206,8 +261,51 @@ Phone: +1 555 1234 | Email: john.doe@acmecorp.com
     </div>
 
   </div>
-
+  <!--Canavs end here-->
+  <!--Main Box End Here-->
+</div>
    
+<!--Layout Ending-->
+   </div>
+    </div>
+</div>
+
+
+<!--Script for Sidebar Quest-->
+<script>
+function setActive(clickedLink) {
+  const sidebar = document.getElementById('main-ul-sidebar');
+  if (!sidebar) return;
+
+  // 1. Get all links in the sidebar
+  const links = sidebar.querySelectorAll('li a');
+
+  // 2. Check if the clicked link is already active
+  const isAlreadyActive = clickedLink.classList.contains('active');
+
+  // 3. REMOVE active class from everyone (The "Reset" step)
+  links.forEach(link => {
+    link.classList.remove('active', 'border', 'border-secondary-subtle', 'shadow-sm', 'bg-light');
+    link.classList.add('text-secondary', 'bg-none');
+    link.style.transform = 'scale(1)'; // Reset scale to 1
+  });
+
+  // 4. If the clicked link was not already active, add the active class to it
+  if (!isAlreadyActive) {
+    clickedLink.classList.add('active', 'border', 'border-secondary-subtle', 'shadow-sm', 'bg-light');
+    clickedLink.classList.remove('text-secondary', 'bg-none');
+    clickedLink.style.transform = 'scale(1.1)'; // Scale it up when active
+  } else {
+    // If it was already active, it should be toggled off
+    clickedLink.classList.remove('active', 'border', 'border-secondary-subtle', 'shadow-sm', 'bg-light');
+    clickedLink.classList.add('text-secondary', 'bg-none');
+    clickedLink.style.transform = 'scale(1)'; // Reset scale when deactivated
+  }
+}
+
+
+</script>
+<!--Sidebar Quest End-->
  
   <script>
     let moveEnabled = false;
