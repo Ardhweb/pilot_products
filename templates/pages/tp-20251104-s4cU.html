@@ -56,10 +56,10 @@
 
     .canvas-container{
       overflow: auto; 
-            max-width: calc(100vw - 80px); 
-            height: calc(100vh - 64px); 
-            position: relative;
-            display: block;
+      max-width: calc(100vw - 80px); 
+      height: calc(100vh - 64px); 
+      position: relative;
+      display: block;
     }
 
     /* Canvas */
@@ -73,7 +73,7 @@
       box-sizing: border-box;
       user-select: none; /* Prevent accidental text selection while dragging/resizing */
       min-height: 80vh; min-width: 800px; 
-       transform-origin: top center center;"
+      transform-origin: top center center;"
 
     }
 
@@ -177,13 +177,37 @@
     #main-ul-sidebar li a:hover {
       transform: scale(1.1); /* Example hover effect for scaling */
     }
-
     .text-groups {
-      font-size: 1.2em;
-      font-family:Ariel,sans-serif;
-      font-weight: 600;
-    }
-  </style>
+     font-family: Arial, sans-serif;
+   }
+   .default-text-box{
+    font-size: 12px;
+  }
+  .text1{
+    font-family: Arial, sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 28px;
+    text-decoration-line: none;
+
+  }
+  .text2 {
+   font-family: Arial, sans-serif;
+   font-size: 16.5px;
+   font-weight: 700;
+   line-height: 16px;
+   text-decoration-line: none;
+ }
+
+ .text3 {
+   font-family: Arial, sans-serif;
+   font-size: 14px;
+   font-weight: 400;
+   line-height: 12px;
+   text-decoration-line: none;
+ }
+
+</style>
 </head>
 <body>
 
@@ -248,10 +272,10 @@
     <button class="btn btn-white border btn-sm fw-medium">H2</button>
   </div>
 
-    <div class="btn-group gap-1">
-<label for="customRange1" class="form-label">Zoom</label>
-<input type="range" min="0" max="150" step="1" value="50" class="form-range" id="customRange1">
- <span id="zoomPercentage">50%</span>
+  <div class="btn-group gap-1">
+    <label for="customRange1" class="form-label">Zoom</label>
+    <input type="range" min="0" max="150" step="1" value="50" class="form-range" id="customRange1">
+    <span id="zoomPercentage">50%</span>
   </div>
 
   <div class="ms-auto">
@@ -266,60 +290,94 @@
 
 <main class="d-flex">
   <!-- TabMenu -->
-  <div style="z-index: 9999!important; height: fit-content; overflow: auto;" id="box-tab" class="p-1 d-none shadow-sm">
-    <ul id="group1" class="list-group">
-      <li class="list-group-item">
-        <span  class="text-groups">Add Text SubHeading</span>
-      </li>
-      <li class="list-group-item">Dapibus ac facilisis in</li>
-      <li class="list-group-item">Morbi leo risus</li>
-      <li class="list-group-item">Porta ac consectetur ac</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
+  <div style="width:max-content; z-index: 9999!important; height: fit-content; overflow: auto;" id="box-tab" class="p-2 d-none shadow-sm">
+    <ul id="group1" class="list-group gap-2">
+      <li class="mb-1">
+       <button class="btn btn-primary default-text-box w-100 rounded-2 ">
+        Default Text Box
+      </button>
 
-    <ul id="group2" class="list-group">
-      <li class="list-group-item">SVG</li>
-      <li class="list-group-item">PNG</li>
-      <li class="list-group-item">Art</li>
-      <li class="list-group-item">Border</li>
-      <li class="list-group-item">Vestibulum at eros</li>
-    </ul>
+    </li>
+
+    <li class="mb-1">
+     <button class="btn border border-1 w-100 rounded-2 bg-body">
+      <div>
+        <span class="text-groups text1">
+          <span>Add This Text</span>
+        </span>
+      </div>
+    </button>
+
+  </li>
+  <li class="mb-1">
+   <button class="btn border border-1 w-100 rounded-2 bg-body">
+    <div>
+      <span class="text-groups text2">
+        <span>Add This Text</span>
+      </span>
+    </div>
+  </button>
+
+</li>
+
+
+<li class="mb-1">
+ <button class="btn border border-1 w-100 rounded-2 bg-body">
+  <div>
+    <span class="text-groups text3">
+      <span>Add this text </span>
+    </span>
   </div>
-  <!-- TabMenu end -->
+</button>
 
-  <!-- Main Canvas -->
- <div class="canvas-container p-4 flex-grow-1 "
-     >
-  
-  <div class="canvas shadow-sm m-auto" id="canvas"
-       >
-     
-     <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
-      John Doe / Acme Corp.
-      123 Business Rd, Suite 101
-      Cityville, USA 54321
-      Phone: +1 555 1234 | Email: john.doe@acmecorp.com
-    </div>
+</li>
 
-    <div class="section resizable" style="top: 70mm; left: 10mm; width: 400px;" id="section-2">
-      <header contenteditable="true">Cover Letter / Job Application</header>
-      <p contenteditable="true">Dear Hiring Manager,</p>
-      <p contenteditable="true">I am writing to express my interest in the Software Engineer position...</p>
-      <p contenteditable="true">Sincerely,</p>
-      <p contenteditable="true">John Doe</p>
-    </div>
 
-    <div class="section resizable" style="top: 170mm; left: 10mm; width: 200px;" id="section-3">
-      <header contenteditable="true">Profile Image</header>
-      <img src="https://placehold.co/400" class="image-element" alt="Profile Image" />
-    </div>
+</ul>
 
-    <div class="section resizable" style="bottom: 10mm; left: 10mm; width: 300px;" id="section-4">
-      <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
-      <p contenteditable="true">LinkedIn: linkedin.com/in/johndoe</p>
-    </div>
+<ul id="group2" class="list-group">
+  <li class="list-group-item">SVG</li>
+  <li class="list-group-item">PNG</li>
+  <li class="list-group-item">Art</li>
+  <li class="list-group-item">Border</li>
+  <li class="list-group-item">Vestibulum at eros</li>
+</ul>
+</div>
+<!-- TabMenu end -->
 
-  </div>
+<!-- Main Canvas -->
+<div class="canvas-container p-4 flex-grow-1 "
+>
+
+<div class="canvas shadow-sm m-auto" id="canvas"
+>
+
+<div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
+  John Doe / Acme Corp.
+  123 Business Rd, Suite 101
+  Cityville, USA 54321
+  Phone: +1 555 1234 | Email: john.doe@acmecorp.com
+</div>
+
+<div class="section resizable" style="top: 70mm; left: 10mm; width: 400px;" id="section-2">
+  <header contenteditable="true">Cover Letter / Job Application</header>
+  <p contenteditable="true">Dear Hiring Manager,</p>
+  <p contenteditable="true">I am writing to express my interest in the Software Engineer position...</p>
+  <p contenteditable="true">Sincerely,</p>
+  <p contenteditable="true">John Doe</p>
+</div>
+
+<div class="section resizable" style="top: 170mm; left: 10mm; width: 200px;" id="section-3">
+  <header contenteditable="true">Profile Image</header>
+  <img src="https://placehold.co/400" class="image-element" alt="Profile Image" />
+</div>
+
+<div class="section resizable" style="bottom: 10mm; left: 10mm; width: 300px;" id="section-4">
+  <p contenteditable="true">Phone: +1 555 1234 | Email: john.doe@acmecorp.com</p>
+  <p contenteditable="true">LinkedIn: linkedin.com/in/johndoe</p>
+</div>
+
+</div>
 <!--Canavs end here-->
 <!--Main Box End Here-->
 </div>
@@ -405,14 +463,14 @@
 
 
   //zoom        // Get the range input, canvas element, and zoom percentage display
-        const rangeInput = document.getElementById('customRange1');
-        const canvas = document.getElementById('canvas');
-        const zoomPercentageDisplay = document.getElementById('zoomPercentage');
+  const rangeInput = document.getElementById('customRange1');
+  const canvas = document.getElementById('canvas');
+  const zoomPercentageDisplay = document.getElementById('zoomPercentage');
 
-        zoomPercentageDisplay.value=rangeInput.value
+  zoomPercentageDisplay.value=rangeInput.value
 
         // Function to update the zoom scale and display the zoom percentage
-        function updateZoomScale() {
+  function updateZoomScale() {
             const scaleValue = rangeInput.value; // Get the value of the range input (0 to 100)
 
             // Apply the transition and scale transformation via JavaScript
@@ -421,14 +479,14 @@
 
             // Update the zoom percentage display
             zoomPercentageDisplay.textContent = `${scaleValue}%`; // Show the zoom percentage as-is
-        }
+          }
 
         // Add event listener to the range input to trigger the zoom
-        rangeInput.addEventListener('input', updateZoomScale);
+          rangeInput.addEventListener('input', updateZoomScale);
 
 
 
-</script>
+        </script>
 <!--Sidebar Quest End-->
 
 <script>
