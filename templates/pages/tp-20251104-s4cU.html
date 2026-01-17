@@ -190,6 +190,18 @@
                 </a>
                 <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Text</small>
             </li>
+
+             <li class="nav-item d-flex flex-column align-items-center list-unstyled">
+                <a onclick="setActive(this)" class=" rounded-4 text-secondary bg-none text-center d-flex align-items-center justify-content-center " 
+                   href="#" 
+                   style="width: 40px; height: 40px; text-decoration: none; transition: 0.2s;">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+  <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+  <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+</svg>
+                </a>
+                <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Images</small>
+            </li>
         </div>
     </div>
 
@@ -274,36 +286,26 @@ Phone: +1 555 1234 | Email: john.doe@acmecorp.com
 <!--Script for Sidebar Quest-->
 <script>
 function setActive(clickedLink) {
-  const sidebar = document.getElementById('main-ul-sidebar');
-  if (!sidebar) return;
+    var sidebar = document.getElementById('sidebar');
+    if (!sidebar) return;
 
-  // 1. Get all links in the sidebar
-  const links = sidebar.querySelectorAll('li a');
+    // 1. Check if this specific link is already active
+    var isAlreadyActive = clickedLink.classList.contains('active');
 
-  // 2. Check if the clicked link is already active
-  const isAlreadyActive = clickedLink.classList.contains('active');
+    // 2. Find all <a> tags and remove the active styles from everyone
+    var links = sidebar.getElementsByTagName('a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].classList.remove('active', 'bg-light', 'border', 'border-dark-subtle');
+        links[i].style.transform = 'scale(1)';
+    }
 
-  // 3. REMOVE active class from everyone (The "Reset" step)
-  links.forEach(link => {
-    link.classList.remove('active', 'border', 'border-secondary-subtle', 'shadow-sm', 'bg-light');
-    link.classList.add('text-secondary', 'bg-none');
-    link.style.transform = 'scale(1)'; // Reset scale to 1
-  });
-
-  // 4. If the clicked link was not already active, add the active class to it
-  if (!isAlreadyActive) {
-    clickedLink.classList.add('active', 'border', 'border-secondary-subtle', 'shadow-sm', 'bg-light');
-    clickedLink.classList.remove('text-secondary', 'bg-none');
-    clickedLink.style.transform = 'scale(1.1)'; // Scale it up when active
-  } else {
-    // If it was already active, it should be toggled off
-    clickedLink.classList.remove('active', 'border', 'border-secondary-subtle', 'shadow-sm', 'bg-light');
-    clickedLink.classList.add('text-secondary', 'bg-none');
-    clickedLink.style.transform = 'scale(1)'; // Reset scale when deactivated
-  }
+    // 3. Only add the active styles if it wasn't active to begin with
+    if (!isAlreadyActive) {
+        clickedLink.classList.add('active', 'bg-light', 'border', 'border-dark-subtle');
+        clickedLink.style.transform = 'scale(1.1)'; // Slightly larger to show it's active
+    }
+    // If it WAS active, the code stops here and the link stays "deactivated"
 }
-
-
 </script>
 <!--Sidebar Quest End-->
  
