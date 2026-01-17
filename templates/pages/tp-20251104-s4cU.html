@@ -8,15 +8,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=TASA+Orbiter:wght@400..800&display=swap" rel="stylesheet" />
-   <!--Bootstrap-->
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <!--Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
   <style>
     body {
       background-color: #eee;
       margin: 0;
       font-family: "TASA Orbiter", sans-serif;
     }
-  
+
     /* Global Toolbar */
     .toolbar {
       width: fit-content;
@@ -37,7 +37,7 @@
       padding-top: 10px; /* Optional, adjust as needed */
     }
     
-  
+
     .toolbar label {
       font-size: 18px;
       display: flex;
@@ -48,26 +48,26 @@
     .toolbar     input[type="checkbox"] {
       width: 18px; /* Desired width */
       height: 18px; /* Desired height */
-  }
-@page {
-  margin: 2mm;  /* Adjust the margin for all sides */
-}
-   
+    }
+    @page {
+      margin: 2mm;  /* Adjust the margin for all sides */
+    }
+
 
     
-  
+
     /* Canvas */
     .canvas {
       width: 210mm;
       height: 297mm;
-      margin: 20mm auto;
-      padding: 10mm;
+     /* margin: 20mm auto;
+      padding: 10mm;*/
       background-color: #fff;
       position: relative;
       box-sizing: border-box;
       user-select: none; /* Prevent accidental text selection while dragging/resizing */
     }
-  
+
     .section {
       position: absolute;
       padding: 10px;
@@ -77,15 +77,15 @@
       box-sizing: border-box;
       border-radius: 2px;
     }
-  
+
     .section.selected {
       border: 3.5px solid #6A097D; /*resize line the selection box line*/
     }
-  
+
     .section.selected.movable {
       cursor: move;
     }
-  
+
     /* Resize Handles */
     .resize-handle {
       width: 12px;
@@ -97,43 +97,43 @@
       display: none;
       user-select: none;
     }
-  
+
     /* Show handles only when selected */
     .section.selected .resize-handle {
       display: block;
     }
-  
+
     /* Resize cursor directions */
     .resize-handle.tl {
       top: -6px;
       left: -6px;
       cursor: nwse-resize; /* top-left corner */
     }
-  
+
     .resize-handle.tr {
       top: -6px;
       right: -6px;
       cursor: nesw-resize; /* top-right corner */
     }
-  
+
     .resize-handle.bl {
       bottom: -6px;
       left: -6px;
       cursor: nesw-resize; /* bottom-left corner */
     }
-  
+
     .resize-handle.br {
       bottom: -6px;
       right: -6px;
       cursor: nwse-resize; /* bottom-right corner */
     }
-  
+
     /* Image inside a section */
     .image-element {
       width: 100px;
       height: auto;
     }
-  
+
     /* Red bar below first element */
     #section-1::after {
       content: "";
@@ -146,113 +146,147 @@
       margin-top: 8px;
       pointer-events: none;
     }
-  
+
     /* Print view cleanup */
     @media print {
       .resize-handle,
       .toolbar {
         display: none !important;
       }
-  
+
       .section {
         border: none !important;
       }
     }
-  
-  #main-ul-sidebar li a.active {
-  color: red;
-  font-weight: bold;
-  transition: scale(1.1);
-}
 
-#main-ul-sidebar li a:hover {
-  transform: scale(1.1); /* Example hover effect for scaling */
-}
+    #main-ul-sidebar li a.active {
+      color: red;
+      font-weight: bold;
+      transition: scale(1.1);
+    }
+
+    #main-ul-sidebar li a:hover {
+      transform: scale(1.1); /* Example hover effect for scaling */
+    }
+
+    .text-groups {
+      font-size: 1.2em;
+      font-family:Ariel,sans-serif;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
 
-<div class="d-flex" style="min-height: 100vh;">
-    
+  <div class="d-flex" style="min-height: 100vh;">
+
     <div id="sidebar" class="sidebar bg-none border-end d-flex flex-column align-items-center py-3" 
-         style="width: 80px; height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
-        
-        <div class="nav flex-column align-items-center w-100 gap-4">
-            <div id="main-ul-sidebar" class="rounded-circle bg-primary opacity-75" style="width: 40px; height: 40px;"></div>
+    style="width: 80px; height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
 
-            <li class="nav-item d-flex flex-column align-items-center list-unstyled">
-                <a onclick="setActive(this)" class=" rounded-4 text-secondary bg-none text-center d-flex align-items-center justify-content-center " 
-                   href="#" 
-                   style="width: 40px; height: 40px; text-decoration: none; transition: 0.2s;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-fonts" viewBox="0 0 16 16">
-                        <path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479z"/>
-                    </svg>
-                </a>
-                <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Text</small>
-            </li>
+    <div class="nav flex-column align-items-center w-100 gap-4">
+      <div id="main-ul-sidebar" class="rounded-circle bg-primary opacity-75" style="width: 40px; height: 40px;"></div>
 
-             <li class="nav-item d-flex flex-column align-items-center list-unstyled">
-                <a onclick="setActive(this)" class=" rounded-4 text-secondary bg-none text-center d-flex align-items-center justify-content-center " 
-                   href="#" 
-                   style="width: 40px; height: 40px; text-decoration: none; transition: 0.2s;">
-                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
-  <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
-  <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
-</svg>
-                </a>
-                <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Images</small>
-            </li>
-        </div>
-    </div>
+      <li class="nav-item d-flex flex-column align-items-center list-unstyled">
+        <a data-target="group1" onclick="setActive(this)" class=" rounded-4 text-secondary bg-none text-center d-flex align-items-center justify-content-center " 
+        href="#" 
+        style="width: 40px; height: 40px; text-decoration: none; transition: 0.2s;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-fonts" viewBox="0 0 16 16">
+          <path d="M12.258 3h-8.51l-.083 2.46h.479c.26-1.544.758-1.783 2.693-1.845l.424-.013v7.827c0 .663-.144.82-1.3.923v.52h4.082v-.52c-1.162-.103-1.306-.26-1.306-.923V3.602l.431.013c1.934.062 2.434.301 2.693 1.846h.479z"/>
+        </svg>
+      </a>
+      <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Text</small>
+    </li>
 
-    <div class="d-flex flex-column w-100" style="margin-left: 80px;">
-        
-        <div class="toolbar bg-white border-bottom d-flex align-items-center px-4 shadow-sm" 
-             style="height: 64px; position: sticky; top: 0; z-index: 1020; gap: 15px;">
-            
-            <button id="saveBtn" class="btn btn-sm btn-outline-primary fw-semibold rounded-pill px-3">Update State Save</button>
-            
-            <div class="vr mx-2 text-black-50" style="height: 30px;"></div>
-
-            <div class="form-check form-switch mb-0">
-                <input class="form-check-input" type="checkbox" id="moveToolToggle">
-                <label class="form-check-label small fw-bold" for="moveToolToggle">Move Tool</label>
-            </div>
-
-            <div class="btn-group shadow-sm">
-                <button class="btn btn-white border btn-sm fw-bold">B</button>
-                <button class="btn btn-white border btn-sm fw-bold">U</button>
-            </div>
-
-            <div class="btn-group shadow-sm">
-                <button class="btn btn-white border btn-sm fw-medium">H1</button>
-                <button class="btn btn-white border btn-sm fw-medium">H2</button>
-            </div>
-
-            <div class="ms-auto">
-                <form method="get" class="m-0">
-                    {% csrf_token %}
-                    <a target="_blank" href="{% url 'view_page_pdf' %}" class="btn btn-primary btn-sm rounded-pill px-4 fw-bold">View PDF</a>
-                </form>
-            </div>
-        </div>
-
-        <div class="canvas-container p-4 flex-grow-1">
-            <!-- <div id="canvas" class="bg-white border rounded-4 shadow-sm p-5" style="min-height: 80vh;">
-                <h4 class="text-secondary opacity-50">Editor Canvas</h4>
-                <hr>
-                <p>The main section is now isolated and will scroll independently of the sidebar.</p>
-            </div> -->
-     
-
-<!--Main Canavas Start here-->
-  <div class="canvas" id="canvas">
-   <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
-John Doe / Acme Corp.
-123 Business Rd, Suite 101
-Cityville, USA 54321
-Phone: +1 555 1234 | Email: john.doe@acmecorp.com
+    <li class="nav-item d-flex flex-column align-items-center list-unstyled">
+      <a data-target="group2" onclick="setActive(this)" class=" rounded-4 text-secondary bg-none text-center d-flex align-items-center justify-content-center " 
+      href="#" 
+      style="width: 40px; height: 40px; text-decoration: none; transition: 0.2s;">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+        <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3"/>
+        <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2M14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1M2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1z"/>
+      </svg>
+    </a>
+    <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Images</small>
+  </li>
 </div>
+</div>
+
+
+
+
+
+<div class="d-flex flex-column w-100" style="margin-left: 80px;">
+
+  <div class="toolbar bg-white border-bottom d-flex align-items-center px-4 shadow-sm" 
+  style="height: 64px; position: sticky; top: 0; z-index: 1020; gap: 15px;">
+
+  <button id="saveBtn" class="btn btn-sm btn-outline-primary fw-semibold rounded-pill px-3">Update State Save</button>
+
+  <div class="vr mx-2 text-black-50" style="height: 30px;"></div>
+
+  <div class="form-check form-switch mb-0">
+    <input class="form-check-input" type="checkbox" id="moveToolToggle">
+    <label class="form-check-label small fw-bold" for="moveToolToggle">Move Tool</label>
+  </div>
+
+  <div class="btn-group shadow-sm">
+    <button class="btn btn-white border btn-sm fw-bold">B</button>
+    <button class="btn btn-white border btn-sm fw-bold">U</button>
+  </div>
+
+  <div class="btn-group shadow-sm">
+    <button class="btn btn-white border btn-sm fw-medium">H1</button>
+    <button class="btn btn-white border btn-sm fw-medium">H2</button>
+  </div>
+
+    <div class="btn-group shadow-sm">
+
+    <button class="btn btn-white border btn-sm fw-medium">Zoom+</button>
+    <button class="btn btn-white border btn-sm fw-medium">Zoomo-</button>
+  </div>
+
+  <div class="ms-auto">
+    <form method="get" class="m-0">
+      {% csrf_token %}
+      <a target="_blank" href="{% url 'view_page_pdf' %}" class="btn btn-primary btn-sm rounded-pill px-4 fw-bold">View PDF</a>
+    </form>
+  </div>
+</div>
+
+
+
+<main class="d-flex">
+  <!-- TabMenu -->
+  <div style="z-index: 9999!important; height: fit-content; overflow: auto;" id="box-tab" class="p-1 d-none shadow-sm">
+    <ul id="group1" class="list-group">
+      <li class="list-group-item">
+        <span  class="text-groups">Add Text SubHeading</span>
+      </li>
+      <li class="list-group-item">Dapibus ac facilisis in</li>
+      <li class="list-group-item">Morbi leo risus</li>
+      <li class="list-group-item">Porta ac consectetur ac</li>
+      <li class="list-group-item">Vestibulum at eros</li>
+    </ul>
+
+    <ul id="group2" class="list-group">
+      <li class="list-group-item">SVG</li>
+      <li class="list-group-item">PNG</li>
+      <li class="list-group-item">Art</li>
+      <li class="list-group-item">Border</li>
+      <li class="list-group-item">Vestibulum at eros</li>
+    </ul>
+  </div>
+  <!-- TabMenu end -->
+
+  <!-- Main Canvas -->
+  <div class="canvas-container p-4 flex-grow-1">
+    <div class="canvas" id="canvas" style="min-height: 80vh;">
+     <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
+      John Doe / Acme Corp.
+      123 Business Rd, Suite 101
+      Cityville, USA 54321
+      Phone: +1 555 1234 | Email: john.doe@acmecorp.com
+    </div>
 
     <div class="section resizable" style="top: 70mm; left: 10mm; width: 400px;" id="section-2">
       <header contenteditable="true">Cover Letter / Job Application</header>
@@ -273,19 +307,21 @@ Phone: +1 555 1234 | Email: john.doe@acmecorp.com
     </div>
 
   </div>
-  <!--Canavs end here-->
-  <!--Main Box End Here-->
+<!--Canavs end here-->
+<!--Main Box End Here-->
 </div>
-   
+
 <!--Layout Ending-->
-   </div>
-    </div>
+</main>
+</div>
+</div>
 </div>
 
 
 <!--Script for Sidebar Quest-->
 <script>
-function setActive(clickedLink) {
+  let boxMenu = document.getElementById("box-tab")
+  function setActive(clickedLink) {
     var sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
 
@@ -295,114 +331,160 @@ function setActive(clickedLink) {
     // 2. Find all <a> tags and remove the active styles from everyone
     var links = sidebar.getElementsByTagName('a');
     for (var i = 0; i < links.length; i++) {
-        links[i].classList.remove('active', 'bg-light', 'border', 'border-dark-subtle');
-        links[i].style.transform = 'scale(1)';
+      links[i].classList.remove('active', 'bg-light', 'border', 'border-dark-subtle');
+      links[i].style.transform = 'scale(1)';
     }
 
     // 3. Only add the active styles if it wasn't active to begin with
     if (!isAlreadyActive) {
-        clickedLink.classList.add('active', 'bg-light', 'border', 'border-dark-subtle');
+      clickedLink.classList.add('active', 'bg-light', 'border', 'border-dark-subtle');
         clickedLink.style.transform = 'scale(1.1)'; // Slightly larger to show it's active
-    }
+      }
     // If it WAS active, the code stops here and the link stays "deactivated"
-}
+
+       // Call the function to toggle visibility of the box based on active links
+      toggleBoxTab();
+   // Also show or hide the corresponding tab content based on the link's data-target
+      showTargetTab(clickedLink);
+    }
+    function toggleBoxTab() {
+      var sidebar = document.getElementById('sidebar');
+      if (!sidebar) return;
+
+      var links = sidebar.getElementsByTagName('a');
+      var isActiveLink = false;
+
+    // Check if any link has the 'active' class
+      for (var i = 0; i < links.length; i++) {
+        if (links[i].classList.contains('active')) {
+          isActiveLink = true;
+            break; // Exit loop as we found at least one active link
+          }
+        }
+
+    // Show or hide the box-tab based on whether any link is active
+        if (isActiveLink) {
+          boxMenu.classList.remove('d-none');
+        } else {
+          boxMenu.classList.add('d-none');
+        }
+      }
+
+      function showTargetTab(clickedLink) {
+    var targetId = clickedLink.getAttribute('data-target'); // Get the target from the clicked link
+
+    // Find all the groups inside the box-tab
+    var tabGroups = boxMenu.querySelectorAll('.list-group');
+
+    // Loop through all groups and hide the ones that don't match the target
+    tabGroups.forEach(function (group) {
+      if (group.id === targetId) {
+            group.classList.remove('d-none'); // Show the target group
+          } else {
+            group.classList.add('d-none'); // Hide non-target groups
+          }
+        });
+  }
+
+// Call toggleBoxTab initially to ensure the box-tab is properly shown/hidden based on the initial state of the links
+  toggleBoxTab();
 </script>
 <!--Sidebar Quest End-->
- 
-  <script>
-    let moveEnabled = false;
-    let currentSelected = null;
 
-    const moveCheckbox = document.getElementById('moveToolToggle');
+<script>
+  let moveEnabled = false;
+  let currentSelected = null;
+
+  const moveCheckbox = document.getElementById('moveToolToggle');
 
     // Update moveEnabled flag on checkbox toggle
-    moveCheckbox.addEventListener('change', () => {
-      moveEnabled = moveCheckbox.checked;
+  moveCheckbox.addEventListener('change', () => {
+    moveEnabled = moveCheckbox.checked;
 
-      if (currentSelected) {
-        if (moveEnabled) {
-          currentSelected.classList.add('movable');
-          currentSelected.style.cursor = 'move';
-        } else {
-          currentSelected.classList.remove('movable');
-          currentSelected.style.cursor = 'default';
-        }
+    if (currentSelected) {
+      if (moveEnabled) {
+        currentSelected.classList.add('movable');
+        currentSelected.style.cursor = 'move';
+      } else {
+        currentSelected.classList.remove('movable');
+        currentSelected.style.cursor = 'default';
+      }
+    }
+  });
+
+    // Variables to track dragging
+  let dragOffsetX = 0;
+  let dragOffsetY = 0;
+  let dragging = false;
+
+    // Variables to track resizing
+  let resizing = false;
+  let resizeHandle = null;
+  let originalWidth, originalHeight, originalX, originalY;
+  let originalMouseX, originalMouseY;
+
+    // Function to append resize handles to the selected section
+  function addResizeHandles(section) {
+    const handlePositions = ['tl', 'tr', 'bl', 'br'];
+
+    handlePositions.forEach(pos => {
+      const handle = document.createElement('div');
+      handle.classList.add('resize-handle', pos);
+      section.appendChild(handle);
+    });
+  }
+
+    // Make sections selectable, draggable, and resizable
+  document.querySelectorAll('.section').forEach(section => {
+      // Clicking a section selects it
+    section.addEventListener('click', (e) => {
+      e.stopPropagation();
+
+        // Deselect others
+      document.querySelectorAll('.section').forEach(s => {
+        s.classList.remove('selected', 'movable');
+        s.style.cursor = 'default';
+          // Remove any existing resize handles from non-selected sections
+        const handles = s.querySelectorAll('.resize-handle');
+        handles.forEach(handle => handle.remove());
+      });
+
+        // Select this one
+      section.classList.add('selected');
+      currentSelected = section;
+
+        // Add resize handles to the selected section
+      addResizeHandles(section);
+
+      if (moveEnabled) {
+        section.classList.add('movable');
+        section.style.cursor = 'move';
+      } else {
+        section.style.cursor = 'default';
       }
     });
 
-    // Variables to track dragging
-    let dragOffsetX = 0;
-    let dragOffsetY = 0;
-    let dragging = false;
-
-    // Variables to track resizing
-    let resizing = false;
-    let resizeHandle = null;
-    let originalWidth, originalHeight, originalX, originalY;
-    let originalMouseX, originalMouseY;
-
-    // Function to append resize handles to the selected section
-    function addResizeHandles(section) {
-      const handlePositions = ['tl', 'tr', 'bl', 'br'];
-
-      handlePositions.forEach(pos => {
-        const handle = document.createElement('div');
-        handle.classList.add('resize-handle', pos);
-        section.appendChild(handle);
-      });
-    }
-
-    // Make sections selectable, draggable, and resizable
-    document.querySelectorAll('.section').forEach(section => {
-      // Clicking a section selects it
-      section.addEventListener('click', (e) => {
-        e.stopPropagation();
-
-        // Deselect others
-        document.querySelectorAll('.section').forEach(s => {
-          s.classList.remove('selected', 'movable');
-          s.style.cursor = 'default';
-          // Remove any existing resize handles from non-selected sections
-          const handles = s.querySelectorAll('.resize-handle');
-          handles.forEach(handle => handle.remove());
-        });
-
-        // Select this one
-        section.classList.add('selected');
-        currentSelected = section;
-
-        // Add resize handles to the selected section
-        addResizeHandles(section);
-
-        if (moveEnabled) {
-          section.classList.add('movable');
-          section.style.cursor = 'move';
-        } else {
-          section.style.cursor = 'default';
-        }
-      });
-
       // Drag start
-      section.addEventListener('mousedown', (e) => {
+    section.addEventListener('mousedown', (e) => {
         // If clicked on a resize handle, do NOT start dragging
-        if (e.target.classList.contains('resize-handle')) return;
+      if (e.target.classList.contains('resize-handle')) return;
 
-        if (!moveEnabled || section !== currentSelected) return;
+      if (!moveEnabled || section !== currentSelected) return;
 
-        dragging = true;
+      dragging = true;
 
-        const rect = section.getBoundingClientRect();
-        dragOffsetX = e.clientX - rect.left;
-        dragOffsetY = e.clientY - rect.top;
+      const rect = section.getBoundingClientRect();
+      dragOffsetX = e.clientX - rect.left;
+      dragOffsetY = e.clientY - rect.top;
 
-        section.style.position = 'absolute';
+      section.style.position = 'absolute';
 
-        e.preventDefault();
-      });
+      e.preventDefault();
+    });
 
       // Setup resize handles
-      section.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('resize-handle')) {
+    section.addEventListener('mousedown', (e) => {
+      if (e.target.classList.contains('resize-handle')) {
           e.stopPropagation(); // Prevent selecting the section
           resizing = true;
           resizeHandle = e.target;
@@ -423,85 +505,85 @@ function setActive(clickedLink) {
           e.preventDefault();
         }
       });
-    });
+  });
 
     // Drag move handler on whole document
-    document.addEventListener('mousemove', (e) => {
-      if (dragging && currentSelected) {
-        let newX = e.clientX - dragOffsetX;
-        let newY = e.clientY - dragOffsetY;
+  document.addEventListener('mousemove', (e) => {
+    if (dragging && currentSelected) {
+      let newX = e.clientX - dragOffsetX;
+      let newY = e.clientY - dragOffsetY;
 
         // Restrict movement within canvas bounds (optional)
-        const canvasRect = document.getElementById('canvas').getBoundingClientRect();
-        const secRect = currentSelected.getBoundingClientRect();
+      const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+      const secRect = currentSelected.getBoundingClientRect();
 
-        newX = Math.min(
-          Math.max(newX, canvasRect.left),
-          canvasRect.right - secRect.width
+      newX = Math.min(
+        Math.max(newX, canvasRect.left),
+        canvasRect.right - secRect.width
         );
-        newY = Math.min(
-          Math.max(newY, canvasRect.top),
-          canvasRect.bottom - secRect.height
+      newY = Math.min(
+        Math.max(newY, canvasRect.top),
+        canvasRect.bottom - secRect.height
         );
 
         // Update position relative to canvas
-        const canvasLeft = canvasRect.left + window.pageXOffset;
-        const canvasTop = canvasRect.top + window.pageYOffset;
+      const canvasLeft = canvasRect.left + window.pageXOffset;
+      const canvasTop = canvasRect.top + window.pageYOffset;
 
-        currentSelected.style.left = (newX - canvasLeft) + 'px';
-        currentSelected.style.top = (newY - canvasTop) + 'px';
-        
-         const sectionId = currentSelected.id;
-       
+      currentSelected.style.left = (newX - canvasLeft) + 'px';
+      currentSelected.style.top = (newY - canvasTop) + 'px';
+
+      const sectionId = currentSelected.id;
+
+    }
+
+    if (resizing && currentSelected && resizeHandle) {
+      const dx = e.clientX - originalMouseX;
+      const dy = e.clientY - originalMouseY;
+
+      let newWidth = originalWidth;
+      let newHeight = originalHeight;
+      let newX = originalX;
+      let newY = originalY;
+
+      const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+
+      if (resizeHandle.classList.contains('br')) {
+        newWidth = originalWidth + dx;
+        newHeight = originalHeight + dy;
+      } else if (resizeHandle.classList.contains('bl')) {
+        newWidth = originalWidth - dx;
+        newHeight = originalHeight + dy;
+        newX = originalX + dx;
+      } else if (resizeHandle.classList.contains('tr')) {
+        newWidth = originalWidth + dx;
+        newHeight = originalHeight - dy;
+        newY = originalY + dy;
+      } else if (resizeHandle.classList.contains('tl')) {
+        newWidth = originalWidth - dx;
+        newHeight = originalHeight - dy;
+        newX = originalX + dx;
+        newY = originalY + dy;
       }
-
-      if (resizing && currentSelected && resizeHandle) {
-        const dx = e.clientX - originalMouseX;
-        const dy = e.clientY - originalMouseY;
-
-        let newWidth = originalWidth;
-        let newHeight = originalHeight;
-        let newX = originalX;
-        let newY = originalY;
-
-        const canvasRect = document.getElementById('canvas').getBoundingClientRect();
-
-        if (resizeHandle.classList.contains('br')) {
-          newWidth = originalWidth + dx;
-          newHeight = originalHeight + dy;
-        } else if (resizeHandle.classList.contains('bl')) {
-          newWidth = originalWidth - dx;
-          newHeight = originalHeight + dy;
-          newX = originalX + dx;
-        } else if (resizeHandle.classList.contains('tr')) {
-          newWidth = originalWidth + dx;
-          newHeight = originalHeight - dy;
-          newY = originalY + dy;
-        } else if (resizeHandle.classList.contains('tl')) {
-          newWidth = originalWidth - dx;
-          newHeight = originalHeight - dy;
-          newX = originalX + dx;
-          newY = originalY + dy;
-        }
 
         // Minimum size limits
-        newWidth = Math.max(newWidth, 50);
-        newHeight = Math.max(newHeight, 30);
+      newWidth = Math.max(newWidth, 50);
+      newHeight = Math.max(newHeight, 30);
 
         // Restrict position inside canvas
-        newX = Math.min(Math.max(newX, canvasRect.left), canvasRect.right - newWidth);
-        newY = Math.min(Math.max(newY, canvasRect.top), canvasRect.bottom - newHeight);
+      newX = Math.min(Math.max(newX, canvasRect.left), canvasRect.right - newWidth);
+      newY = Math.min(Math.max(newY, canvasRect.top), canvasRect.bottom - newHeight);
 
         // Update size and position relative to canvas
-        const canvasLeft = canvasRect.left + window.pageXOffset;
-        const canvasTop = canvasRect.top + window.pageYOffset;
+      const canvasLeft = canvasRect.left + window.pageXOffset;
+      const canvasTop = canvasRect.top + window.pageYOffset;
 
-        currentSelected.style.width = newWidth + 'px';
-        currentSelected.style.height = newHeight + 'px';
-        currentSelected.style.left = (newX - canvasLeft) + 'px';
-        currentSelected.style.top = (newY - canvasTop) + 'px';
-      }
-    });
+      currentSelected.style.width = newWidth + 'px';
+      currentSelected.style.height = newHeight + 'px';
+      currentSelected.style.left = (newX - canvasLeft) + 'px';
+      currentSelected.style.top = (newY - canvasTop) + 'px';
+    }
+  });
 
     // Drag / Resize end
     // document.addEventListener('mouseup', () => {
@@ -509,50 +591,50 @@ function setActive(clickedLink) {
     //   resizing = false;
     //   resizeHandle = null;
     // });
-    document.addEventListener('mouseup', (e) => {
-  if (dragging && currentSelected) {
-    const rect = currentSelected.getBoundingClientRect();
-    const canvasRect = document.getElementById('canvas').getBoundingClientRect();
+  document.addEventListener('mouseup', (e) => {
+    if (dragging && currentSelected) {
+      const rect = currentSelected.getBoundingClientRect();
+      const canvasRect = document.getElementById('canvas').getBoundingClientRect();
 
-    const canvasLeft = canvasRect.left + window.pageXOffset;
-    const canvasTop = canvasRect.top + window.pageYOffset;
+      const canvasLeft = canvasRect.left + window.pageXOffset;
+      const canvasTop = canvasRect.top + window.pageYOffset;
 
-    const finalX = rect.left - canvasLeft;
-    const finalY = rect.top - canvasTop;
+      const finalX = rect.left - canvasLeft;
+      const finalY = rect.top - canvasTop;
 
     // Update position only once, at the end of drag
-    updateSectionPosition(currentSelected.id, finalX, finalY);
-  }
+      updateSectionPosition(currentSelected.id, finalX, finalY);
+    }
 
-  dragging = false;
-  resizing = false;
-  resizeHandle = null;
-});
+    dragging = false;
+    resizing = false;
+    resizeHandle = null;
+  });
 
 
  // Make sections selectable
- document.querySelectorAll('.section').forEach(section => {
+  document.querySelectorAll('.section').forEach(section => {
   // Handle section click to select and show action button
-  section.addEventListener('click', (e) => {
-    e.stopPropagation();
+    section.addEventListener('click', (e) => {
+      e.stopPropagation();
 
     // Deselect the previous selection and hide its button
-    if (currentSelected) {
-      currentSelected.classList.remove('selected');
-      const prevActionBox = currentSelected.querySelector('.actionbox');
-      if (prevActionBox) prevActionBox.remove();
-      const prevContextMenu = currentSelected.querySelector('.context-menu');
-      if (prevContextMenu) prevContextMenu.remove();
-    }
+      if (currentSelected) {
+        currentSelected.classList.remove('selected');
+        const prevActionBox = currentSelected.querySelector('.actionbox');
+        if (prevActionBox) prevActionBox.remove();
+        const prevContextMenu = currentSelected.querySelector('.context-menu');
+        if (prevContextMenu) prevContextMenu.remove();
+      }
 
     // Select new section and add action box
-    section.classList.add('selected');
-    currentSelected = section;
+      section.classList.add('selected');
+      currentSelected = section;
 
-    const actionSelected = document.createElement('div');
-    actionSelected.classList.add('actionbox');
-    actionSelected.style.position = 'absolute';
-    actionSelected.style.left = '50%';
+      const actionSelected = document.createElement('div');
+      actionSelected.classList.add('actionbox');
+      actionSelected.style.position = 'absolute';
+      actionSelected.style.left = '50%';
     actionSelected.style.bottom = '-60px'; // Positioned further down
     actionSelected.style.transform = 'translateX(-50%)';
     actionSelected.style.zIndex = '1000'; // Ensure it's in front of other elements
@@ -578,99 +660,99 @@ function setActive(clickedLink) {
 
     actionSelected.appendChild(actionButton);
 
- 
-   
+
+
 
     
 
     
   });
-});
+  });
 
 
 
     // Clicking outside deselects all
-    document.addEventListener('click', () => {
-      if (currentSelected) {
-        currentSelected.classList.remove('selected', 'movable');
-        currentSelected.style.cursor = 'default';
-        const actionBox = currentSelected.querySelector('.actionbox');
-        if (actionBox) actionBox.remove();
-       
-        currentSelected = null;
-      }
-    });
+  document.addEventListener('click', () => {
+    if (currentSelected) {
+      currentSelected.classList.remove('selected', 'movable');
+      currentSelected.style.cursor = 'default';
+      const actionBox = currentSelected.querySelector('.actionbox');
+      if (actionBox) actionBox.remove();
 
-    
+      currentSelected = null;
+    }
+  });
+
+
 
 
 
     // Function to update section position in jsonGraphData
 // Function to update section position in jsonGraphData
-function updateSectionPosition(sectionId, newX, newY) {
-  const section = document.getElementById(sectionId);
-  const nodeKey = section?.dataset?.nodeKey;
+  function updateSectionPosition(sectionId, newX, newY) {
+    const section = document.getElementById(sectionId);
+    const nodeKey = section?.dataset?.nodeKey;
 
-  if (!nodeKey) {
-    console.warn(`⚠️ No nodeKey found for section ${sectionId}`);
-    return;
-  }
+    if (!nodeKey) {
+      console.warn(`⚠️ No nodeKey found for section ${sectionId}`);
+      return;
+    }
 
-  const graph = GraphRegistry.get();
-  const node = graph?.[0]?.nodes?.[nodeKey];
+    const graph = GraphRegistry.get();
+    const node = graph?.[0]?.nodes?.[nodeKey];
 
-  if (!node) {
-    console.warn(`⚠️ Node not found for key ${nodeKey}`);
-    return;
-  }
+    if (!node) {
+      console.warn(`⚠️ Node not found for key ${nodeKey}`);
+      return;
+    }
 
   // Update position (g.k.l = x, g.k.m = y)
-  node.g.k.l = newX;
-  node.g.k.m = newY;
+    node.g.k.l = newX;
+    node.g.k.m = newY;
 
-  console.log(`✅ Updated ${nodeKey} position → x:${newX}, y:${newY}`);
+    console.log(`✅ Updated ${nodeKey} position → x:${newX}, y:${newY}`);
 
   // Store updated graph back to registry
-  GraphRegistry.set(graph);
-}
+    GraphRegistry.set(graph);
+  }
 
 
 
-    
-  </script>
+
+</script>
 
 <!--JsonBatchTrack-->
 
 <script>
-let GraphData = [];
+  let GraphData = [];
 
-function initializeGraph(e) {
-  if (e.id === "canvas") {
-    GraphData = [
-      {
-        c: {
-          d: {
-            e: {
-              f: "RootLayer"
+  function initializeGraph(e) {
+    if (e.id === "canvas") {
+      GraphData = [
+        {
+          c: {
+            d: {
+              e: {
+                f: "RootLayer"
+              }
             }
           }
         }
-      }
-    ];
+      ];
 
     // Get all children of the 'canvas' element that have an ID
-    const childrens = Array.from(e.children)
+      const childrens = Array.from(e.children)
       .filter(el => el.id)
       .map(el => el.id);
 
     // Insert the array of children's IDs into the 's' key inside GraphData[0].c.d
-    GraphData[0].c.d.s = childrens;
+      GraphData[0].c.d.s = childrens;
 
-    return JSON.stringify(GraphData, null, 2);
+      return JSON.stringify(GraphData, null, 2);
+    }
   }
-}
 
-const e = document.getElementById("canvas");
+  const e = document.getElementById("canvas");
 const json = initializeGraph(e); // Initialize the json template data objects base just only with rootlayer or so called canvas.
 console.log(json);
 
@@ -683,16 +765,16 @@ function createContentLayerObj(jsonData) {
     jsonData[0].c.d.e &&
     jsonData[0].c.d.e.f === "RootLayer" &&
     Array.isArray(jsonData[0].c.d.s)
-  ) {
+    ) {
     const obj = jsonData[0]; // the root object inside the array
 
-    jsonData[0].c.d.s.forEach(item => {
+  jsonData[0].c.d.s.forEach(item => {
       // Create a new key in the root object with the name of the item
-      obj[item] = { name: item };
-    });
-  }
+    obj[item] = { name: item };
+  });
+}
 
-  return jsonData;
+return jsonData;
 }
 
 createContentLayerObj(GraphData) // This constructor of new objects on the data json each children which id present on rootlayer sibling array or so calld s:[].
@@ -706,7 +788,7 @@ console.log(result)
 
 
 
- 
+
 </script>
 
 <button onclick="applyStylesToCanvas(updatedData)" id="Up">Apply Data from DB for State</button>
@@ -719,12 +801,12 @@ console.log(result)
 <script>
   let updatedData = null;
   const urlPath = window.location.pathname;
-let lId = null;
+  let lId = null;
 // Adjusted regex to handle different URL formats
-const match = urlPath.match(/\/test-page\/([0-9a-fA-F-]{36})/);
+  const match = urlPath.match(/\/test-page\/([0-9a-fA-F-]{36})/);
 
 
-function captureAndLogGraph() {
+  function captureAndLogGraph() {
     const canvas = document.getElementById('canvas');
     const sections = document.querySelectorAll('.section');
     
@@ -733,181 +815,181 @@ function captureAndLogGraph() {
 
     // 1. Initialize the root structure following your schema
     let currentGraphState = {
-        "c": {
-            "d": {
-                "e": { "f": "RootLayer" },
-                "g": {
-                    "h": { "i": canvas.offsetWidth, "j": canvas.offsetHeight },
-                    "k": { "l": 0, "m": 0 },
-                    "n": 0,
-                    "o": canvasStyle.backgroundColor
-                },
+      "c": {
+        "d": {
+          "e": { "f": "RootLayer" },
+          "g": {
+            "h": { "i": canvas.offsetWidth, "j": canvas.offsetHeight },
+            "k": { "l": 0, "m": 0 },
+            "n": 0,
+            "o": canvasStyle.backgroundColor
+          },
                 "s": [], // Successors (child IDs) will go here
                 "t": null
-            }
-        },
-        "nodes": {}
-    };
+              }
+            },
+            "nodes": {}
+          };
 
     // 2. Iterate through all dynamic sections
-    sections.forEach((section) => {
-        const id = section.id;
-        const style = window.getComputedStyle(section);
-        
+          sections.forEach((section) => {
+            const id = section.id;
+            const style = window.getComputedStyle(section);
+
         // Add ID to the root's children array
-        currentGraphState.c.d.s.push(id);
+            currentGraphState.c.d.s.push(id);
 
         // Determine the type based on elements inside
-        let layerType = "TextLayer";
-        if (section.querySelector('img')) layerType = "ImageLayer";
-        if (section.classList.contains('shape')) layerType = "ShapeLayer";
+            let layerType = "TextLayer";
+            if (section.querySelector('img')) layerType = "ImageLayer";
+            if (section.classList.contains('shape')) layerType = "ShapeLayer";
 
         // 3. Construct the specific Node data
-        let nodeData = {
-            "e": { "f": layerType },
-            "g": {
+            let nodeData = {
+              "e": { "f": layerType },
+              "g": {
                 "h": { "i": section.offsetWidth, "j": section.offsetHeight },
                 "k": { "l": section.offsetLeft, "m": section.offsetTop }
-            },
-            "s": [] 
-        };
+              },
+              "s": [] 
+            };
 
         // Capture Content/Styles dynamically
-        if (layerType === "TextLayer") {
-            nodeData.content = section.innerText.trim();
-            nodeData.style = {
+            if (layerType === "TextLayer") {
+              nodeData.content = section.innerText.trim();
+              nodeData.style = {
                 "fontSize": style.fontSize,
                 "color": style.color,
                 "fontFamily": style.fontFamily
-            };
-        } else if (layerType === "ImageLayer") {
-            const img = section.querySelector('img');
-            nodeData.src = img ? img.src : "";
-        }
+              };
+            } else if (layerType === "ImageLayer") {
+              const img = section.querySelector('img');
+              nodeData.src = img ? img.src : "";
+            }
 
         // Add node to the main object
-        currentGraphState.nodes[id] = nodeData;
-    });
+            currentGraphState.nodes[id] = nodeData;
+          });
 
     // 4. Update the Registry
-    if (window.GraphRegistry) {
-        window.GraphRegistry.set([currentGraphState]);
-    }
+          if (window.GraphRegistry) {
+            window.GraphRegistry.set([currentGraphState]);
+          }
 
     // 5. THE CONSOLE LOGS
-    console.group("📊 GRAPH DATA UPDATE");
-    console.log("Timestamp:", new Date().toLocaleTimeString());
-    console.log("Full Object:", currentGraphState);
-    console.log("JSON String:", JSON.stringify(currentGraphState));
-    console.groupEnd();
+          console.group("📊 GRAPH DATA UPDATE");
+          console.log("Timestamp:", new Date().toLocaleTimeString());
+          console.log("Full Object:", currentGraphState);
+          console.log("JSON String:", JSON.stringify(currentGraphState));
+          console.groupEnd();
 
-    return currentGraphState;
-}
+          return currentGraphState;
+        }
 
 // Attach to the button
 // Make sure your HTML has: <button id="log-graph-btn">Check Graph</button>
-const logButton = document.getElementById('log-graph-btn');
-if (logButton) {
-    logButton.addEventListener('click', () => {
+        const logButton = document.getElementById('log-graph-btn');
+        if (logButton) {
+          logButton.addEventListener('click', () => {
         console.clear(); // Clears old logs to show only the latest
         captureAndLogGraph();
-    });
-}
+      });
+        }
 
 
 
 // Handle "Save" button click with Integrated Capture
-function UpdateStates(id = null) {
-    if (id === null) {
-        console.error('❌ Error: ID is null!');
-        return;
-    }
+        function UpdateStates(id = null) {
+          if (id === null) {
+            console.error('❌ Error: ID is null!');
+            return;
+          }
 
     // 1. Capture the fresh graph data from the DOM
-    let graphResult = captureAndLogGraph();
-    console.log("Result",graphResult)                                                   
+          let graphResult = captureAndLogGraph();
+          console.log("Result",graphResult)                                                   
 
     // 2. VERIFY IN CONSOLE BEFORE SENDING
-    console.log("🛠️ Preparing Payload...");
-    console.log("Type of graphResult:", typeof graphResult);
-    
+          console.log("🛠️ Preparing Payload...");
+          console.log("Type of graphResult:", typeof graphResult);
+
     // 3. Construct the payload EXPLICITLY
     // Ensure the key name matches EXACTLY what your backend expects
-    const payload = {
-        "state_data": graphResult, 
-        "user": 1
-    };
+          const payload = {
+            "state_data": graphResult, 
+            "user": 1
+          };
 
     // 4. FINAL LOG CHECK: Does this look like { state_data: {...}, user: 1 }?
-    console.log("📤 FINAL PAYLOAD:", payload);
+          console.log("📤 FINAL PAYLOAD:", payload);
 
-    const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+          const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;
+          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
 
-    fetch(source, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken ? csrfToken.value : '',
-        },
+          fetch(source, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken ? csrfToken.value : '',
+            },
         body: JSON.stringify(payload), // This turns the object into the JSON string for Python
         credentials: 'same-origin',
-    })
-    .then(response => response.json())
-    .then(responseData => {
-        console.log('✅ Success:', responseData);
-        alert("Updated Successfully!");
-        updatedData = graphResult
-    })
-    .catch(error => console.error('❌ Error:', error));
-}
+      })
+          .then(response => response.json())
+          .then(responseData => {
+            console.log('✅ Success:', responseData);
+            alert("Updated Successfully!");
+            updatedData = graphResult
+          })
+          .catch(error => console.error('❌ Error:', error));
+        }
 // Get Latest Update State Data
-function get_latest_state(id = null, user = null) {
-    const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;     
-    const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
+        function get_latest_state(id = null, user = null) {
+          const source = `http://127.0.0.1:8000/api/core/coverletter/${id}/`;     
+          const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]');
 
-    return fetch(source, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': csrfToken ? csrfToken.value : '',
-        },
-        credentials: 'same-origin',
-    })
+          return fetch(source, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-CSRFToken': csrfToken ? csrfToken.value : '',
+            },
+            credentials: 'same-origin',
+          })
     .then(response => response.json())  // Parse JSON response
     .then(responseData => {
-        console.log('✅ Success GET:', responseData);
+      console.log('✅ Success GET:', responseData);
 
         // You can access the state data here and return it from the promise
         //alert("Updated Successfully!");
 
         // If you just want to return the `state_data`, extract it from the response
         return responseData.state_data;  // Assuming `state_data` is part of the response
-    })
+      })
     .catch(error => {
-        console.error('❌ Error:', error);
-        alert("Error updating data.");
+      console.error('❌ Error:', error);
+      alert("Error updating data.");
         return null;  // Return `null` if there's an error
-    });
-}
+      });
+  }
 
 
-document.getElementById('saveBtn').addEventListener('click', function() {
+  document.getElementById('saveBtn').addEventListener('click', function() {
 
-if (match) {
+    if (match) {
     // If a match is found, extract the UUID and log it to the console
     lId = match[1];  // The UUID is the first captured group
     console.log('Letter Design ID (UUID):', lId);
-} else {
+  } else {
     console.log('UUID not found in URL');
-}
+  }
 
-console.log("Test", lId);
+  console.log("Test", lId);
 
 // Now you can use the `lId` as needed Here we updating backend and frontedn at same time via calling PUT and GET method through function UpdatesState and getlatest state  but now we stopped get_latest_stateand only run for PUT
-UpdateStates(id=lId);
+  UpdateStates(id=lId);
 //get_latest_state(lc_id=lId,user=1)
- 
+
 });
 
 
@@ -921,7 +1003,7 @@ UpdateStates(id=lId);
  * REVERSE LOGIC: Hydrates the Canvas DOM based on a Graph JSON structure.
  * This function ensures that the DOM perfectly mirrors the JSON state.
  */
-function applyStylesToCanvas(data) {
+  function applyStylesToCanvas(data) {
     const canvas = document.getElementById('canvas');
     if (!canvas) return console.error('Canvas container not found!');
 
@@ -939,90 +1021,90 @@ function applyStylesToCanvas(data) {
      * Internal helper to create or update a specific node
      */
     function processNode(nodeKey, parentElement) {
-        const node = nodes[nodeKey];
-        if (!node) return;
+      const node = nodes[nodeKey];
+      if (!node) return;
 
-        let element = document.getElementById(nodeKey);
-        const type = node.e.f;
+      let element = document.getElementById(nodeKey);
+      const type = node.e.f;
 
         // A. CREATE element if it doesn't exist
-        if (!element) {
-            console.log(`✨ Creating new ${type}: ${nodeKey}`);
-            if (type === 'ImageLayer') {
-                element = document.createElement('img');
-            } else {
-                element = document.createElement('div');
-                element.classList.add('section', 'resizable');
-            }
-            element.id = nodeKey;
-            parentElement.appendChild(element);
+      if (!element) {
+        console.log(`✨ Creating new ${type}: ${nodeKey}`);
+        if (type === 'ImageLayer') {
+          element = document.createElement('img');
+        } else {
+          element = document.createElement('div');
+          element.classList.add('section', 'resizable');
         }
+        element.id = nodeKey;
+        parentElement.appendChild(element);
+      }
 
         // B. APPLY GEOMETRY (Position & Size)
-        const g = node.g;
-        element.style.position = 'absolute';
-        element.style.left = `${g.k.l}px`;
-        element.style.top = `${g.k.m}px`;
-        element.style.width = `${g.h.i}px`;
-        element.style.height = `${g.h.j}px`;
+      const g = node.g;
+      element.style.position = 'absolute';
+      element.style.left = `${g.k.l}px`;
+      element.style.top = `${g.k.m}px`;
+      element.style.width = `${g.h.i}px`;
+      element.style.height = `${g.h.j}px`;
 
         // C. APPLY VISUAL STYLES
-        if (node.style) {
-            const s = node.style;
-            if (s.color) element.style.color = s.color;
-            if (s.fontSize) element.style.fontSize = `${s.fontSize}px`;
-            if (s.fill) element.style.backgroundColor = s.fill;
-            if (s.stroke) element.style.border = `1px solid ${s.stroke}`;
-        }
+      if (node.style) {
+        const s = node.style;
+        if (s.color) element.style.color = s.color;
+        if (s.fontSize) element.style.fontSize = `${s.fontSize}px`;
+        if (s.fill) element.style.backgroundColor = s.fill;
+        if (s.stroke) element.style.border = `1px solid ${s.stroke}`;
+      }
 
         // D. APPLY CONTENT
-        if (type === 'TextLayer' || type === 'RootLayer') {
+      if (type === 'TextLayer' || type === 'RootLayer') {
             // Only update innerText if it's different to prevent losing cursor focus
-            if (node.content && element.innerText !== node.content) {
-                element.innerText = node.content;
-            }
-            element.setAttribute('contenteditable', 'true');
-        } else if (type === 'ImageLayer' && node.src) {
-            element.src = node.src;
+        if (node.content && element.innerText !== node.content) {
+          element.innerText = node.content;
         }
+        element.setAttribute('contenteditable', 'true');
+      } else if (type === 'ImageLayer' && node.src) {
+        element.src = node.src;
+      }
 
         // E. RECURSIVE HIERARCHY (Handle Successors/Children)
-        if (node.s && node.s.length > 0) {
-            node.s.forEach(childKey => {
+      if (node.s && node.s.length > 0) {
+        node.s.forEach(childKey => {
                 processNode(childKey, element); // Nest the child inside this element
-            });
-        }
+              });
+      }
     }
 
     // 2. Start processing from the Root successors
     rootChildren.forEach(nodeKey => {
-        processNode(nodeKey, canvas);
+      processNode(nodeKey, canvas);
     });
 
     console.log('✅ Canvas Hydration Complete.');
-}
+  }
 
 
 
 /// Corrected Button Trigger
-document.getElementById('Up')?.addEventListener('click', function() {
+  document.getElementById('Up')?.addEventListener('click', function() {
     if (match) {
-        lId = match[1];
+      lId = match[1];
     }
 
     // 1. Call the API
     get_latest_state(lId, 1).then(dataFromAPI => {
         // 2. dataFromAPI is now the actual JSON object
-        if (dataFromAPI) {
-            console.log("✅ Data received from API, now applying:", dataFromAPI);
-            
+      if (dataFromAPI) {
+        console.log("✅ Data received from API, now applying:", dataFromAPI);
+
             // 3. ONLY call this once we have the real data
-            applyStylesToCanvas(dataFromAPI); 
-        } else {
-            console.error("❌ No state_data found in the API response");
-        }
+        applyStylesToCanvas(dataFromAPI); 
+      } else {
+        console.error("❌ No state_data found in the API response");
+      }
     });
-});
+  });
 
 
 //Call Server Data to  apply graph
