@@ -54,7 +54,13 @@
     }
 
 
-    
+    .canvas-container{
+      overflow: auto; 
+            max-width: calc(100vw - 80px); 
+            height: calc(100vh - 64px); 
+            position: relative;
+            display: block;
+    }
 
     /* Canvas */
     .canvas {
@@ -66,6 +72,9 @@
       position: relative;
       box-sizing: border-box;
       user-select: none; /* Prevent accidental text selection while dragging/resizing */
+      min-height: 80vh; min-width: 800px; 
+       transform-origin: top center center;"
+
     }
 
     .section {
@@ -180,7 +189,7 @@
 
   <div class="d-flex" style="min-height: 100vh;">
 
-    <div id="sidebar" class="sidebar bg-none border-end d-flex flex-column align-items-center py-3" 
+    <aside id="sidebar" class="sidebar bg-none border-end d-flex flex-column align-items-center py-3" 
     style="width: 80px; height: 100vh; position: fixed; left: 0; top: 0; z-index: 1030;">
 
     <div class="nav flex-column align-items-center w-100 gap-4">
@@ -209,7 +218,7 @@
     <small class="fw-bold text-uppercase mt-1" style="font-size: 10px; color: #666;">Images</small>
   </li>
 </div>
-</div>
+</aside>
 
 
 
@@ -239,10 +248,10 @@
     <button class="btn btn-white border btn-sm fw-medium">H2</button>
   </div>
 
-    <div class="btn-group shadow-sm">
-
-    <button class="btn btn-white border btn-sm fw-medium">Zoom+</button>
-    <button class="btn btn-white border btn-sm fw-medium">Zoomo-</button>
+    <div class="btn-group gap-1">
+<label for="customRange1" class="form-label">Zoom</label>
+<input type="range" min="0" max="150" step="1" value="50" class="form-range" id="customRange1">
+ <span id="zoomPercentage">50%</span>
   </div>
 
   <div class="ms-auto">
@@ -279,8 +288,12 @@
   <!-- TabMenu end -->
 
   <!-- Main Canvas -->
-  <div class="canvas-container p-4 flex-grow-1">
-    <div class="canvas" id="canvas" style="min-height: 80vh;">
+ <div class="canvas-container p-4 flex-grow-1 "
+     >
+  
+  <div class="canvas shadow-sm m-auto" id="canvas"
+       >
+     
      <div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
       John Doe / Acme Corp.
       123 Business Rd, Suite 101
@@ -388,6 +401,33 @@
 
 // Call toggleBoxTab initially to ensure the box-tab is properly shown/hidden based on the initial state of the links
   toggleBoxTab();
+
+
+
+  //zoom        // Get the range input, canvas element, and zoom percentage display
+        const rangeInput = document.getElementById('customRange1');
+        const canvas = document.getElementById('canvas');
+        const zoomPercentageDisplay = document.getElementById('zoomPercentage');
+
+        zoomPercentageDisplay.value=rangeInput.value
+
+        // Function to update the zoom scale and display the zoom percentage
+        function updateZoomScale() {
+            const scaleValue = rangeInput.value; // Get the value of the range input (0 to 100)
+
+            // Apply the transition and scale transformation via JavaScript
+            canvas.style.transition = 'transform 0.3s ease-in-out'; // Add smooth transition effect
+            canvas.style.transform = `scale(${scaleValue / 100})`; // Apply the scale transformation (percentage scale)
+
+            // Update the zoom percentage display
+            zoomPercentageDisplay.textContent = `${scaleValue}%`; // Show the zoom percentage as-is
+        }
+
+        // Add event listener to the range input to trigger the zoom
+        rangeInput.addEventListener('input', updateZoomScale);
+
+
+
 </script>
 <!--Sidebar Quest End-->
 
