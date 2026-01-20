@@ -293,14 +293,14 @@
   <div style="width:max-content; z-index: 9999!important; height: fit-content; overflow: auto;" id="box-tab" class="p-2 d-none shadow-sm">
     <ul id="group1" class="list-group gap-2">
       <li class="mb-1">
-       <button class="btn btn-primary default-text-box w-100 rounded-2 ">
+       <button id="default-text" class="txt-btn btn btn-primary default-text-box w-100 rounded-2 ">
         Default Text Box
       </button>
 
     </li>
 
     <li class="mb-1">
-     <button class="btn border border-1 w-100 rounded-2 bg-body">
+     <button id="text1" class="txt-btnbtn border border-1 w-100 rounded-2 bg-body">
       <div>
         <span class="text-groups text1">
           <span>Add This Text</span>
@@ -310,7 +310,7 @@
 
   </li>
   <li class="mb-1">
-   <button class="btn border border-1 w-100 rounded-2 bg-body">
+   <button id="text2" class="txt-btn btn border border-1 w-100 rounded-2 bg-body">
     <div>
       <span class="text-groups text2">
         <span>Add This Text</span>
@@ -322,7 +322,7 @@
 
 
 <li class="mb-1">
- <button class="btn border border-1 w-100 rounded-2 bg-body">
+ <button id="text3" class="btn txt-btn border border-1 w-100 rounded-2 bg-body">
   <div>
     <span class="text-groups text3">
       <span>Add this text </span>
@@ -486,7 +486,72 @@
 
 
 
-        </script>
+//Add  Text from Text List to  Canvas
+// Query all child elements inside the canvas
+let canvasSection = document.querySelectorAll('#canvas div'); // Get all div elements inside canvas
+
+function AddTextNode(elm) {
+   const textList = ["text1", "text2", "text3"];
+  // Create new div element
+  let divItem = document.createElement("div");
+
+  // Use the length of canvasSection to generate a unique index for the new section
+  let idx = `section-${canvasSection.length + 1}`;
+
+  // Set the id and class of the new div element
+  divItem.setAttribute("id", idx);
+  divItem.setAttribute("class", "section resizable");
+
+  // Create a text node and append it to a new <p> element
+  let createText = document.createElement("p");
+  let textNode = document.createTextNode("New Section Content");
+  createText.appendChild(textNode);
+  createText.setAttribute("contenteditable", "true")
+
+  // Check the value of elm and assign the appropriate class
+    // Check if elm matches one of the predefined texts in the list
+  if (textList.includes(elm)) {
+    textNode = document.createTextNode(`Content for ${elm}`);
+    // Apply the class based on the matching elm
+    createText.setAttribute("class", elm);
+  } else {
+    // If no match is found, set default text
+    textNode = document.createTextNode("New Section Content");
+    createText.setAttribute("class", 'text');
+  }
+
+  // Append the text paragraph to the divItem
+  divItem.appendChild(createText);
+
+  // Select the canvas element and append the new div inside it
+  let canvas = document.getElementById('canvas');
+  canvas.appendChild(divItem);
+}
+
+
+
+// // Add event listener to the element with id 'text1'
+// document.getElementById('text1').addEventListener('click', function () {
+//   //alert('Button clicked!');
+//   console.log(canvasSection.length);  // Log the current number of sections
+//   AddTextNode(elm="text1");  // Add the new element
+// });
+
+// Select all elements with the class 'node-btn'
+const txtbuttons = document.querySelectorAll('.txt-btn');
+
+txtbuttons.forEach(txtbutton => {
+  txtbutton.addEventListener('click', function () {
+    console.log(canvasSection.length);
+    
+    // Pass the specific ID of the button that was clicked
+    AddTextNode(txtbutton.id); 
+  });
+});
+
+
+
+</script>
 <!--Sidebar Quest End-->
 
 <script>
