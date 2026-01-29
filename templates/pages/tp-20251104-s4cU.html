@@ -352,7 +352,7 @@
 <div class="canvas shadow-sm m-auto" id="canvas"
 >
 
-<div class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
+<div contenteditable="true" class="section resizable" style="top: 10mm; left: 10mm; width: 300px;" id="section-1">
   John Doe / Acme Corp.
   123 Business Rd, Suite 101
   Cityville, USA 54321
@@ -486,47 +486,57 @@
 
 
 
-//Add  Text from Text List to  Canvas
-// Query all child elements inside the canvas
-let canvasSection = document.querySelectorAll('#canvas div'); // Get all div elements inside canvas
+
+  let canvasSection = document.querySelectorAll('#canvas div');
 
 function AddTextNode(elm) {
-   const textList = ["text1", "text2", "text3"];
-  // Create new div element
-  let divItem = document.createElement("div");
+  const textList = ["text1", "text2", "text3"];
 
-  // Use the length of canvasSection to generate a unique index for the new section
+  let divItem = document.createElement("div");
   let idx = `section-${canvasSection.length + 1}`;
 
-  // Set the id and class of the new div element
   divItem.setAttribute("id", idx);
   divItem.setAttribute("class", "section resizable");
 
-  // Create a text node and append it to a new <p> element
-  let createText = document.createElement("p");
-  let textNode = document.createTextNode("New Section Content");
-  createText.appendChild(textNode);
-  createText.setAttribute("contenteditable", "true")
+  // INLINE STYLE
+  divItem.style.position = "absolute";
+  //divItem.style.bottom = "10mm";
+  //divItem.style.left = "10mm";
+  //divItem.style.width = "300px";
+  divItem.style.cursor = "default";
+  //divItem.style.zIndex = "1000";
 
-  // Check the value of elm and assign the appropriate class
-    // Check if elm matches one of the predefined texts in the list
+  // SINGLE PARAGRAPH (editable)
+  let createText = document.createElement("p");
+  createText.setAttribute("contenteditable", "true");
+
   if (textList.includes(elm)) {
-    textNode = document.createTextNode(`Content for ${elm}`);
-    // Apply the class based on the matching elm
+    createText.textContent = `Content for ${elm}`;
     createText.setAttribute("class", elm);
   } else {
-    // If no match is found, set default text
-    textNode = document.createTextNode("New Section Content");
-    createText.setAttribute("class", 'text');
+    createText.textContent = "New Section Content";
+    createText.setAttribute("class", "text");
   }
 
-  // Append the text paragraph to the divItem
+  // Prevent browser from creating new <p>
+  createText.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.execCommand("insertLineBreak");
+    }
+  });
+
   divItem.appendChild(createText);
 
-  // Select the canvas element and append the new div inside it
-  let canvas = document.getElementById('canvas');
+  let canvas = document.getElementById("canvas");
+  //canvas.style.position = "relative";
   canvas.appendChild(divItem);
+
+  canvasSection = document.querySelectorAll('#canvas div');
+  createText.addEventListener('mousedown', e => e.stopPropagation());
+
 }
+
 
 
 
@@ -597,81 +607,189 @@ txtbuttons.forEach(txtbutton => {
     });
   }
 
-    // Make sections selectable, draggable, and resizable
-  document.querySelectorAll('.section').forEach(section => {
-      // Clicking a section selects it
-    section.addEventListener('click', (e) => {
-      e.stopPropagation();
+// // Make Event Delegation
+// document.addEventListener('click', (e) => {
+//     const section = e.target.closest('.section');
+//     if (!section) return;
 
-        // Deselect others
-      document.querySelectorAll('.section').forEach(s => {
-        s.classList.remove('selected', 'movable');
-        s.style.cursor = 'default';
-          // Remove any existing resize handles from non-selected sections
-        const handles = s.querySelectorAll('.resize-handle');
-        handles.forEach(handle => handle.remove());
-      });
+//     e.stopPropagation();
+//    // 1. SELECTION LOGIC: Loop through all sections to reset their state
+//   // Make sections selectable, draggable, and resizable
+// document.querySelectorAll('.section').forEach(section => {
+//       // Clicking a section selects it
+//     section.addEventListener('click', (e) => {
+//       e.stopPropagation();
 
-        // Select this one
-      section.classList.add('selected');
-      currentSelected = section;
+//         // Deselect others
+//       document.querySelectorAll('.section').forEach(s => {
+//         s.classList.remove('selected', 'movable');
+//         s.style.cursor = 'default';
+//           // Remove any existing resize handles from non-selected sections
+//         const handles = s.querySelectorAll('.resize-handle');
+//         handles.forEach(handle => handle.remove());
+//       });
 
-        // Add resize handles to the selected section
-      addResizeHandles(section);
+//         // Select this one
+//       section.classList.add('selected');
+//       currentSelected = section;
 
-      if (moveEnabled) {
-        section.classList.add('movable');
-        section.style.cursor = 'move';
-      } else {
-        section.style.cursor = 'default';
-      }
+//         // Add resize handles to the selected section
+//       addResizeHandles(section);
+
+//       if (moveEnabled) {
+//         section.classList.add('movable');
+//         section.style.cursor = 'move';
+//       } else {
+//         section.style.cursor = 'default';
+//       }
+//     });
+
+//       // Drag start
+//     section.addEventListener('mousedown', (e) => {
+//       // 3. DRAG INITIALIZATION: Only start if move is enabled and section is selected
+//         // If clicked on a resize handle, do NOT start dragging
+//       if (e.target.classList.contains('resize-handle')) return;
+
+//       if (!moveEnabled || section !== currentSelected) return;
+
+//       dragging = true;
+//       // Capture current dimensions and position of the section
+//       const rect = section.getBoundingClientRect();
+//       dragOffsetX = e.clientX - rect.left;
+//       dragOffsetY = e.clientY - rect.top;
+
+//       section.style.position = 'absolute';
+
+//       e.preventDefault();
+//     });
+
+//       // Setup resize handles
+//     section.addEventListener('mousedown', (e) => {
+//       if (e.target.classList.contains('resize-handle')) {
+//           e.stopPropagation(); // Prevent selecting the section
+//           resizing = true;
+//           resizeHandle = e.target;
+
+//           const rect = section.getBoundingClientRect();
+
+//           originalWidth = rect.width;
+//           originalHeight = rect.height;
+//           originalX = rect.left;
+//           originalY = rect.top;
+
+//           originalMouseX = e.clientX;
+//           originalMouseY = e.clientY;
+
+//           // Position must be absolute to update left/top during resize
+//           section.style.position = 'absolute';
+
+//           e.preventDefault();
+//         }
+//       });
+//   });
+
+// //End of e
+// })
+// //end of E
+
+
+
+/*
+ * Code Name: InteractiveSectionManager
+ * 
+ * This script provides interactive behavior for elements with the class `.section`. It enables 
+ * the following functionalities: selection, dragging, and resizing of sections on the page.
+ * 
+ * 1. **Event Delegation**: A single `click` event listener on the document captures clicks 
+ *    on any `.section`. If a section is clicked, it processes that section, ensuring efficient 
+ *    event handling through delegation.
+ * 
+ * 2. **Section Selection**: When a section is clicked, it is selected by adding a `selected` class, 
+ *    and any previously selected sections are deselected. The section can also be resized, 
+ *    and if moving is enabled, it becomes draggable.
+ * 
+ * 3. **Dragging**: When a selected section is clicked and dragged, it follows the mouse movement. 
+ *    The section’s position is dynamically updated using absolute positioning.
+ * 
+ * 4. **Resizing**: If a resize handle inside the section is clicked, it enables resizing by tracking 
+ *    mouse movements, adjusting the section's width and height accordingly.
+ * 
+ * The code ensures that only one section can be selected, moved, or resized at any given time, 
+ * allowing users to interactively modify sections of a page while maintaining a clean and efficient layout.
+ */
+ 
+// Event Delegation to capture click events on the document
+document.addEventListener('click', (e) => {
+    const section = e.target.closest('.section');
+    if (!section) return; // If the clicked element is not a section, exit the function
+
+    e.stopPropagation(); // Prevent the click event from propagating further up the DOM
+
+    // 1. SELECTION LOGIC: Loop through all sections to reset their state
+    document.querySelectorAll('.section').forEach(section => {
+        section.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent the click event from bubbling to the document
+
+            // Deselect all other sections by removing the 'selected' and 'movable' class
+            document.querySelectorAll('.section').forEach(s => {
+                s.classList.remove('selected', 'movable');
+                s.style.cursor = 'default'; // Reset the cursor style to default
+                // Remove any existing resize handles from non-selected sections
+                const handles = s.querySelectorAll('.resize-handle');
+                handles.forEach(handle => handle.remove());
+            });
+
+            // Select the clicked section by adding the 'selected' class
+            section.classList.add('selected');
+            currentSelected = section; // Store the reference of the selected section
+
+            // Add resize handles to the selected section for resizing functionality
+            addResizeHandles(section);
+
+            // Enable dragging if move is allowed, by adding the 'movable' class
+            if (moveEnabled) {
+                section.classList.add('movable');
+                section.style.cursor = 'move'; // Change the cursor to indicate that the section can be moved
+            } else {
+                section.style.cursor = 'default'; // Reset cursor if move is disabled
+            }
+        });
+
+        // Drag start initialization for the section
+        section.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('resize-handle')) return;
+            if (!moveEnabled || section !== currentSelected) return;
+            dragging = true;
+            const rect = section.getBoundingClientRect();
+            dragOffsetX = e.clientX - rect.left;
+            dragOffsetY = e.clientY - rect.top;
+            section.style.position = 'absolute';
+            e.preventDefault();
+        });
+
+        // Handle resize logic when clicking on a resize handle within the section
+        section.addEventListener('mousedown', (e) => {
+            if (e.target.classList.contains('resize-handle')) {
+                e.stopPropagation(); // Prevent the section from being selected
+                resizing = true; // Indicate that resizing is in progress
+                resizeHandle = e.target; // Store reference to the resize handle being dragged
+                const rect = section.getBoundingClientRect();
+                originalWidth = rect.width;  // Original width of the section
+                originalHeight = rect.height; // Original height of the section
+                originalX = rect.left;       // Original left position of the section
+                originalY = rect.top;        // Original top position of the section
+                originalMouseX = e.clientX;
+                originalMouseY = e.clientY;
+                section.style.position = 'absolute';
+                e.preventDefault();
+            }
+        });
     });
+});
 
-      // Drag start
-    section.addEventListener('mousedown', (e) => {
-        // If clicked on a resize handle, do NOT start dragging
-      if (e.target.classList.contains('resize-handle')) return;
 
-      if (!moveEnabled || section !== currentSelected) return;
-
-      dragging = true;
-
-      const rect = section.getBoundingClientRect();
-      dragOffsetX = e.clientX - rect.left;
-      dragOffsetY = e.clientY - rect.top;
-
-      section.style.position = 'absolute';
-
-      e.preventDefault();
-    });
-
-      // Setup resize handles
-    section.addEventListener('mousedown', (e) => {
-      if (e.target.classList.contains('resize-handle')) {
-          e.stopPropagation(); // Prevent selecting the section
-          resizing = true;
-          resizeHandle = e.target;
-
-          const rect = section.getBoundingClientRect();
-
-          originalWidth = rect.width;
-          originalHeight = rect.height;
-          originalX = rect.left;
-          originalY = rect.top;
-
-          originalMouseX = e.clientX;
-          originalMouseY = e.clientY;
-
-          // Position must be absolute to update left/top during resize
-          section.style.position = 'absolute';
-
-          e.preventDefault();
-        }
-      });
-  });
-
-    // Drag move handler on whole document
-  document.addEventListener('mousemove', (e) => {
+// Drag move handler on whole document
+document.addEventListener('mousemove', (e) => {
     if (dragging && currentSelected) {
       let newX = e.clientX - dragOffsetX;
       let newY = e.clientY - dragOffsetY;
@@ -754,7 +872,9 @@ txtbuttons.forEach(txtbutton => {
     //   resizing = false;
     //   resizeHandle = null;
     // });
-  document.addEventListener('mouseup', (e) => {
+
+
+document.addEventListener('mouseup', (e) => {
     if (dragging && currentSelected) {
       const rect = currentSelected.getBoundingClientRect();
       const canvasRect = document.getElementById('canvas').getBoundingClientRect();
@@ -775,67 +895,9 @@ txtbuttons.forEach(txtbutton => {
   });
 
 
- // Make sections selectable
-  document.querySelectorAll('.section').forEach(section => {
-  // Handle section click to select and show action button
-    section.addEventListener('click', (e) => {
-      e.stopPropagation();
 
-    // Deselect the previous selection and hide its button
-      if (currentSelected) {
-        currentSelected.classList.remove('selected');
-        const prevActionBox = currentSelected.querySelector('.actionbox');
-        if (prevActionBox) prevActionBox.remove();
-        const prevContextMenu = currentSelected.querySelector('.context-menu');
-        if (prevContextMenu) prevContextMenu.remove();
-      }
-
-    // Select new section and add action box
-      section.classList.add('selected');
-      currentSelected = section;
-
-      const actionSelected = document.createElement('div');
-      actionSelected.classList.add('actionbox');
-      actionSelected.style.position = 'absolute';
-      actionSelected.style.left = '50%';
-    actionSelected.style.bottom = '-60px'; // Positioned further down
-    actionSelected.style.transform = 'translateX(-50%)';
-    actionSelected.style.zIndex = '1000'; // Ensure it's in front of other elements
-    section.appendChild(actionSelected);
-
-    // Add the three-dots button
-    const actionButton = document.createElement('button');
-    actionButton.classList.add('btn', 'btn-light', 'rounded', 'border', 'shadow-sm', 'action-button');
-    actionButton.innerHTML = `<span class="vxQy1w"><span aria-hidden="true" class="NA_Img dkWypw"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5 14a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm7 0a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg></span></span>`; // The three dots (ellipsis)
-
-    // Use JavaScript to increase the size of the dots button
-    actionButton.style.fontSize = '30px'; // Increase the font size
-    actionButton.style.padding = '15px';  // Increase padding to make the button larger
-    actionButton.style.width = '50px';    // Button width
-    actionButton.style.height = '50px';   // Button height
-    actionButton.style.display = 'flex';
-    actionButton.style.justifyContent = 'center';
-    actionButton.style.alignItems = 'center';
-    actionButton.style.borderRadius = '50%'; // Keep it circular
-    actionButton.style.backgroundColor = '#f8f9fa'; // Light background color
-    actionButton.style.border = '1px solid #ddd'; // Optional: border color
-    actionButton.style.boxShadow = '0 2px 5px rgba(0, 0, 0, 0.1)'; // Optional: shadow for button
-
-    actionSelected.appendChild(actionButton);
-
-
-
-
-    
-
-    
-  });
-  });
-
-
-
-    // Clicking outside deselects all
-  document.addEventListener('click', () => {
+// Clicking outside deselects all
+document.addEventListener('click', () => {
     if (currentSelected) {
       currentSelected.classList.remove('selected', 'movable');
       currentSelected.style.cursor = 'default';
@@ -844,9 +906,7 @@ txtbuttons.forEach(txtbutton => {
 
       currentSelected = null;
     }
-  });
-
-
+ });
 
 
 
