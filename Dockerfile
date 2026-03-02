@@ -142,41 +142,83 @@
 # Use a slim Python image based on Debian Bookworm
 
 #FROM python:3.10-slim-bullseye
-FROM python:3.13-slim-bullseye
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    gnupg \
-    curl \
-    ca-certificates \
-    build-essential \
-    default-libmysqlclient-dev \
-    pkg-config \
-    libpq-dev \
-    libcairo2 \
-    libcairo2-dev \
-    libpango-1.0-0 \
-    libpangocairo-1.0-0 \
-    libgdk-pixbuf2.0-0 \
-    libgdk-pixbuf2.0-dev \
-    libffi-dev \
-    shared-mime-info \
-    libjpeg-dev \
-    libpng-dev \
-    libharfbuzz-dev \
-    libfribidi-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
+#FROM python:3.13-slim-bullseye
+#
+#ENV DEBIAN_FRONTEND=noninteractive
+#
+#RUN apt-get update && apt-get install -y --no-install-recommends \
+#    gnupg \
+#    curl \
+#    ca-certificates \
+#    build-essential \
+#    default-libmysqlclient-dev \
+#    pkg-config \
+#    libpq-dev \
+#    libcairo2 \
+#    libcairo2-dev \
+#    libpango-1.0-0 \
+#    libpangocairo-1.0-0 \
+#    libgdk-pixbuf2.0-0 \
+#    libgdk-pixbuf2.0-dev \
+#    libffi-dev \
+#    shared-mime-info \
+#    libjpeg-dev \
+#    libpng-dev \
+#    libharfbuzz-dev \
+#    libfribidi-dev \
+#    && rm -rf /var/lib/apt/lists/*
+#
+#WORKDIR /app
 
 # COPY requirements.txt .
 # RUN pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
-COPY package.txt .
-RUN pip install --upgrade pip && pip install --no-cache-dir -r package.txt
+#COPY package.txt .
+#RUN pip install --upgrade pip && pip install --no-cache-dir -r package.txt
 
-COPY . .
+#COPY . .
 
+#EXPOSE 8000
+#CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+
+
+
+#Development
+FROM python:3.10-slim-trixie
+
+# Standard environment variables
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+# Bypass GPG signature verification to avoid NO_PUBKEY errors
+RUN apt-get update --allow-unauthenticated && apt-get install -y --no-install-recommends \
+    libmariadb-dev-compat \
+    libpq5 \
+    libcairo2 \
+    libpango-1.0-0 \
+    libpangocairo-1.0-0 \
+    libgdk-pixbuf2.0-0 \
+    shared-mime-info \
+    libjpeg62-turbo \
+    libpng16-16 \
+    libharfbuzz0b \
+    libfribidi0 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory to /app
+WORKDIR /app
+
+# Copy the requirements file into the container
+COPY requirements.txt .
+
+# Upgrade pip and install requirements
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Expose the necessary port
 EXPOSE 8000
+
+# Run Django app using the manage.py command
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
